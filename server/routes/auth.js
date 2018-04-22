@@ -1,49 +1,27 @@
 const passport = require('passport');
-var User = require('../models/User');
-se
+const express = require('express');
+const router = express.Router();
 
-module.exports = (app) => {
+router.get('/google', passport.authenticate('google', {
+    scope: ['profile', 'email']
+}));
 
-    app.get('/auth/google', passport.authenticate('google', {
-        scope: ['profile', 'email']
-    }));
+router.get('/google/callback', passport.authenticate('google'), (req, res) => {
+    res.redirect('/');
+})
 
-    app.get('/api/current_user', (req, res) => { // this line shows the result after deserializing user from cookie
-        res.json(req.user);
-    });
-
-    app.get('/auth/google/callback', passport.authenticate('google'), (req, res) => {
-        res.redirect('/');
-    })
-
-    app.get('/api/logout', (req, res) => {
-        req.logout();
-        res.redirect('/');
-    });
-
-    app.post('/api/signup', (req, res) => {        
-        User.findUserByUsername(req.body.username, (user) => {
-            if (user) {
-                return res.json({success: false, message: "username already exists"});
-            } else {
-                User.createUser({ username: req.body.username, password: req.body.password }, () => {
-                return res.json({success: true});
-                });
-            }
+router.post('/local', function (req, res, next) {
+    passport.authenticate('local', function (err, user, info) {
+        console.log("usr: ", user);
+        if (err) { return next(err) }
+        if (!user) {
+            return res.json({ success: false });
+        }
+        req.logIn(user, function (err) {
+            if (err) { return next(err); }
+            return res.json({ success: true });
         });
+    })(req, res, next);
+});
 
-    });
-
-    app.post('/auth/local', function (req, res, next) {
-        passport.authenticate('local', function (err, user, info) {
-            if (err) { return next(err) }
-            if (!user) {
-                return res.send({ success: false });
-            }
-            req.logIn(user, function (err) {
-                if (err) { return next(err); }
-                res.send({success: true});
-            });
-        })(req, res, next);
-    });
-
+module.exports = router;

@@ -9,13 +9,12 @@ var cookieSession = require('cookie-session');
 var passport = require('passport');
 var session = require('express-session');
 var keys = require('./config/keys');
+var apiRouter = require('./routes/api');
+var authRouter = require('./routes/auth');
+var watchRouter = require('./routes/watch');
 require('./models/User');
 require('./services/passport');
 const authRoutes = require('./routes/auth');
-
-var index = require('./routes/index');
-var users = require('./routes/users');
-
 
 var app = express();
 
@@ -46,10 +45,12 @@ app.use((req, res, next) => {
     console.log((new Date()).toLocaleTimeString());
     next();
 });
-// app.use('/', index);
-// app.use('/users', users);
 
-authRoutes(app);
+global.dirname = __dirname;
+
+app.use('/watch', watchRouter)
+app.use('/auth', authRouter);
+app.use('/api', apiRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
