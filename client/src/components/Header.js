@@ -28,7 +28,7 @@ class Header extends Component {
             <div>
                 <Link to='/'>This is my logo</Link>
                 {this.renderContent()}
-                <video src="/watch/2" type="video/mp4" width={400}/>
+                <video src="/watch/2" type="video/mp4" controls autoplay={true} width={400}/>
             </div>
         );
     }
