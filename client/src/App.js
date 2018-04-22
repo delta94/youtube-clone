@@ -1,21 +1,36 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import * as actions from './actions/index';
+import { connect } from 'react-redux';
+import { Route, BrowserRouter, Switch } from 'react-router-dom';
+import Header from './components/Header';
+import LandingPage from './components/LandingPage';
+import SignupPage from './components/SignupPage';
+import NotFoundPage from './components/NotFoundPage';
+import LoginPage from './components/LoginPage';
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
-  }
+    constructor(props) {
+        console.log('app render');
+        super(props);
+        this.props.fetchUser();
+    }
+    render() {
+        return (
+            <BrowserRouter>
+                <div>
+                    <Header />
+                    <Switch>
+                        <Route path='/' component={LandingPage} exact />
+                        <Route path='/login' component={LoginPage} />
+                        <Route path='/signup' component={SignupPage} />
+                        <Route component={NotFoundPage} />
+                    </Switch>    
+                </div>    
+            </BrowserRouter>    
+        );
+    }
 }
 
-export default App;
+export default connect(null, actions)(App);

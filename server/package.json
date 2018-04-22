@@ -3,15 +3,27 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
-, "dev": "nodemon ./bin/www"  },
- "devDependencies": {"nodemon" : "*"}, "dependencies": {
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www"
+  },
+  "devDependencies": {
+    "nodemon": "*"
+  },
+  "dependencies": {
+    "bcrypt": "^2.0.1",
     "body-parser": "~1.18.2",
     "cookie-parser": "~1.4.3",
+    "cookie-session": "^2.0.0-beta.3",
     "debug": "~2.6.9",
     "express": "~4.15.5",
+    "express-session": "^1.15.6",
     "jade": "~1.11.0",
+    "local": "^0.3.3",
     "morgan": "~1.9.0",
+    "mysql": "^2.15.0",
+    "passport": "^0.4.0",
+    "passport-google-oauth20": "^1.0.0",
+    "passport-local": "^1.0.0",
     "serve-favicon": "~2.4.5"
   }
 }
