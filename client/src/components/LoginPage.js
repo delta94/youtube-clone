@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { fetchUser } from '../actions/index';
+import { Link } from 'react-router-dom';
 
 class LoginPage extends Component {
     constructor(props) {
@@ -25,6 +26,7 @@ class LoginPage extends Component {
     }
 
     handleOnSubmit(e) {
+        console.log('submit');
         e.preventDefault();
         console.log(this.state.username, this.state.password);
         axios.post('/auth/local', {
@@ -42,16 +44,48 @@ class LoginPage extends Component {
 
     render() {
         return (
-            <div>
-                login
+            <div>     
+                <center>
+                    <div className="section"></div>
 
-                <form onSubmit={this.handleOnSubmit}>
-                    Username: <br/>
-                    <input name='username' value={this.state.username} type='text' value={this.state.username} onChange={this.handleUsernameOnChange}/> <br />
-                    Password: <br/>
-                    <input name='password' value={this.state.password} type='text' value={this.state.password} onChange={this.handlePasswordOnChange}/> <br />
-                    <input type='submit' value='Submit'/>
-                </form>    
+                    <h5 className="indigo-text">Login to MyApp</h5>
+                    <div className="section"></div>
+
+                    <div className="container">
+                        <div className="z-depth-1 grey lighten-4 row" style={{ display: "inline-block", padding: "32px 48px 0px 48px", border: "1px solid #EEE" }}>
+
+                        <form className="col s12" onSubmit={this.handleOnSubmit}>
+                                <div className='row'>
+                                    <div className='col s12'>
+                                    </div>
+                                </div>
+
+                                <div className='row'>
+                                    <div className='input-field col s12'>
+                                        <input className='validate' value={this.state.username} type='text' value={this.state.username} onChange={this.handleUsernameOnChange} placeholder="Enter your username"/>
+                                    </div>
+                                </div>
+
+                                <div className='row'>
+                                    <div className='input-field col s12'>
+                                        <input className='validate' value={this.state.password} type='password' value={this.state.password} onChange={this.handlePasswordOnChange} placeholder="Enter your password"/>
+                                    </div>
+                                    <label style={{ float: "right" }}>
+                                        <a className='pink-text' href='#!'><b>Forgot Password?</b></a>
+                                    </label>
+                                </div>
+
+                                <br />
+                                <center>
+                                    <div className='row'>
+                                        <button type='submit' name='btn_login' className='col s12 btn btn-large waves-effect indigo'>Login</button>
+                                    </div>
+                                </center>
+                        </form>
+                        </div>
+                    </div>
+                    <Link to='/signup'>Create account</Link>
+                </center>
             </div>
         );
     }

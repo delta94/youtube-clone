@@ -44,18 +44,50 @@ class SignupPage extends Component {
     render() {
         return (
             <div>
-                signup
+                <center>
+                    <div className="section"></div>
 
-                <form onSubmit={this.handleOnSubmit}>
-                    Username: <br />
-                    <input name='username' type='text' value={this.state.username} onChange={this.handleUsernameOnChange} /> <br />
-                    Password: <br />
-                    <input name='password' type='text' value={this.state.password} onChange={this.handlePasswordOnChange} /> <br />
-                    Re enter password: <br/>
+                    <h5 className="indigo-text">Login to MyApp</h5>
+                    <div className="section"></div>
 
-                    <input name='reentered-password' type='text' value={this.state.reentered_password} onChange={this.handleReenteredPasswordOnChange} /> <br />
-                    <input type='submit' value='Submit' />
-                </form>  
+                    <div className="container">
+                        <div className="z-depth-1 grey lighten-4 row" style={{ display: "inline-block", padding: "32px 48px 0px 48px", border: "1px solid #EEE" }}>
+
+                            <form className="col s12" onSubmit={this.handleOnSubmit}>
+                                <div className='row'>
+                                    <div className='col s12'>
+                                    </div>
+                                </div>
+
+                                <div className='row'>
+                                    <div className='input-field col s12'>
+                                        <input className='validate' value={this.state.username} type='text' value={this.state.username} onChange={this.handleUsernameOnChange} placeholder="Enter your username" />
+                                    </div>
+                                </div>
+
+                                <div className='row'>
+                                    <div className='input-field col s12'>
+                                        <input className='validate' value={this.state.password} type='password' value={this.state.password} onChange={this.handlePasswordOnChange} placeholder="Enter your password" />
+                                    </div>
+                                </div>
+
+                                <div className='row'>
+                                    <div className='input-field col s12'>
+                                        <input className='validate'  type='password' value={this.state.reentered_password} onChange={this.handleReenteredPasswordOnChange} placeholder="Re-enter your password" />
+                                    </div>
+                                </div>
+
+                                <br />
+                                <center>
+                                    <div className='row'>
+                                        <button type='submit' name='btn_login' className='col s12 btn btn-large waves-effect indigo'>Create</button>
+                                    </div>
+                                </center>
+                            </form>
+                        </div>
+                    </div>
+                </center>
+
             </div>
         );
     }
