@@ -11,7 +11,7 @@ var session = require('express-session');
 var keys = require('./config/keys');
 var apiRouter = require('./routes/api');
 var authRouter = require('./routes/auth');
-var watchRouter = require('./routes/watch');
+var uploadRouter = require('./routes/upload');
 require('./models/User');
 require('./services/passport');
 const authRoutes = require('./routes/auth');
@@ -46,11 +46,10 @@ app.use((req, res, next) => {
     next();
 });
 
-global.dirname = __dirname;
-
-app.use('/watch', watchRouter)
 app.use('/auth', authRouter);
 app.use('/api', apiRouter);
+app.use('/upload', uploadRouter);   
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

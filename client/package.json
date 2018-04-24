@@ -2,19 +2,21 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-    "proxy": {
-        "/auth/*": {
-            "target": "http://localhost:5000"
-        },
-        "/api/*": {
-            "target": "http://localhost:5000"
-        },
-        "/watch" : {
-            "target" : "http://localhost:5000"
-        }
+  "proxy": {
+    "/auth/*": {
+      "target": "http://localhost:5000"
     },
+    "/api/*": {
+      "target": "http://localhost:5000"
+    },
+    "/watch": {
+      "target": "http://localhost:5000"
+    }
+  },
   "dependencies": {
+    "@material/drawer": "^0.35.0",
     "axios": "^0.18.0",
+    "materialize-css": "^1.0.0-beta",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-redux": "^5.0.7",
