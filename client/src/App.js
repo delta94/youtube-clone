@@ -9,7 +9,6 @@ import LandingPage from './components/LandingPage';
 import SignupPage from './components/SignupPage';
 import NotFoundPage from './components/NotFoundPage';
 import LoginPage from './components/LoginPage';
-import './styles/base.css';
 
 class App extends Component {
     constructor(props) {
@@ -19,7 +18,6 @@ class App extends Component {
     }
     render() {
         return (
-            <div className="container">
             <BrowserRouter>
                 <div>
                     <Header />
@@ -30,8 +28,7 @@ class App extends Component {
                         <Route component={NotFoundPage} />
                     </Switch>    
                 </div>    
-                </BrowserRouter>    
-            </div>    
+            </BrowserRouter>    
         );
     }
 }
