@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import LoginModal from './LoginModal';
 
 class Header extends Component {
     renderContent() {
@@ -26,6 +27,7 @@ class Header extends Component {
     render() {
         return (
             <div>
+                <LoginModal/>    
                 <Link to='/'>This is my logo</Link>
                 {this.renderContent()}
                 <video src="/watch/2" type="video/mp4" controls autoplay={true} width={400}/>
