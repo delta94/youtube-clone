@@ -7,7 +7,6 @@ module.exports.createUser = function (user, cb) {
         bcrypt.hash(user.password, salt, function (err, hash) {
             user.password = hash;
             db.query(`INSERT INTO user(username, password) VALUES ('${user.username}', '${user.password}')`)
-                
                 .then(rows => {
                     cb();
                 })
@@ -21,10 +20,10 @@ module.exports.createUser = function (user, cb) {
 module.exports.findUserByUsername = function (username, cb) {
     const db = new Database();
     db.query(`SELECT * FROM user WHERE username='${username}'`)
-        .then(rows => cb(rows[0])
+        .then(rows => cb(rows[0]))
         .catch(err => {
             throw err;
-        }));
+        });
 }
 
 module.exports.comparePassword = function (candidatePassword, hash, cb) {

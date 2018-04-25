@@ -1,0 +1,148 @@
+* {
+    box-sizing: border-box;
+}
+
+.sidebar {
+    background-color: #ddd;
+       font-size: 12px;
+
+}
+
+.sidebar a {
+    text-decoration: none;
+}
+
+.sidebar a:hover {
+    text-decoration: none;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+.nav-outer-container {
+    padding-top: 5px;
+    padding: 1em 1.5em;
+    background-color: #f5f5f5;
+    width: 230px;
+    border-right: 1px solid #ccc;
+    position: fixed;
+    top: 50px;
+    bottom: 0;
+    overflow-y: hidden;
+       transition: 0.5s ease;
+}
+
+.nav-outer-container:hover {
+       transition: 0.5s ease;
+    overflow-y: scroll;
+}
+
+.nav-main-sections-container {
+    list-style-type: none;
+}
+
+.nav-main-section-links {
+    background-color: #f5f5f5;
+}
+
+.nav-main-section-link {
+    list-style-type: none;
+}
+
+.nav-main-section-link-a {
+    text-decoration: none;
+    color: #333;
+    width: 100%;
+    display: block;
+    padding: 0.5em;
+}
+
+.nav-main-section-link-a:hover {
+    background-color: #ebebeb;
+    color: #0a0a0a;
+}
+
+.nav-main-section-link-a:hover .nav-link-numbers,
+.nav-main-section-link-a:hover .icon {
+  color: #0a0a0a;
+  }
+
+.nav-main-section-link-a:focus {
+    background-color: #990000;
+  color: #0a0a0a;
+  }
+
+.nav-main-section-link-a:focus .nav-link-numbers,
+.nav-main-section-link-a:focus .icon {
+  color: #0a0a0a;
+  }
+
+.nav-main-section-link-a .link-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-link-icon,
+.nav-link-img {
+    width: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-link-img>img {
+    height: 1.5em;
+    width: 1.5em;
+}
+
+.icon {
+    font-size: 1.5em;
+    color: #555;
+}
+
+.nav-link-text {
+    width: 80%;
+    padding: 0 0.2em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-link-numbers {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    color: #999999;
+}
+
+hr {
+    border: none;
+    border-bottom: 1px solid #ccc;
+}
+
+.nav-main-section-header {
+    font-size: 1em;
+    margin: 0.2em 0;
+    padding: 0.5em;
+}
+
+.nav-main-section-header-a {
+    text-decoration: none;
+    color: #990000;
+}
+
+.nav-main-section-header-a:hover {
+    text-decoration: underline;
+}
+
+::-webkit-scrollbar {
+    width: 1px;
+    transition: 0.5s ease;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.5);
+}
