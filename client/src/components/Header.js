@@ -177,7 +177,7 @@ class Header extends Component {
                                 <span className="icon-bar"></span>
                                 <span className="icon-bar"></span>
                             </button>
-                            <a className="navbar-brand" id='brand-logo' href="#"><img src="logo.png" width="150px"/></a>
+                            <a className="navbar-brand" id='brand-logo' href="#"><img src="logo.png" width="135px"/></a>
                         </div>
 
                         <div className="collapse navbar-collapse">
