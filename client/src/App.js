@@ -4,6 +4,7 @@ import router from './router';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import Sidebar from 'react-sidenav';
+import { BrowserRouter } from 'react-router-dom';
 
 import SideNav, { Nav, NavIcon, NavText } from 'react-sidenav';
 
@@ -17,11 +18,13 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-
-        <Header />
-          { router }
-        <Footer />
-
+            <BrowserRouter>
+            <div>        
+                <Header />
+                { router }
+                <Footer />
+            </div>        
+        </BrowserRouter>
       </div>
     );
   }
