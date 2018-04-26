@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/User');
-var Database = require('../models/Database');
 
 router.get('/current_user', (req, res) => { // this line shows the result after deserializing user from cookie
     res.json(req.user);
@@ -24,11 +23,6 @@ router.post('/signup', (req, res) => {
         }
     });
 
-});
-
-router.get('/users', (req, res) => {
-    let db = new Database();
-    db.query('CALL `GetUsers`').then(rows => console.log(rows));
 });
 
 module.exports = router;
