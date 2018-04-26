@@ -1,9 +1,0 @@
-@import url("./components/login_modal.css");
-@import url("./components/sidebar.css");
-
-.content-page {
-    margin-top: 100px;
-    background-color: red;
-    margin-left: 275px;
-    margin-right: 35px;
-}
