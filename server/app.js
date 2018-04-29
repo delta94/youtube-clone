@@ -15,12 +15,14 @@ var watchRouter = require('./routes/watch');
 require('./models/User');
 require('./services/passport');
 const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/user');
 
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+app.use(express.static('public'))
 
 
 // uncomment after placing your favicon in /public
@@ -41,6 +43,8 @@ app.use(session({
     resave: true
 }));
 
+console.log('Listening to server on port 5000');
+
 app.use((req, res, next) => {
     console.log((new Date()).toLocaleTimeString());
     next();
@@ -51,6 +55,7 @@ global.dirname = __dirname;
 app.use('/watch', watchRouter)
 app.use('/auth', authRouter);
 app.use('/api', apiRouter);
+app.use('/user', userRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

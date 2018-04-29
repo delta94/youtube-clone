@@ -251,3 +251,11 @@ a{
     top: calc(50% - 7px);
     left: calc(50% - 7px)
 }
+
+.channel-title {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #767676;
+    font-family: 'Roboto Condensed',sans-serif;
+    margin-bottom: 10px 
+}

@@ -2,12 +2,12 @@ var Database = require('./database');
 var bcrypt = require('bcrypt');
 
 module.exports.createUser = function (user, cb) {
-    const db = new Database();
     bcrypt.genSalt(10, function (err, salt) {
         bcrypt.hash(user.password, salt, function (err, hash) {
             user.password = hash;
             db.query(`INSERT INTO user(username, password) VALUES ('${user.username}', '${user.password}')`)
                 .then(rows => {
+                    const db = new Database();
                     cb();
                 })
                 .catch(err => {

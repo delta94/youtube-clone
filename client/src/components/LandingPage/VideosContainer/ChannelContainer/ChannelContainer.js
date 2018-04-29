@@ -237,7 +237,7 @@ export default class ChannelContainer extends Component{
                                     <div className="watch_container">
                                         <img id="watch_later" src={watch_later}/>
                                     </div>
-                                    <h2>{videos[id].snippet.channelTitle}</h2>
+                                    <p className="channel-title">{videos[id].snippet.channelTitle}</p>
                                     <ul>
                                         <li>{
                                             this.getViews()

@@ -5,8 +5,9 @@ import {unregister} from './registerServiceWorker';
 
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
+import createStore from './store';
 
-import store from './store/configurateStore';
+let store = createStore();
 
 ReactDOM.render(
 

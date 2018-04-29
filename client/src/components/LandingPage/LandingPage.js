@@ -35,7 +35,7 @@ class LandingPage extends Component {
             })
         }, 2500)
         this.props.handleSubscription();
-        axios.post(`/api/subscribe/${ str }`)
+        axios.post(`/api/subscribe/${str}`);
     }
 
     handleUnsubscription(str){
