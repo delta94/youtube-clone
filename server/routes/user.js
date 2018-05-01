@@ -28,7 +28,7 @@ router.post('/upload/video', upload.single('video'), function (req, res, next) {
     var videoPath = path.resolve('./../videos', req.file.filename);
     let filename = (req.file.filename.split('.')[0]);
     console.log(filename);
-    var proc = ffmpeg(videoPath).takeScreenshots({ count: 1, timemarks: ['00:00:1.000'], filename: filename + '.png', size: '300x200', folder: "./public/images/" });
+    var proc = ffmpeg(videoPath).takeScreenshots({ count: 1, timemarks: ['00:00:1.000'], filename: filename + '.png', size: '600x400', folder: "./public/images/" });
     setTimeout(() => {
         res.json({
             imageUrl: filename + '.png',

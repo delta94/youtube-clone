@@ -202,10 +202,6 @@ ul {
     padding: 1em 1.5em;
 }
 
-.nav-main-section-link-a:hover {
-    background-color: #ebebeb;
-    color: #0f0f0f;
-}
 
 .nav-main-section-link-a:active {
     background-color: #ebebeb;
@@ -213,8 +209,7 @@ ul {
     color: #0f0f0f;
 }
 
-.nav-main-section-link-a:hover .nav-link-numbers,
-.nav-main-section-link-a:hover .icon {
+.nav-link-numbers {
     color: #0f0f0f;
 }
 
@@ -296,4 +291,12 @@ hr {
 
 ::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.5);
+}
+
+.hamburger-item-active i {
+    color: #ff0000;
+}
+
+.hamburger-item-active span {
+    font-weight: bold;
 }

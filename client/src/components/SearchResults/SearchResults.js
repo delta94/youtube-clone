@@ -4,10 +4,12 @@ import bullet from './../Header/img/bullet.png'
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import image from './images/91.png';
 
 import watch_later from './../Header/img/watch_later.png';
 import dropdown from '../Header/img/drop_down_arrow.png';
-import './SearchResults.css'
+import './SearchResults.css';
+import Avatar from 'react-avatar';
 
 class SearchResults extends Component{
 
@@ -193,7 +195,7 @@ class SearchResults extends Component{
                 { filterBttn }
 
                 <section className='main_video_search_container'>
-                    {videos.map( (video, id) => {
+                    {/*{videos.map( (video, id) => {
                         return <div  key={ id }id='search_video_container'>
                         <Link to={ '/video/' + videos[id].id.videoId }><div id="video_display_container">
                             <img id="search_video_img" src={ videos[id].snippet.thumbnails.medium.url} />
@@ -213,7 +215,51 @@ class SearchResults extends Component{
                         </div>
                     </div>
                     }
-                    )}
+                    )}*/}
+
+                    <div className="list-item-container">
+                        <div className="list-item">
+                            <div className="list-item-image"><img src={image} /></div>
+                            <div className="list-item-content">
+                                <h4>This is the video name</h4>
+                                <small>Channel name • 1.2K views • 3 years ago</small>
+                                <p>Lorem ipsum dolor sit amet consectetur adipi</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="list-item-container">
+                        <div className="list-item">
+                            <div className="list-item-image">
+                                <img src={image} />
+                            </div>
+                            <div className="list-item-content">
+                                <h4>This is the video name</h4>
+                                <small>1,233,233 subscribers • 1000 videos</small>
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                            </div>
+                            <div className="subscribe-btn-container">
+                                <button className="subscribe-btn">SUBSCRIBE 7M</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="list-item-container">
+                        <div className="list-item">
+                            <div className="list-item-image">
+                                <Avatar src={image} size="140" round={true}/>
+                            </div>
+                            <div className="list-item-content">
+                                <h4>This is the video name</h4>
+                                <small>1,233,233 subscribers • 1000 videos</small>
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus ducimus qui fuga. Commodi reiciendis minima
+                        repellat error ipsam inventore, quasi possimus mollitia explicabo, consequatur harum fuga! A est vero hic.</p>
+                            </div>
+                            <div className="subscribe-btn-container">
+                                <button className="subscribed-btn">SUBSCRIBE 7M</button>
+                            </div>
+                        </div>
+                    </div>
+                
                     <section className="pagination_bttn">
                         <div id="prev_bttn" onClick={ this.getPrevPage }><p>&#171; Previous</p></div>
                         <div id="next_bttn" onClick={ this.getNextPage }><p>Next &#187;</p></div>

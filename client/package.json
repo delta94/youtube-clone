@@ -12,6 +12,12 @@
     },
     "/watch": {
       "target": "http://localhost:5000"
+    },
+    "/user/*": {
+      "target": "http://localhost:5000"
+    },
+    "/images/*": {
+      "target": "http://localhost:5000"
     }
   },
   "dependencies": {
@@ -29,7 +35,9 @@
     "passport-auth0": "^0.6.0",
     "passport-google-oauth": "^1.0.0",
     "react": "^15.6.1",
+    "react-avatar": "^2.5.1",
     "react-dom": "^15.6.1",
+    "react-icons-kit": "^1.1.0",
     "react-modal": "^3.4.4",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.1.1",

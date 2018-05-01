@@ -74,9 +74,11 @@ class Header extends Component {
                 return (
                     <div>
                         <section className="upload">
-                            <div id="upload">
-                            </div>
+                            <Link to='/upload' >
+                                <div id="upload" />
+                            </Link>                            
                         </section>
+                        
                         <ul id="notification_signin">
                             <li id="notifications"></li>
                             <li>

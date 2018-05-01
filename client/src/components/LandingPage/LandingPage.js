@@ -73,11 +73,6 @@ class LandingPage extends Component {
                 <div className="landing_words">
                     { notifyPrompt }
                     { unsubNotifyPrompt }
-                    <ul className="landing">
-                        <li id="landing">Home</li>
-                        <li id="landing">Trending</li>
-                        { subscriptionsBttn }
-                    </ul>
                 </div>
                 <VideosContainer 
                 subscribe={ this.handleSubscription } 

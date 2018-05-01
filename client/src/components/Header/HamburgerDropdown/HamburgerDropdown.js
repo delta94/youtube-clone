@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route,Link } from 'react-router-dom';
+import { Route, Link, NavLink } from 'react-router-dom';
 import SideNav, { Nav, NavIcon, NavText } from 'react-sidenav';
 import './HamburgerDropdown.css';
 import SvgIcon from 'react-icons-kit';
@@ -20,12 +20,12 @@ function MySideNav (props) {
                             <div className="nav-main-section-inner-container">
                                 <ul className="nav-main-section-links">
                                     <li className="nav-main-section-link">
-                                        <a href="#" className="nav-main-section-link-a">
+                                        <NavLink to='/' className="nav-main-section-link-a" activeClassName="hamburger-item-active">
                                             <span className="link-container">
                                                 <span className="nav-link-icon"><i className="ion-home icon"></i></span>
                                                 <span className="nav-link-text">Home</span>
                                             </span>
-                                        </a>
+                                        </NavLink>
                                     </li>
                                 </ul>
                             </div>

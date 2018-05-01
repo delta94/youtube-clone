@@ -7,7 +7,7 @@
     padding-bottom: 50px;
 }
 #first_box{
-    width: 710px;
+    width: 1100px;
     background: white;
     position: relative;
     margin-left: 10%;
@@ -66,7 +66,7 @@
     font-weight: 300;
 }
 #menu_dropdown{
-    width: 710px;
+    width: 1100px;
     background: white;
     position: relative;
     margin-left: 10%;
@@ -76,9 +76,10 @@
     height: 210px;
     display: flex;
     font-family: 'Roboto Condensed', sans-serif;
-    font-size: 11px;
+    font-size: 12px;
     color: #555555;
     line-height: 20px;
+    transition: display 0.5s ease;
 }
 #menu_dropdown ul {
     margin-left: 15px;
@@ -92,26 +93,26 @@
 }
 .first_column{
     /*border: 1px solid lime;*/
-    width: 86px;
+    width: 150px;
 }
 .second_column{
     /*border: 1px solid lightcoral;*/
-    width: 86px;
+    width: 150px;
 }
 .third_column{
     /*border: 1px solid lime;*/
-    width: 86px;
+    width: 150px;
 }
 .fourth_column{
     /*border: 1px solid lightcoral;*/
-    width: 100px;
+    width: 150px;
 }
 .fifth_column{
     /*border: 1px solid lime;*/
-    width: 86px;
+    width: 150px;
 }
 .main_video_search_container{
-    width: 710px;
+    width: 1100px;
     background: white;
     position: relative;
     margin-left: 10%;
@@ -272,4 +273,102 @@
     border: 1px solid #d3d3d3;
     background: #f8f8f8;
     border-radius: 2px;
+}
+
+body {
+    font-family: Roboto;
+}
+
+.list-item::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.list-item {
+    padding: 10px 20px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.list-item>div {
+    padding-left: 7px;
+    padding-right: 7px;
+}
+
+.list-item-content {
+    float: left;
+    margin-top: 5px;
+}
+
+.list-item-content h4 {
+    font-size: 20px;
+    margin: 3px;
+}
+
+.list-item-content {
+    word-wrap: break-word;
+    width: 630px;
+}
+
+.list-item-content p {
+    font-size: 14px;
+    word-break: break-all;
+    white-space: normal;
+    padding: 15px 0;
+}
+
+.list-item-content p,
+small {
+    color: hsl(0, 0%, 53.3%);
+}
+
+.list-item-content h4 {
+    color: #4a4a4a;
+}
+
+.list-item-image {
+    float: left;
+    width: 230px;
+    text-align: center;
+}
+
+.list-item-image img {
+    height: 140px;
+}
+
+.list-item-container {
+    padding: 10px;
+}
+
+.subscribe-btn {
+    border: 0;
+    background-color: #FF0000;
+    color: white;
+    border-radius: 3px;
+    padding: 9px 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: 40px;
+}
+
+.subscribe-btn-container {
+    float: left;
+    margin-left: 10px;
+}
+
+.subscribed-btn {
+    border: 0;
+    background-color: #eaeaea;
+    color: hsla(0, 0%, 6.7%, .4);
+    border-radius: 3px;
+    padding: 9px 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: 40px;
+}
+
+.list-item-content small {
+    font-size: 12px;
 }

@@ -16,6 +16,7 @@ import plusYTPage from './components/Footer/Press/+YouTube.js'
 import AboutPage from './components/Footer/Press/About.js'
 import TeamPage from './components/Footer/Press/Team.js'
 import MoviePage from './components/Footer/Press/Movie.js'
+import UploadPage from './components/UploadPage/UploadPage';
 
 
 export default (
@@ -33,7 +34,8 @@ export default (
         <Route component={plusYTPage} path='/+YouTube' />
         <Route component={AboutPage} path='/About' />
         <Route component={TeamPage} path='/Team' />
-        <Route component={ MoviePage } path='/Movie' />
+        <Route component={MoviePage} path='/Movie' />
+        <Route component={UploadPage} path='/upload' />
 
     </Switch>
 )
