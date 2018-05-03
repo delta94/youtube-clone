@@ -171,10 +171,11 @@ input:focus{
 
 .btn-danger {
     background-color: #ed2939;
-    margin-top: 11px;
     font-family: Roboto, Arial, Helvetica, sans-serif;
     font-weight: 100;
-    padding: -10px;
+    padding-bottom: 0px;
+    line-height: 22px;
+    margin-top: 10px;
 }
 
 .dropdown {

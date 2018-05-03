@@ -217,26 +217,32 @@ class SearchResults extends Component{
                     }
                     )}*/}
 
-                    <div className="list-item-container">
-                        <div className="list-item">
-                            <div className="list-item-image"><img src={image} /></div>
+                    <Link to='/' className="list-item-container link">
+                        <div className="list-item-video">
+                            <div className="list-item-image"><img src={image} />
+                                <div className="watch_container">
+                                    <img id="watch_later" src={watch_later} />
+                                </div>
+                            </div>
                             <div className="list-item-content">
                                 <h4>This is the video name</h4>
                                 <small>Channel name • 1.2K views • 3 years ago</small>
                                 <p>Lorem ipsum dolor sit amet consectetur adipi</p>
                             </div>
                         </div>
-                    </div>
+                    </Link>
                     <div className="list-item-container">
-                        <div className="list-item">
-                            <div className="list-item-image">
-                                <img src={image} />
-                            </div>
-                            <div className="list-item-content">
-                                <h4>This is the video name</h4>
-                                <small>1,233,233 subscribers • 1000 videos</small>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                            </div>
+                        <div className="list-item-chnl">
+                            <Link to='/' className="link">    
+                                <div className="list-item-image">
+                                    <img src={image} />
+                                </div>
+                                <div className="list-item-content">
+                                    <h4>This is the video name</h4>
+                                    <small>1,233,233 subscribers • 1000 videos</small>
+                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                                    </div>
+                            </Link>
                             <div className="subscribe-btn-container">
                                 <button className="subscribe-btn">SUBSCRIBE 7M</button>
                             </div>
@@ -244,7 +250,8 @@ class SearchResults extends Component{
                     </div>
 
                     <div className="list-item-container">
-                        <div className="list-item">
+                        <div className="list-item-chnl">
+                            <Link to='/' className='link'>    
                             <div className="list-item-image">
                                 <Avatar src={image} size="140" round={true}/>
                             </div>
@@ -253,7 +260,8 @@ class SearchResults extends Component{
                                 <small>1,233,233 subscribers • 1000 videos</small>
                                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus ducimus qui fuga. Commodi reiciendis minima
                         repellat error ipsam inventore, quasi possimus mollitia explicabo, consequatur harum fuga! A est vero hic.</p>
-                            </div>
+                                </div>
+                            </Link>    
                             <div className="subscribe-btn-container">
                                 <button className="subscribed-btn">SUBSCRIBE 7M</button>
                             </div>

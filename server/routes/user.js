@@ -8,8 +8,15 @@ var ffmpeg = require('fluent-ffmpeg');
 ffmpeg.setFfmpegPath(ffmpegPath);
 ffmpeg.setFfprobePath(ffprobePath);
 var fs = require('fs');
+var Database = require('../models/Database');
+var MySql = require('sync-mysql');
+const config = require('../config/mysqlConfig');
+var SyncMySQL = require('../models/SyncDatabase');
 
-let id = Math.round((Math.random() * 100));
+
+let qr = new SyncMySQL();
+let video_id = qr.query('SELECT MAX(id) + 1 AS max_id FROM video')[0].max_id || 0;
+console.log('max_id: ', video_id);
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -17,7 +24,7 @@ var storage = multer.diskStorage({
     },
     filename: function (req, file, cb) {
         /* TODO: replace req.file.filename with the index of uploaded video in database */
-        cb(null, id.toString() + '.mp4');
+        cb(null, video_id.toString() + '.mp4');
     }
 })
 
@@ -25,21 +32,46 @@ var upload = multer({ storage: storage })
 
 /* upload video */
 router.post('/upload/video', upload.single('video'), function (req, res, next) {
+    let duration = 0;
     var videoPath = path.resolve('./../videos', req.file.filename);
     let filename = (req.file.filename.split('.')[0]);
-    console.log(filename);
-    var proc = ffmpeg(videoPath).takeScreenshots({ count: 1, timemarks: ['00:00:1.000'], filename: filename + '.png', size: '600x400', folder: "./public/images/" });
+    var proc = ffmpeg(videoPath).takeScreenshots({
+        count: 1,
+        timemarks: ['00:00:1.000'],
+        filename: filename + '.png',
+        size: '600x400',
+        folder: "./public/images/"
+    }).on('codecData', (data) => {
+        let duration = data.duration.toString();
+        console.log(duration);
+        var db = new Database();
+        db.query(`SELECT TIME_TO_SEC('${duration}') AS duration`).then(rows => {
+            console.log(rows[0].duration);
+            db.query(`INSERT INTO video(id, upload_account, length) VALUES ('${video_id}', '${req.body.username}', ${rows[0].duration})`);
+        })
+    });
     setTimeout(() => {
         res.json({
             imageUrl: filename + '.png',
-            id: id
+            id: filename
         });
     }, 5000);
 
 });
 
+router.put('/video/:id', (req, res) => {
+    let db = new Database();
+    console.log('inside');
+    console.log(req.body);
+    db.query(`UPDATE video 
+    SET status=${req.body.state}, name='${req.body.name}', description='${req.body.desc}', tag='${req.body.tag}' 
+    WHERE id=${req.body.id}`).then((rows) => res.end());
+});
+
 /* delete video */
 router.delete('/video/:id', (req, res) => {
+    let db = new Database();
+    db.query('DELETE FROM video WHERE id=' + req.params.id);
     fs.unlink('./../videos/' + req.params.id + '.mp4', (err) => {
         console.log(path.resolve('./../videos', req.params.id + '.mp4'));
         if (err) throw err;

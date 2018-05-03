@@ -5,9 +5,10 @@ module.exports.createUser = function (user, cb) {
     bcrypt.genSalt(10, function (err, salt) {
         bcrypt.hash(user.password, salt, function (err, hash) {
             user.password = hash;
-            db.query(`INSERT INTO user(username, password) VALUES ('${user.username}', '${user.password}')`)
+
+            const db = new Database();
+            db.query(`INSERT INTO account(username, password, name) VALUES ('${user.username}', '${user.password}', '${user.username}')`)
                 .then(rows => {
-                    const db = new Database();
                     cb();
                 })
                 .catch(err => {
@@ -19,7 +20,7 @@ module.exports.createUser = function (user, cb) {
 
 module.exports.findUserByUsername = function (username, cb) {
     const db = new Database();
-    db.query(`SELECT * FROM user WHERE username='${username}'`)
+    db.query(`SELECT * FROM account WHERE username='${username}'`)
         .then(rows => cb(rows[0]))
         .catch(err => {
             throw err;

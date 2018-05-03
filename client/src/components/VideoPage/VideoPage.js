@@ -15,7 +15,6 @@ import './VideoPage.css';
 class VideoPage extends Component {
     constructor(props){
         super(props);
-        
         this.state = {
             videoInfo: {},
             videoList: [],
@@ -31,12 +30,14 @@ class VideoPage extends Component {
         this.handleUnsubscription = this.handleUnsubscription.bind(this);
         this.handleLike = this.handleLike.bind(this);
         this.handleShowSharebox = this.handleShowSharebox.bind(this);
+        console.log(props.videoId);
     }
 
-    componentDidMount(){
-        axios.get(`https://www.googleapis.com/youtube/v3/videos?id=${this.props.videoId}&key=AIzaSyCuuFUnpR3Gm-ai-tS252apbm0adv10PAI&part=snippet,statistics`)
+    componentDidMount() {
+        axios.get(`/api/video/${this.props.videoId}`)
         .then( videoInfo => {
-            videoInfo = videoInfo.data.items[0];
+            console.log(videoInfo);
+            videoInfo = videoInfo.data;
             if (videoInfo.snippet.tags){
                 if (videoInfo.snippet.tags[0] && videoInfo.snippet.tags[1] && videoInfo.snippet.tags[2]){
                     var searchTerm = videoInfo.snippet.tags[0] + '+' + videoInfo.snippet.tags[1] + '+' + videoInfo.snippet.tags[2];
@@ -56,29 +57,29 @@ class VideoPage extends Component {
     }
 
     componentDidUpdate(prevProps, prevState){
-        if ( this.props !== prevProps ){
-            axios.get(`https://www.googleapis.com/youtube/v3/videos?id=${this.props.videoId}&key=AIzaSyCuuFUnpR3Gm-ai-tS252apbm0adv10PAI&part=snippet,statistics`)
-            .then( videoInfo => {
-                videoInfo = videoInfo.data.items[0];
-                if (videoInfo.snippet.tags){
-                    if (videoInfo.snippet.tags[1] && videoInfo.snippet.tags[4] && videoInfo.snippet.tags[2]){
-                        var searchTerm = videoInfo.snippet.tags[1] + '+' + videoInfo.snippet.tags[4] + '+' + videoInfo.snippet.tags[2];
-                    }else{
-                        var searchTerm = 'funny+cats'
-                    }
-                }
-                axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&order=relevance&q=${ searchTerm }&type=video&key=AIzaSyA6QnEmVEZ_b2ZQO8GLc7CTEU3g-xDyhFY`)
-                .then( RecommendedVideos => {
-                    this.setState({
-                        videoInfo: videoInfo,
-                        videoList: RecommendedVideos.data.items
-                    })
-                })
-            })
-            this.setState({
-                showShareBox: false
-            })
-        }
+        // if ( this.props !== prevProps ){
+        //     axios.get(`https://www.googleapis.com/youtube/v3/videos?id=${this.props.videoId}&key=AIzaSyCuuFUnpR3Gm-ai-tS252apbm0adv10PAI&part=snippet,statistics`)
+        //     .then( videoInfo => {
+        //         videoInfo = videoInfo.data.items[0];
+        //         if (videoInfo.snippet.tags){
+        //             if (videoInfo.snippet.tags[1] && videoInfo.snippet.tags[4] && videoInfo.snippet.tags[2]){
+        //                 var searchTerm = videoInfo.snippet.tags[1] + '+' + videoInfo.snippet.tags[4] + '+' + videoInfo.snippet.tags[2];
+        //             }else{
+        //                 var searchTerm = 'funny+cats'
+        //             }
+        //         }
+        //         axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&order=relevance&q=${ searchTerm }&type=video&key=AIzaSyA6QnEmVEZ_b2ZQO8GLc7CTEU3g-xDyhFY`)
+        //         .then( RecommendedVideos => {
+        //             this.setState({
+        //                 videoInfo: videoInfo,
+        //                 videoList: RecommendedVideos.data.items
+        //             })
+        //         })
+        //     })
+        //     this.setState({
+        //         showShareBox: false
+        //     })
+        // }
     }
 
     handleShowSharebox(){
@@ -144,7 +145,7 @@ class VideoPage extends Component {
                             videoId={ this.state.videoInfo.id } 
                             />
         }
-
+        console.log(this.props.videoId);
         return (
             <section className='videopage_main_container'>
                 { notifyPrompt }
@@ -152,11 +153,13 @@ class VideoPage extends Component {
                 <section className='main_content_wrapper'>
 
                     <div className='iframe_placeholder'>
-                        <iframe 
+                        <video
                         className='iframe'
                         allowFullScreen
-                        src={ 'http://www.youtube.com/embed/' + this.props.videoId + '?autoplay=1' }>
-                        </iframe>
+                            src={'/watch/' + this.props.videoId}
+                            autoPlay
+                            controls>
+                        </video>
                     </div>
                     
                     <VideoTitleContainer 

@@ -91,7 +91,7 @@ class Header extends Component {
                                                     float: "left", verticalAlign: "middle", lineHeight: "60px", padding: "0 5px 0 20px"
                                                 }}><img src="temp.jpg" className="img-circle profile-image" alt="Cinque Terre" width="35px" height="35px" /> </div>
                                                 <div style={{ float: "left", padding: "8px 15px", verticalAlign: "middle" }}>
-                                                    <p style={{ marginBottom: "5px", marginTop: "5px", fontWeight: "bold" }}><b>asfasfdsdf</b></p>
+                                                    <p style={{ marginBottom: "5px", marginTop: "5px", fontWeight: "bold" }}><b>{this.props.auth.username}</b></p>
                                                     <p style={{ margin: 0 }}>asfsafafd</p>
                                                 </div>
 

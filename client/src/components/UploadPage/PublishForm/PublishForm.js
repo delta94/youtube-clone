@@ -23,9 +23,9 @@ class PublishForm extends Component {
                     {!this.props.isLoading && <p>Your video url: <a style={{ color: "#3498db" }}>domain.com/123</a></p>}
                 </div>    
                 <div className="col-sm-6">    
-                    <div style={{ paddingLeft: 10 }} className="btn-container">
+                    <div className="btn-container">
                         
-                        <button className="btn btn-primary" id="publish-btn"><i style={{ fontSize: "16px" }} className="ion-earth" />&ensp;Publish</button>
+                        <button onClick={this.props.handlePublishButtonOnClick} className="btn btn-primary" id="publish-btn"><i style={{ fontSize: "16px" }} className="ion-earth" />&ensp;Save</button>
 
                         <button className="btn btn-primary" id="cancel-btn"
                             onClick={this.props.handleCancelButtonOnClick}
@@ -38,23 +38,23 @@ class PublishForm extends Component {
                         <form >
 
                             <div className="form-group">
-                                <label for="formGroupExampleInput">Video name</label>
+                                <label htmlFor="formGroupExampleInput">Video name</label>
                                 <input type="text" value={this.props.videoName} className="form-control" id="formGroupExampleInput" onChange={this.props.handleVideoNameOnChange} />
                             </div>
                             <div className="form-group">
-                                <label for="exampleFormControlTextarea1">Description</label>
+                                <label htmlFor="exampleFormControlTextarea1">Description</label>
                                 <textarea className="form-control" id="exampleFormControlTextarea1" rows="3" onChange={this.props.handleDesciptionOnChange}></textarea>
                             </div>
                             <div className="form-group">
-                                <label for="inputState">State</label>
+                                <label htmlFor="inputState">State</label>
                                 <select id="inputState" className="form-control" onChange={this.props.handleStateOnChange}>
-                                    <option selected>Public</option>
-                                    <option>Private</option>
-                                    <option>Protected</option>
+                                    <option defaultValue={true} value={0}>Public</option>
+                                    <option value={1}>Private</option>
+                                    <option value={2}>Protected</option>
                                 </select>
                             </div>
                             <div className="form-group">
-                                <label for="exampleFormControlTextarea1">Tag</label>
+                                <label htmlFor="exampleFormControlTextarea1">Tag</label>
                                 <input type="text" className="form-control" id="formGroupExampleInput" onChange={this.props.handleTagOnChange}/>
                             </div>
                         </form>
