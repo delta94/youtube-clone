@@ -22,7 +22,8 @@ class VideoTitleContainer extends Component {
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
+        console.log('inside did mount');
         axios.get(`/api/checkForSubscriptions/${ this.props.snippet.channelTitle }`).then((response)=>{
             let arr = response.data;
             console.log('arr: ', arr);
