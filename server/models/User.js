@@ -5,10 +5,9 @@ module.exports.createUser = function (user, cb) {
     bcrypt.genSalt(10, function (err, salt) {
         bcrypt.hash(user.password, salt, function (err, hash) {
             user.password = hash;
-
-            const db = new Database();
-            db.query(`INSERT INTO account(username, password, name) VALUES ('${user.username}', '${user.password}', '${user.username}')`)
+            db.query(`INSERT INTO account(username, password) VALUES ('${user.username}', '${user.password}')`)
                 .then(rows => {
+                    const db = new Database();
                     cb();
                 })
                 .catch(err => {

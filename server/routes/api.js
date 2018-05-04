@@ -1,10 +1,9 @@
-let express = require('express');
-let router = express.Router();
-let User = require('../models/User');
-let Database = require('../models/Database');
+var express = require('express');
+var router = express.Router();
+var User = require('../models/User');
+var Database = require('../models/Database');
 
-router.get('/current_user', (req, res) => {
-    console.log('current_user', req.user);
+router.get('/current_user', (req, res) => { // this line shows the result after deserializing user from cookie
     res.json(req.user);
 });
 
@@ -13,14 +12,14 @@ router.get('/logout', (req, res) => {
     res.redirect('/');
 });
 
-router.post('/signup', (req, res) => {        
+router.post('/signup', (req, res) => {
     console.log('asflskafj');
     User.findUserByUsername(req.body.username, (user) => {
         if (user) {
-            return res.json({success: false, message: "username already exists"});
+            return res.json({ success: false, message: "username already exists" });
         } else {
             User.createUser({ username: req.body.username, password: req.body.password, name: req.body.username }, () => {
-                return res.json({success: true});
+                return res.json({ success: true });
             });
         }
     });
@@ -53,7 +52,7 @@ router.get('/video/:id', (req, res) => {
         }).then((rows) => {
             statistics["likeCount"] = rows[0].count_like;
             return db.query(`SELECT COUNT(video_id) AS count_dislike FROM a_likes_v WHERE video_id=${req.params.id} AND liked=-1`);
-        }).then((rows) => { 
+        }).then((rows) => {
             statistics["dislikeCount"] = rows[0].count_dislike;
             res.json({
                 id: req.params.id,
@@ -61,15 +60,6 @@ router.get('/video/:id', (req, res) => {
                 statistics,
             });
         });
-});
-
-router.get('/checkForSubscription/', (req, res) => {
-    console.log('->username: ', req.user.username);
-    console.log('->channel: ', req.query.channel);
-    db.query(`SELECT Subscribes_CheckExist('${req.user.username}', '${req.query.channel}')`).then((rows) => {
-        let key = Object.keys(rows[0]).toString();
-        res.json({ result: rows[0][key] });
-    })
 });
 
 module.exports = router;

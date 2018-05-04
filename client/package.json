@@ -43,7 +43,6 @@
     "react-icons-kit": "^1.1.0",
     "react-modal": "^3.4.4",
     "react-redux": "^5.0.7",
-    "react-router": "^3.2.1",
     "react-router-dom": "^4.1.1",
     "react-z-index": "^2.3.0",
     "redux": "^3.7.2",

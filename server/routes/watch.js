@@ -3,7 +3,6 @@ const fs = require('fs');
 const path = require('path');
 const router = express.Router();
 
-
 router.get('/:id', function (req, res, next) {
     const videoPath = path.resolve(__dirname, `../../videos/${req.params.id}`) + '.mp4';
     if (fs.existsSync(videoPath)) {
@@ -39,7 +38,7 @@ router.get('/:id', function (req, res, next) {
             return res.writeHead(200, head)
             fs.createReadStream(videoPath).pipe(res)
         }
-    }    
+    }
     else next();
 })
 

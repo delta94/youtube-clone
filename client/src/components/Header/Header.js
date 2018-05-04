@@ -94,6 +94,7 @@ class Header extends Component {
                                                 <div style={{ float: "left", padding: "8px 15px", verticalAlign: "middle" }}>
                                                     <p style={{ marginBottom: "5px", marginTop: "5px", fontWeight: "bold" }}><b>{this.props.auth.username}</b></p>
                                                     <p style={{ margin: 0 }}>{this.props.auth.gmail || 'dummy@gmail.com'}</p>
+
                                                 </div>
 
                                             </div>

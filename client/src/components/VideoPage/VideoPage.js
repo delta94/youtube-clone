@@ -13,13 +13,13 @@ import RecommendedVideosContainer from './RecommendedVideosContainer/Recommended
 import './VideoPage.css';
 
 class VideoPage extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             videoInfo: {},
             videoList: [],
             videoId: props.videoId,
-            uniqueId: Math.floor(Math.random()*999),
+            uniqueId: Math.floor(Math.random() * 999),
             notify: false,
             unsubNotify: false,
             showShareBox: false
@@ -35,28 +35,28 @@ class VideoPage extends Component {
 
     componentDidMount() {
         axios.get(`/api/video/${this.props.videoId}`)
-        .then( videoInfo => {
-            console.log(videoInfo);
-            videoInfo = videoInfo.data;
-            if (videoInfo.snippet.tags){
-                if (videoInfo.snippet.tags[0] && videoInfo.snippet.tags[1] && videoInfo.snippet.tags[2]){
-                    var searchTerm = videoInfo.snippet.tags[0] + '+' + videoInfo.snippet.tags[1] + '+' + videoInfo.snippet.tags[2];
-                }else{
-                    var searchTerm = 'funny+cats'
+            .then(videoInfo => {
+                console.log(videoInfo);
+                videoInfo = videoInfo.data;
+                if (videoInfo.snippet.tags) {
+                    if (videoInfo.snippet.tags[0] && videoInfo.snippet.tags[1] && videoInfo.snippet.tags[2]) {
+                        var searchTerm = videoInfo.snippet.tags[0] + '+' + videoInfo.snippet.tags[1] + '+' + videoInfo.snippet.tags[2];
+                    } else {
+                        var searchTerm = 'funny+cats'
+                    }
                 }
-            }
-            axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&order=relevance&q=${ searchTerm }&type=video&key=AIzaSyA6QnEmVEZ_b2ZQO8GLc7CTEU3g-xDyhFY`)
-            .then( RecommendedVideos => {
-                this.setState({
-                    videoInfo: videoInfo,
-                    videoList: RecommendedVideos.data.items
-                })
+                axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&order=relevance&q=${searchTerm}&type=video&key=AIzaSyA6QnEmVEZ_b2ZQO8GLc7CTEU3g-xDyhFY`)
+                    .then(RecommendedVideos => {
+                        this.setState({
+                            videoInfo: videoInfo,
+                            videoList: RecommendedVideos.data.items
+                        })
+                    })
             })
-        })
         document.body.scrollTop = 0;
     }
 
-    componentDidUpdate(prevProps, prevState){
+    componentDidUpdate(prevProps, prevState) {
         // if ( this.props !== prevProps ){
         //     axios.get(`https://www.googleapis.com/youtube/v3/videos?id=${this.props.videoId}&key=AIzaSyCuuFUnpR3Gm-ai-tS252apbm0adv10PAI&part=snippet,statistics`)
         //     .then( videoInfo => {
@@ -82,13 +82,13 @@ class VideoPage extends Component {
         // }
     }
 
-    handleShowSharebox(){
+    handleShowSharebox() {
         this.setState({
             showShareBox: !this.state.showShareBox
         })
     }
 
-    handleLike(){
+    handleLike() {
         this.setState({
             videoInfo: Object.assign({}, this.state.videoInfo, {
                 statistics: Object.assign({}, this.state.videoInfo.statistics, {
@@ -98,7 +98,7 @@ class VideoPage extends Component {
         })
     }
 
-    handleDislike(){
+    handleDislike() {
         this.setState({
             videoInfo: Object.assign({}, this.state.videoInfo, {
                 statistics: Object.assign({}, this.state.videoInfo.statistics, {
@@ -108,22 +108,22 @@ class VideoPage extends Component {
         })
     }
 
-    handleSubscription(str){
+    handleSubscription(str) {
         this.setState({
-            notify:true,
+            notify: true,
         })
-        setTimeout(()=> {
+        setTimeout(() => {
             this.setState({
                 notify: false,
             })
         }, 2500)
     }
 
-    handleUnsubscription(str){
+    handleUnsubscription(str) {
         this.setState({
-            unsubNotify:true,
+            unsubNotify: true,
         })
-        setTimeout(()=> {
+        setTimeout(() => {
             this.setState({
                 unsubNotify: false,
             })
@@ -132,36 +132,37 @@ class VideoPage extends Component {
 
     render() {
         let notifyPrompt = null;
-        if(this.state.notify){
-            notifyPrompt = <SubscriptionNotify/>
+        if (this.state.notify) {
+            notifyPrompt = <SubscriptionNotify />
         }
         let unsubNotifyPrompt = null;
-        if(this.state.unsubNotify){
-            unsubNotifyPrompt = <UnsubscribeNotify/>
+        if (this.state.unsubNotify) {
+            unsubNotifyPrompt = <UnsubscribeNotify />
         }
         let shareLinkBox = null;
-        if (this.state.showShareBox){
-            shareLinkBox = <ShareLinkBox 
-            videoId={ this.state.videoInfo.id } 
+        if (this.state.showShareBox) {
+            shareLinkBox = <ShareLinkBox
+                videoId={this.state.videoInfo.id}
             />
         }
+        console.log(this.props.videoId);
         return (
             <section className='videopage_main_container'>
-                { notifyPrompt }
-                { unsubNotifyPrompt }
+                {notifyPrompt}
+                {unsubNotifyPrompt}
                 <section className='main_content_wrapper'>
 
                     <div className='iframe_placeholder'>
                         <video
-                        className='iframe'
-                        allowFullScreen
+                            className='iframe'
+                            allowFullScreen
                             src={'/watch/' + this.props.videoId}
                             autoPlay
                             controls>
                         </video>
                     </div>
-                    
-                    <VideoTitleContainer 
+
+                    <VideoTitleContainer
                         snippet={this.state.videoInfo.snippet || { title: '' }}
                         videoId={this.state.videoInfo.id}
                         statistics={this.state.videoInfo.statistics || {}}
@@ -170,21 +171,21 @@ class VideoPage extends Component {
                         notify={this.handleSubscription}
                         unsubNotify={this.handleUnsubscription}
                         handleDislike={this.handleDislike}
-                        showShareBox={this.handleShowSharebox}/>
-                    
-                    { shareLinkBox }
-                    
-                    <VideoDescriptionBox 
-                    snippet={ this.state.videoInfo.snippet || {} } />
+                        showShareBox={this.handleShowSharebox} />
+
+                    {shareLinkBox}
+
+                    <VideoDescriptionBox
+                        snippet={this.state.videoInfo.snippet || {}} />
 
                     <CommentsContainer
-                    videoId={ this.state.videoInfo.id } />
-        
+                        videoId={this.state.videoInfo.id} />
+
                 </section>
 
-                <section className='rightside_videos_wrapper'>        
+                <section className='rightside_videos_wrapper'>
                     <RecommendedVideosContainer
-                    videoList={ this.state.videoList || [{}] } />
+                        videoList={this.state.videoList || [{}]} />
                 </section>
 
             </section>
@@ -192,5 +193,10 @@ class VideoPage extends Component {
     }
 }
 
-export default VideoPage;
+function mapStateToProps(state, ownProps) {
+    return {
+        videoId: ownProps.match.params.videoId
+    }
+}
 
+export default connect(mapStateToProps, {})(VideoPage);
