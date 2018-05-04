@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PublishForm from './PublishForm/PublishForm';
 import UploadForm from './UploadForm/UploadForm';
 import axios from 'axios';
+import { connect } from 'react-redux';
 
 class UploadPage extends Component {
     constructor(props) {
@@ -9,10 +10,10 @@ class UploadPage extends Component {
 
         this.state = {
             toggle: true,
-            videoName: '',
+            name: '',
             isLoading: true,
             description: '',
-            state: '',
+            state: 0,
             tag: '',
             imageUrl: undefined,
             id: ''
@@ -20,6 +21,11 @@ class UploadPage extends Component {
 
         this.handleInputFileOnChange = this.handleInputFileOnChange.bind(this);
         this.handleCancelButtonOnClick = this.handleCancelButtonOnClick.bind(this);
+        this.handleVideoNameOnChange = this.handleVideoNameOnChange.bind(this);
+        this.handleDesciptionOnChange = this.handleDesciptionOnChange.bind(this)
+        this.handleStateOnChange = this.handleStateOnChange.bind(this);
+        this.handleTagOnChange = this.handleTagOnChange.bind(this);
+        this.handlePublishButtonOnClick = this.handlePublishButtonOnClick.bind(this);
     }
 
     componentWillMount() {
@@ -31,11 +37,25 @@ class UploadPage extends Component {
         var formData = new FormData();
         var imagefile = document.querySelector('#file');
         formData.append("video", imagefile.files[0]);
+        formData.append("username", this.props.auth.username)
         console.log(formData);
-        axios.post('/upload/video', formData, {
+        axios.post('user/upload/video', formData, {
             headers: { 'Content-Type': 'multipart/form-data' }
         }).then(res => {
             this.setState({ isLoading: false, imageUrl: res.data.imageUrl, id: res.data.id });
+        });
+    }
+
+    handlePublishButtonOnClick() {
+        console.log('id: ', this.state.id);
+        axios.put('/user/video/' + this.state.id, {
+            state: this.state.state,
+            name: this.state.name,
+            desc: this.state.description,
+            tag: this.state.tag,
+            id: this.state.id
+        }).then((res) => {
+            this.props.history.push('/video/' + this.state.id);
         });
     }
 
@@ -68,6 +88,7 @@ class UploadPage extends Component {
                     <UploadForm handleInputFileOnChange={this.handleInputFileOnChange} />
                     :
                     <PublishForm videoName={this.state.videoName}
+                        handlePublishButtonOnClick={this.handlePublishButtonOnClick}    
                         handleCancelButtonOnClick={this.handleCancelButtonOnClick}
                         isLoading={this.state.isLoading}
                         imageUrl={this.state.imageUrl}
@@ -82,4 +103,10 @@ class UploadPage extends Component {
     }
 }
 
-export default UploadPage;
+const mapStateToProps = (state) => {
+    return {
+        auth: state.auth
+    }
+}
+
+export default connect(mapStateToProps)(UploadPage);

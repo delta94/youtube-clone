@@ -25,7 +25,9 @@ class PublishForm extends Component {
                 <div className="col-sm-6">    
                     <div style={{ paddingLeft: 10 }} className="btn-container">
                         
-                        <button className="btn btn-primary" id="publish-btn"><i style={{ fontSize: "16px" }} className="ion-earth" />&ensp;Publish</button>
+                        <button
+                            onClick={this.props.handlePublishButtonOnClick} className="btn btn-primary" id="publish-btn"><i style={{ fontSize: "16px" }} className="ion-earth"
+                            />&ensp;Save</button>
 
                         <button className="btn btn-primary" id="cancel-btn"
                             onClick={this.props.handleCancelButtonOnClick}
@@ -39,7 +41,7 @@ class PublishForm extends Component {
 
                             <div className="form-group">
                                 <label for="formGroupExampleInput">Video name</label>
-                                <input type="text" value={this.props.videoName} className="form-control" id="formGroupExampleInput" onChange={this.props.handleVideoNameOnChange} />
+                                <input type="text"  className="form-control" id="formGroupExampleInput" onChange={this.props.handleVideoNameOnChange} />
                             </div>
                             <div className="form-group">
                                 <label for="exampleFormControlTextarea1">Description</label>

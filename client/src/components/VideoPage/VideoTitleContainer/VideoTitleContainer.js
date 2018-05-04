@@ -21,14 +21,16 @@ class VideoTitleContainer extends Component {
             this.props = newProps;
         }
     }
-idMount(){
+
+    componentDidMount(){
         axios.get(`/api/checkForSubscriptions/${ this.props.snippet.channelTitle }`).then((response)=>{
-                let arr = response.data;
-                if (arr.length === 0){
+            let arr = response.data;
+            console.log('arr: ', arr);
+                if (!arr){
                     this.setState({
                         canSubscribe: true
                     })
-                }else if (arr.length > 0){
+                }else if (arr){
                     this.setState({
                         canSubscribe: false
                     })
@@ -86,7 +88,6 @@ idMount(){
     }
 
     render() {
-        console.log('->', this.props.auth);
         let subbtn;
         let subbtnTwo;
         if(this.state.canSubscribe){

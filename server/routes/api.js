@@ -62,4 +62,13 @@ router.get('/video/:id', (req, res) => {
         });
 });
 
+router.get('/checkForSubscriptions', (req, res) => {
+    let db = new Database();
+    db.query(`SELECT Subscribes_CheckExist('${req.user.username}', '${req.query.channel}')`)
+        .then((rows) => {
+            let obj = rows[0];
+            res.json({ result: obj[Object.keys(obj)[0]] });
+        })
+});
+
 module.exports = router;

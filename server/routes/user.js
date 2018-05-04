@@ -11,20 +11,11 @@ var fs = require('fs');
 var Database = require('../models/Database');
 var MySql = require('sync-mysql');
 const config = require('../config/mysqlConfig');
-var SyncMySQL = require('../models/SyncDatabase');
-
-
-let qr = new SyncMySQL();
-let video_id = qr.query('SELECT MAX(id) + 1 AS max_id FROM video')[0].max_id || 0;
-console.log('max_id: ', video_id);
+let SyncMySQL = require('../models/SyncDatabase');
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, path.resolve(__dirname, '../../videos'));
-    },
-    filename: function (req, file, cb) {
-        /* TODO: replace req.file.filename with the index of uploaded video in database */
-        cb(null, video_id.toString() + '.mp4');
     }
 })
 
@@ -33,30 +24,34 @@ var upload = multer({ storage: storage })
 /* upload video */
 router.post('/upload/video', upload.single('video'), function (req, res, next) {
     let duration = 0;
-    var videoPath = path.resolve('./../videos', req.file.filename);
-    let filename = (req.file.filename.split('.')[0]);
-    var proc = ffmpeg(videoPath).takeScreenshots({
-        count: 1,
-        timemarks: ['00:00:1.000'],
-        filename: filename + '.png',
-        size: '600x400',
-        folder: "./public/images/"
-    }).on('codecData', (data) => {
-        let duration = data.duration.toString();
-        console.log(duration);
-        var db = new Database();
-        db.query(`SELECT TIME_TO_SEC('${duration}') AS duration`).then(rows => {
-            console.log(rows[0].duration);
-            db.query(`INSERT INTO video(id, upload_account, length) VALUES ('${video_id}', '${req.body.username}', ${rows[0].duration})`);
-        })
-    });
-    setTimeout(() => {
-        res.json({
-            imageUrl: filename + '.png',
-            id: filename
+    let qr = new SyncMySQL();
+    let video_id = qr.query('SELECT MAX(id) + 1 AS max_id FROM video')[0].max_id || 0;
+    fs.rename( './../videos/' + req.file.filename, './../videos/' + video_id + '.mp4', () => {
+        console.log(req.file.filename);
+        console.log('video_id: ', video_id);
+        var videoPath = path.resolve('./../videos/',  video_id + '.mp4');
+        var proc = ffmpeg(videoPath).takeScreenshots({
+            count: 1,
+            timemarks: ['00:00:1.000'],
+            filename: video_id + '.png',
+            size: '600x400',
+            folder: "./public/images/"
+        }).on('codecData', (data) => {
+            let duration = data.duration.toString();
+            console.log(duration);
+            var db = new Database();
+            db.query(`SELECT TIME_TO_SEC('${duration}') AS duration`).then(rows => {
+                console.log(rows[0].duration);
+                db.query(`INSERT INTO video(id, upload_account, length) VALUES ('${video_id}', '${req.body.username}', ${rows[0].duration})`);
+            })
         });
-    }, 5000);
-
+        setTimeout(() => {
+            res.json({
+                imageUrl: video_id + '.png',
+                id: video_id
+            });
+        }, 5000);
+    });
 });
 
 router.put('/video/:id', (req, res) => {
