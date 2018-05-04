@@ -18,6 +18,9 @@
     },
     "/images/*": {
       "target": "http://localhost:5000"
+    },
+    "/upload/*" :{
+        "target": "http://localhost:5000"
     }
   },
   "dependencies": {

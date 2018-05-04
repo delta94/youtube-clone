@@ -22,10 +22,12 @@ class VideoTitleContainer extends Component {
         }
     }
 
-    componentDidMount(){
-        // axios.get(`/api/checkForSubscriptions/${ this.props.snippet.channelTitle }`).then((response)=>{
-        //         let arr = response.data;
-        //         if (arr.length === 0){
+    componentDidMount() {
+        // console.log('component did mount', this.props.snippet.channelTitle);
+        // axios.get(`/api/checkForSubscription?channel=${ this.props.snippet.channelTitle }`).then((response)=>{
+        //     let arr = response.data.result;
+        //     console.log('result: ', arr);
+        //         if (!arr){
         //             this.setState({
         //                 canSubscribe: true
         //             })
@@ -35,18 +37,18 @@ class VideoTitleContainer extends Component {
         //             })
         //         }
         //     })
-        if(!this.state.canSubscribe){
-            let subscribed = document.getElementById('unsubscribe_bttn')
-            let unsubscribe = document.getElementById('unsubscribe_bttn_hover')
-            document.getElementById('unsubscribe_bttn').addEventListener("mouseenter", function(){
-                subscribed.style.display = 'none';
-                unsubscribe.style.display = 'block';
-            })
-            unsubscribe.addEventListener("mouseleave", function(){
-                subscribed.style.display = 'block';
-                unsubscribe.style.display = 'none';
-            })
-        }
+        // if(!this.state.canSubscribe){
+        //     let subscribed = document.getElementById('unsubscribe_bttn')
+        //     let unsubscribe = document.getElementById('unsubscribe_bttn_hover')
+        //     document.getElementById('unsubscribe_bttn').addEventListener("mouseenter", function(){
+        //         subscribed.style.display = 'none';
+        //         unsubscribe.style.display = 'block';
+        //     })
+        //     unsubscribe.addEventListener("mouseleave", function(){
+        //         subscribed.style.display = 'block';
+        //         unsubscribe.style.display = 'none';
+        //     })
+        // }
     }
     componentDidUpdate(prevProps, prevState){
         if(this.props != prevProps || this.state != prevState){
@@ -87,6 +89,7 @@ class VideoTitleContainer extends Component {
     }
 
     render() {
+        console.log('->', this.props.auth);
         let subbtn;
         let subbtnTwo;
         if(this.state.canSubscribe){
@@ -170,7 +173,7 @@ class VideoTitleContainer extends Component {
     }
 }
 
-function mapStateToProps(state){
+const mapStateToProps = (state) => {
     return {
         subscription: state.subscriptions
     }

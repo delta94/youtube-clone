@@ -9,6 +9,7 @@ import notification from './img/notification.png';
 import signIn from './img/photo.jpg';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import Avatar from 'react-avatar';
 
 class Header extends Component {
     constructor(){
@@ -83,16 +84,16 @@ class Header extends Component {
                             <li id="notifications"></li>
                             <li>
                                 <div className="dropdown" >
-                                    <a className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="temp.jpg" className="img-circle" alt="Cinque Terre" width="30px" height="30px" /></a>
-                                    <ul className="dropdown-menu" style={{ width: "250px" }}>
+                                    <a className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><Avatar textSizeRatio="2" name={this.props.auth.username} size="30" round={true} /></a>
+                                    <ul className="dropdown-menu" style={{ width: "275px" }}>
                                         <li>
                                             <div style={{ height: "60px", cursor: "pointer", backgroundColor: "#dfdfdf", paddingBottom: "10px", paddingTop: "1px" }} className="clearfix">
                                                 <div style={{
                                                     float: "left", verticalAlign: "middle", lineHeight: "60px", padding: "0 5px 0 20px"
-                                                }}><img src="temp.jpg" className="img-circle profile-image" alt="Cinque Terre" width="35px" height="35px" /> </div>
+                                                }}><Avatar name={this.props.auth.username} size="35" round={true} textSizeRatio="2"/> </div>
                                                 <div style={{ float: "left", padding: "8px 15px", verticalAlign: "middle" }}>
                                                     <p style={{ marginBottom: "5px", marginTop: "5px", fontWeight: "bold" }}><b>{this.props.auth.username}</b></p>
-                                                    <p style={{ margin: 0 }}>asfsafafd</p>
+                                                    <p style={{ margin: 0 }}>{this.props.auth.gmail || 'dummy@gmail.com'}</p>
                                                 </div>
 
                                             </div>
@@ -110,6 +111,7 @@ class Header extends Component {
     }
 
     render() {
+        console.log('inside header: ', this.props.auth);
         return (
             <section className="main_header_section">
                 <div className="main_header_div">
@@ -142,9 +144,9 @@ class Header extends Component {
 }
 
 const mapStateToProps = (state) => {
-    return ({
+    return {
         auth: state.auth
-    });
+    };
 }
 
 export default connect(mapStateToProps)(Header);

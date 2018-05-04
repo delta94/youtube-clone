@@ -5,15 +5,12 @@ const LocalStrategy = require('passport-local').Strategy;
 const User = require('../models/User');
 
 passport.serializeUser((user, done) => {
-    console.log('serialize', user);
     done(null, user.username);    // serializeUser with the token of user.id
 });
 
 passport.deserializeUser((username, done) => {
-    console.log('deserialize')
 
     User.findUserByUsername(username, function (user) {
-        console.log('------------>', user);
         if (user) {
             done(null, user);
         } else {

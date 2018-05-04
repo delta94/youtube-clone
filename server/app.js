@@ -14,8 +14,8 @@ var authRouter = require('./routes/auth');
 var watchRouter = require('./routes/watch');
 require('./models/User');
 require('./services/passport');
-const authRoutes = require('./routes/auth');
-const userRoutes = require('./routes/user');
+const userRouter = require('./routes/user');
+const uploadRouter = require('./routes/upload');
 
 var app = express();
 
@@ -38,11 +38,6 @@ app.use(cookieSession({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(session({
-    secret: keys.sessionSecret, saveUninitialized: true,
-    resave: true
-}));
-
 console.log('Listening to server on port 5000');
 
 app.use((req, res, next) => {
@@ -55,7 +50,8 @@ global.dirname = __dirname;
 app.use('/watch', watchRouter)
 app.use('/auth', authRouter);
 app.use('/api', apiRouter);
-app.use('/user', userRoutes);
+app.use('/user', userRouter);
+app.use('/upload', uploadRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

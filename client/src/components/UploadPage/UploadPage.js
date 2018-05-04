@@ -40,7 +40,7 @@ class UploadPage extends Component {
         formData.append("video", imagefile.files[0]);
         formData.append("username", this.props.auth.username);
         console.log(formData);
-        axios.post('user/upload/video', formData, {
+        axios.post('/upload/video', formData, {
             headers: { 'Content-Type': 'multipart/form-data' }
         }).then(res => {
             this.setState({ isLoading: false, imageUrl: res.data.imageUrl, id: res.data.id });
@@ -113,6 +113,7 @@ class UploadPage extends Component {
 }
 
 var mapStateToProps = (state) => {
+    console.log('inside uploadpage: ', state.auth);
     return {
         auth: state.auth
     }

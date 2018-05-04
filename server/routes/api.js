@@ -1,9 +1,10 @@
-var express = require('express');
-var router = express.Router();
-var User = require('../models/User');
-var Database = require('../models/Database');
+let express = require('express');
+let router = express.Router();
+let User = require('../models/User');
+let Database = require('../models/Database');
 
-router.get('/current_user', (req, res) => { // this line shows the result after deserializing user from cookie
+router.get('/current_user', (req, res) => {
+    console.log('current_user', req.user);
     res.json(req.user);
 });
 
@@ -60,6 +61,15 @@ router.get('/video/:id', (req, res) => {
                 statistics,
             });
         });
+});
+
+router.get('/checkForSubscription/', (req, res) => {
+    console.log('->username: ', req.user.username);
+    console.log('->channel: ', req.query.channel);
+    db.query(`SELECT Subscribes_CheckExist('${req.user.username}', '${req.query.channel}')`).then((rows) => {
+        let key = Object.keys(rows[0]).toString();
+        res.json({ result: rows[0][key] });
+    })
 });
 
 module.exports = router;

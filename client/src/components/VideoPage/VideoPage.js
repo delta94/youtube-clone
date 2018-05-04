@@ -142,10 +142,9 @@ class VideoPage extends Component {
         let shareLinkBox = null;
         if (this.state.showShareBox){
             shareLinkBox = <ShareLinkBox 
-                            videoId={ this.state.videoInfo.id } 
-                            />
+            videoId={ this.state.videoInfo.id } 
+            />
         }
-        console.log(this.props.videoId);
         return (
             <section className='videopage_main_container'>
                 { notifyPrompt }
@@ -163,16 +162,16 @@ class VideoPage extends Component {
                     </div>
                     
                     <VideoTitleContainer 
-                    snippet={ this.state.videoInfo.snippet || {title: ''} }
-                    videoId={ this.state.videoInfo.id }
-                    statistics={ this.state.videoInfo.statistics || {} }
-                    handleLike={ this.handleLike }
-                    handleDislike={ this.handleDislike }
-                    notify={ this.handleSubscription }
-                    unsubNotify={ this.handleUnsubscription }
-                    handleDislike={ this.handleDislike } 
-                    showShareBox={ this.handleShowSharebox } />
-
+                        snippet={this.state.videoInfo.snippet || { title: '' }}
+                        videoId={this.state.videoInfo.id}
+                        statistics={this.state.videoInfo.statistics || {}}
+                        handleLike={this.handleLike}
+                        handleDislike={this.handleDislike}
+                        notify={this.handleSubscription}
+                        unsubNotify={this.handleUnsubscription}
+                        handleDislike={this.handleDislike}
+                        showShareBox={this.handleShowSharebox}/>
+                    
                     { shareLinkBox }
                     
                     <VideoDescriptionBox 
@@ -193,11 +192,5 @@ class VideoPage extends Component {
     }
 }
 
-function mapStateToProps(state, ownProps){
-    return {
-        videoId: ownProps.match.params.videoId
-    }
-}
-
-export default connect(mapStateToProps, {  } )(VideoPage);
+export default VideoPage;
 
