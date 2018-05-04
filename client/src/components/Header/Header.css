@@ -174,7 +174,7 @@ input:focus{
     margin-top: 11px;
     font-family: Roboto, Arial, Helvetica, sans-serif;
     font-weight: 100;
-    padding: -10px;
+    line-height: 25px;
 }
 
 .dropdown {
