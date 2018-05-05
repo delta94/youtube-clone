@@ -6,8 +6,6 @@ const router = express.Router();
 router.get('/:id', function (req, res, next) {
     const videoPath = path.resolve(__dirname, `../../videos/${req.params.id}`) + '.mp4';
     if (fs.existsSync(videoPath)) {
-        console.log(req.header.range);
-        console.log('exist');
         const stat = fs.statSync(videoPath);
         const fileSize = stat.size;
         const range = req.headers.range;

@@ -27,27 +27,23 @@ router.post('/upload/video', upload.single('video'), function (req, res, next) {
     let qr = new SyncMySQL();
     let video_id = qr.query('SELECT MAX(id) + 1 AS max_id FROM video')[0].max_id || 0;
     fs.rename( './../videos/' + req.file.filename, './../videos/' + video_id + '.mp4', () => {
-        console.log(req.file.filename);
-        console.log('video_id: ', video_id);
         var videoPath = path.resolve('./../videos/',  video_id + '.mp4');
         var proc = ffmpeg(videoPath).takeScreenshots({
             count: 1,
             timemarks: ['00:00:1.000'],
             filename: video_id + '.png',
             size: '600x400',
-            folder: "./public/images/"
+            folder: "./public/images/thumbnails/"
         }).on('codecData', (data) => {
             let duration = data.duration.toString();
-            console.log(duration);
             var db = new Database();
             db.query(`SELECT TIME_TO_SEC('${duration}') AS duration`).then(rows => {
-                console.log(rows[0].duration);
                 db.query(`INSERT INTO video(id, upload_account, length) VALUES ('${video_id}', '${req.body.username}', ${rows[0].duration})`);
             })
         });
         setTimeout(() => {
             res.json({
-                imageUrl: video_id + '.png',
+                imageUrl: 'thumbnails/' + video_id + '.png',
                 id: video_id
             });
         }, 5000);
@@ -56,8 +52,6 @@ router.post('/upload/video', upload.single('video'), function (req, res, next) {
 
 router.put('/video/:id', (req, res) => {
     let db = new Database();
-    console.log('inside');
-    console.log(req.body);
     db.query(`UPDATE video 
     SET status=${req.body.state}, name='${req.body.name}', description='${req.body.desc}', tag='${req.body.tag}' 
     WHERE id=${req.body.id}`).then((rows) => res.end());
@@ -68,10 +62,8 @@ router.delete('/video/:id', (req, res) => {
     let db = new Database();
     db.query('DELETE FROM video WHERE id=' + req.params.id);
     fs.unlink('./../videos/' + req.params.id + '.mp4', (err) => {
-        console.log(path.resolve('./../videos', req.params.id + '.mp4'));
         if (err) throw err;
-        fs.unlink('./public/images/' + req.params.id + '.png', (err) => {
-            console.log(path.resolve('./public/images', req.params.id + '.png'));
+        fs.unlink('./public/images/thumbnails/' + req.params.id + '.png', (err) => {
             if (err)
                 throw err;
             res.json({ success: true });

@@ -12,7 +12,6 @@ router.get('/google/callback', passport.authenticate('google'), (req, res) => {
 
 router.post('/local', function (req, res, next) {
     passport.authenticate('local', function (err, user, info) {
-        console.log("usr: ", user);
         if (err) { return next(err) }
         if (!user) {
             return res.json({ success: false });
