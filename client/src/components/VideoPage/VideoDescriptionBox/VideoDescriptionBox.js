@@ -60,7 +60,7 @@ class VideoDescriptionBox extends Component {
             <div className='video_description_wrapper'>
                 <div className='video_description_container'>
                     <p id='publish_date'>Published on { this.formattedDate(snippet.publishedAt) }</p>
-                    <p id='video_description'>{ snippet.description }</p>
+                    <p id='video_description'>{ snippet.localized.description }</p>
                     <div className='show_more_box'>
                         <div className='line'></div>
                         <p id='show_more_words'>SHOW MORE</p>

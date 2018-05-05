@@ -25,7 +25,9 @@ var upload = multer({ storage: storage })
 router.post('/upload/video', upload.single('video'), function (req, res, next) {
     let duration = 0;
     let qr = new SyncMySQL();
-    let video_id = qr.query('SELECT MAX(id) + 1 AS max_id FROM video')[0].max_id || 0;
+    let video_id = qr.query(`SELECT AUTO_INCREMENT AS max_id
+            FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'assignment' 
+            AND TABLE_NAME = 'video'`)[0].max_id;
     fs.rename( './../videos/' + req.file.filename, './../videos/' + video_id + '.mp4', () => {
         var videoPath = path.resolve('./../videos/',  video_id + '.mp4');
         var proc = ffmpeg(videoPath).takeScreenshots({
@@ -52,8 +54,9 @@ router.post('/upload/video', upload.single('video'), function (req, res, next) {
 
 router.put('/video/:id', (req, res) => {
     let db = new Database();
+    console.log(req.body);
     db.query(`UPDATE video 
-    SET status=${req.body.state}, name='${req.body.name}', description='${req.body.desc}', tag='${req.body.tag}' 
+    SET status=${req.body.state}, name='${req.body.name}', description='${req.body.desc}', tags='${req.body.tag}' 
     WHERE id=${req.body.id}`).then((rows) => res.end());
 });
 

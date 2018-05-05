@@ -22,7 +22,9 @@ class VideoPage extends Component {
             uniqueId: Math.floor(Math.random() * 999),
             notify: false,
             unsubNotify: false,
-            showShareBox: false
+            showShareBox: false,
+            isLoading: true,
+            likeStatus: 0
         }
 
         this.handleDislike = this.handleDislike.bind(this);
@@ -32,19 +34,14 @@ class VideoPage extends Component {
         this.handleShowSharebox = this.handleShowSharebox.bind(this);
     }
 
-    componentDidMount() {
+    componentWillMount() {
         axios.get(`/api/video/${this.props.videoId}`)
             .then(res => {
                 let videoInfo = res.data;
-                console.log('videoInfo:', videoInfo);
-                if (videoInfo.snippet.tags) {
-                    if (videoInfo.snippet.tags[0] && videoInfo.snippet.tags[1] && videoInfo.snippet.tags[2]) {
-                        var searchTerm = videoInfo.snippet.tags[0] + '+' + videoInfo.snippet.tags[1] + '+' + videoInfo.snippet.tags[2];
-                    } else {
-                        var searchTerm = 'funny+cats'
-                    }
-                }
-                this.setState({ videoInfo: videoInfo });
+                axios.post('/api/view/' + this.props.videoId);
+                axios.get('/api/checkLike/' + this.props.videoId, this.props.videoId).then((res) => {
+                    this.setState({ videoInfo: videoInfo, isLoading: false, likeStatus: res.data.result });
+                });
                 // axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&order=relevance&q=${searchTerm}&type=video&key=AIzaSyA6QnEmVEZ_b2ZQO8GLc7CTEU3g-xDyhFY`)
                 //     .then(RecommendedVideos => {
                 //         console.log('recommended: ', RecommendedVideos.data.items);
@@ -59,16 +56,10 @@ class VideoPage extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if ( this.props !== prevProps ){
-            axios.get(`https://www.googleapis.com/youtube/v3/videos?id=${this.props.videoId}&key=AIzaSyCuuFUnpR3Gm-ai-tS252apbm0adv10PAI&part=snippet,statistics`)
-            .then( videoInfo => {
-                videoInfo = videoInfo.data.items[0];
-                if (videoInfo.snippet.tags){
-                    if (videoInfo.snippet.tags[1] && videoInfo.snippet.tags[4] && videoInfo.snippet.tags[2]){
-                        var searchTerm = videoInfo.snippet.tags[1] + '+' + videoInfo.snippet.tags[4] + '+' + videoInfo.snippet.tags[2];
-                    }else{
-                        var searchTerm = 'funny+cats'
-                    }
-                }
+            axios.get(`/api/video/${this.props.videoId}`)
+            .then( res => {
+                let videoInfo = res.data;
+                let searchTerm = this.snippet.tags || 'react';
                 axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&order=relevance&q=${ searchTerm }&type=video&key=AIzaSyA6QnEmVEZ_b2ZQO8GLc7CTEU3g-xDyhFY`)
                 .then( RecommendedVideos => {
                     this.setState({
@@ -90,23 +81,83 @@ class VideoPage extends Component {
     }
 
     handleLike() {
-        this.setState({
-            videoInfo: Object.assign({}, this.state.videoInfo, {
-                statistics: Object.assign({}, this.state.videoInfo.statistics, {
-                    likeCount: Number(this.state.videoInfo.statistics.likeCount) + 1
-                })
+        if (this.state.likeStatus == 1) {
+            axios.post('/api/unlike/' + this.state.videoId).then((res) => {
+                this.setState({
+                    videoInfo: Object.assign({}, this.state.videoInfo, {
+                        statistics: Object.assign({}, this.state.videoInfo.statistics, {
+                            likeCount: Number(this.state.videoInfo.statistics.likeCount) - 1
+                        })
+                    }),
+                    likeStatus: 0
+                });
             })
-        })
+        } else if (this.state.likeStatus == 0) {
+            axios.post('/api/like/' + this.state.videoId).then((res) => {
+                this.setState({
+                    videoInfo: Object.assign({}, this.state.videoInfo, {
+                        statistics: Object.assign({}, this.state.videoInfo.statistics, {
+                            likeCount: Number(this.state.videoInfo.statistics.likeCount) + 1
+                        })
+                    }),
+                    likeStatus: 1
+                });
+            })
+        } else {
+            axios.post('/api/unlike/' + this.state.videoId).then((res) => {
+                axios.post('/api/like/' + this.state.videoId).then((res) => {
+                    this.setState({
+                        videoInfo: Object.assign({}, this.state.videoInfo, {
+                            statistics: Object.assign({}, this.state.videoInfo.statistics, {
+                                likeCount: Number(this.state.videoInfo.statistics.likeCount) + 1,
+                                dislikeCount: Number(this.state.videoInfo.statistics.dislikeCount) - 1
+                            })
+                        }),
+                        likeStatus: 1
+                    });
+                })
+            });
+        }
     }
 
     handleDislike() {
-        this.setState({
-            videoInfo: Object.assign({}, this.state.videoInfo, {
-                statistics: Object.assign({}, this.state.videoInfo.statistics, {
-                    dislikeCount: Number(this.state.videoInfo.statistics.dislikeCount) + 1
+        if (this.state.likeStatus == 1) {
+            axios.post('/api/unlike/' + this.state.videoId).then((res) => {
+                axios.post('/api/dislike/' + this.state.videoId).then((res) => {
+                    this.setState({
+                        videoInfo: Object.assign({}, this.state.videoInfo, {
+                            statistics: Object.assign({}, this.state.videoInfo.statistics, {
+                                likeCount: Number(this.state.videoInfo.statistics.likeCount) - 1,
+                                dislikeCount: Number(this.state.videoInfo.statistics.dislikeCount) + 1
+                            })
+                        }),
+                        likeStatus: -1
+                    });
                 })
+            });
+        } else if (this.state.likeStatus == 0) {
+            axios.post('/api/dislike/' + this.state.videoId).then((res) => {
+                this.setState({
+                    videoInfo: Object.assign({}, this.state.videoInfo, {
+                        statistics: Object.assign({}, this.state.videoInfo.statistics, {
+                            dislikeCount: Number(this.state.videoInfo.statistics.dislikeCount) + 1
+                        })
+                    }),
+                    likeStatus: -1
+                });
             })
-        })
+        } else {
+            axios.post('/api/unlike/' + this.state.videoId).then((res) => {
+                this.setState({
+                    videoInfo: Object.assign({}, this.state.videoInfo, {
+                        statistics: Object.assign({}, this.state.videoInfo.statistics, {
+                            dislikeCount: Number(this.state.videoInfo.statistics.dislikeCount) - 1
+                        })
+                    }),
+                    likeStatus: 0
+                });
+            })
+        }
     }
 
     handleSubscription(str) {
@@ -147,50 +198,55 @@ class VideoPage extends Component {
             />
         }
 
-        return (
-            <section className='videopage_main_container'>
-                {notifyPrompt}
-                {unsubNotifyPrompt}
-                <section className='main_content_wrapper'>
+        if (this.state.isLoading) {
+            return null;
+        } else {
+            return (
+                <section className='videopage_main_container'>
+                    {notifyPrompt}
+                    {unsubNotifyPrompt}
+                    <section className='main_content_wrapper'>
 
-                    <div className='iframe_placeholder'>
-                        <video
-                            className='iframe'
-                            allowFullScreen
-                            src={'/watch/' + this.props.videoId}
-                            autoPlay
-                            controls>
-                        </video>
-                    </div>
+                        <div className='iframe_placeholder'>
+                            <video
+                                className='iframe'
+                                allowFullScreen
+                                src={'/watch/' + this.props.videoId}
+                                autoPlay
+                                controls>
+                            </video>
+                        </div>
+                        <VideoTitleContainer
+                            snippet={this.state.videoInfo.snippet || { title: '' }}
+                            videoId={this.state.videoInfo.id}
+                            statistics={this.state.videoInfo.statistics || {}}
+                            handleLike={this.handleLike}
+                            handleDislike={this.handleDislike}
+                            notify={this.handleSubscription}
+                            unsubNotify={this.handleUnsubscription}
+                            handleDislike={this.handleDislike}
+                            showShareBox={this.handleShowSharebox}
+                            likeStatus={this.state.likeStatus}
+                        />
 
-                    <VideoTitleContainer
-                        snippet={this.state.videoInfo.snippet || { title: '' }}
-                        videoId={this.state.videoInfo.id}
-                        statistics={this.state.videoInfo.statistics || {}}
-                        handleLike={this.handleLike}
-                        handleDislike={this.handleDislike}
-                        notify={this.handleSubscription}
-                        unsubNotify={this.handleUnsubscription}
-                        handleDislike={this.handleDislike}
-                        showShareBox={this.handleShowSharebox} />
+                        {shareLinkBox}
 
-                    {shareLinkBox}
+                        <VideoDescriptionBox
+                            snippet={this.state.videoInfo.snippet || {}} />
 
-                    <VideoDescriptionBox
-                        snippet={this.state.videoInfo.snippet || {}} />
+                        <CommentsContainer
+                            videoId={this.state.videoInfo.id} />
 
-                    <CommentsContainer
-                        videoId={this.state.videoInfo.id} />
+                    </section>
+
+                    <section className='rightside_videos_wrapper'>
+                        <RecommendedVideosContainer
+                            videoList={this.state.videoList || [{}]} />
+                    </section>
 
                 </section>
-
-                <section className='rightside_videos_wrapper'>
-                    <RecommendedVideosContainer
-                        videoList={this.state.videoList || [{}]} />
-                </section>
-
-            </section>
-        );
+            );
+        }
     }
 }
 

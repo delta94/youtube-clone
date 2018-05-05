@@ -23,33 +23,34 @@ class VideoTitleContainer extends Component {
     }
 
     componentDidMount() {
-        console.log('inside did mount');
-        axios.get(`/api/checkForSubscriptions/${ this.props.snippet.channelTitle }`).then((response)=>{
-            let arr = response.data;
-            console.log('arr: ', arr);
-                if (!arr){
-                    this.setState({
-                        canSubscribe: true
-                    })
-                }else if (arr){
-                    this.setState({
-                        canSubscribe: false
-                    })
-                }
-            })
-        if(!this.state.canSubscribe){
+        axios.get(`/api/checkForSubscriptions/${this.props.snippet.channelTitle}`).then((res) => {
+            let { result } = res.data;
+            console.log('result:', result);
+            if (!result) {
+                this.setState({
+                    canSubscribe: true
+                })
+            } else {
+                this.setState({
+                    canSubscribe: false
+                })
+            }
+        })
+
+        if (!this.state.canSubscribe) {
             let subscribed = document.getElementById('unsubscribe_bttn')
             let unsubscribe = document.getElementById('unsubscribe_bttn_hover')
-            document.getElementById('unsubscribe_bttn').addEventListener("mouseenter", function(){
+            document.getElementById('unsubscribe_bttn').addEventListener("mouseenter", function () {
                 subscribed.style.display = 'none';
                 unsubscribe.style.display = 'block';
-            })
-            unsubscribe.addEventListener("mouseleave", function(){
+            });
+            unsubscribe.addEventListener("mouseleave", function () {
                 subscribed.style.display = 'block';
                 unsubscribe.style.display = 'none';
-            })
+            });
         }
     }
+
     componentDidUpdate(prevProps, prevState){
         if(this.props != prevProps || this.state != prevState){
             if(!this.state.canSubscribe){
@@ -88,12 +89,69 @@ class VideoTitleContainer extends Component {
 
     }
 
+    renderLike() {
+        let { statistics } = this.props;
+        switch (this.props.likeStatus) {
+            case 1:
+                return (
+                    <ul className='like_dislike_list'>
+                    <li>
+                        <div className='video_title_like_thumb_active'
+                            onClick={this.props.handleLike} ></div>
+                        <p>{Number(statistics.likeCount).toLocaleString()}</p>
+                    </li>
+                    <li>
+                        <div className='video_title_dislike_thumb'
+                            onClick={this.props.handleDislike} ></div>
+                        <p>{Number(statistics.dislikeCount).toLocaleString()}</p>
+                    </li>
+                    </ul>
+                );
+        
+            case -1:
+                return (
+                    <ul className='like_dislike_list'>
+                        <li>
+                            <div className='video_title_like_thumb'
+                                onClick={this.props.handleLike} ></div>
+                            <p>{Number(statistics.likeCount).toLocaleString()}</p>
+                        </li>
+                        <li>
+                            <div className='video_title_dislike_thumb_active'
+                                onClick={this.props.handleDislike} ></div>
+                            <p>{Number(statistics.dislikeCount).toLocaleString()}</p>
+                        </li>
+                    </ul>
+                );
+            
+            default:
+                return (
+                    <ul className='like_dislike_list'>
+                        <li>
+                            <div className='video_title_like_thumb'
+                                onClick={this.props.handleLike} ></div>
+                            <p>{Number(statistics.likeCount).toLocaleString()}</p>
+                        </li>
+                        <li>
+                            <div className='video_title_dislike_thumb'
+                                onClick={this.props.handleDislike} ></div>
+                            <p>{Number(statistics.dislikeCount).toLocaleString()}</p>
+                        </li>
+                    </ul>
+                );
+        }
+    }
+
     render() {
+        console.log('video-title rerender');
         let subbtn;
         let subbtnTwo;
-        if(this.state.canSubscribe){
+        let editBtn;
+        if (this.props.snippet.channelTitle === this.props.auth.username) {
+            editBtn = <button type="button" className="edit-btn">Edit</button>
+        } else if(this.state.canSubscribe){
             subbtn = <section>
-                    <div id="subscribe_bttn_test" className='subscribe_button'onClick= { ()=> this.subscribeTo(snippet.channelTitle) }>
+                    <div id="subscribe_bttn_test" className='subscribe_button' onClick= { ()=> this.subscribeTo(snippet.channelTitle) }>
                         <div className='subscribe_play_button'></div>
                         <p>Subscribe</p>
                         <div className='num_subscribers_box'>
@@ -132,7 +190,8 @@ class VideoTitleContainer extends Component {
                     onClick={ ()=> {console.log(this.state.canSubscribe)} } >
                     </div>
                     <div className='channel_container'>
-                        <p key={1} className='channel_title'>{ snippet.channelTitle }</p>
+                        <p key={1} className='channel_title'>{snippet.channelTitle}</p>
+                        { editBtn }
                         { subbtn }
                         { subbtnTwo }
                     </div>
@@ -153,18 +212,7 @@ class VideoTitleContainer extends Component {
                                 <p>More</p>
                             </li>
                         </ul>
-                        <ul className='like_dislike_list'>
-                            <li>
-                                <div className='video_title_like_thumb'
-                                    onClick={ this.props.handleLike } ></div>
-                                <p>{ Number(statistics.likeCount).toLocaleString() }</p>
-                            </li>
-                            <li>
-                                <div className='video_title_dislike_thumb'
-                                    onClick={ this.props.handleDislike } ></div>
-                                <p>{ Number(statistics.dislikeCount).toLocaleString() }</p>
-                            </li>
-                        </ul>
+                        {this.renderLike()}
                     </div>
                 </div>
             </div>
@@ -174,7 +222,8 @@ class VideoTitleContainer extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        subscription: state.subscriptions
+        subscription: state.subscriptions,
+        auth: state.auth
     }
 }
 
