@@ -10,7 +10,7 @@ class VideoTitleContainer extends Component {
         super(props);
 
         this.state={
-            subscribers: Math.floor(Math.random() * 80 + 1)
+            subscribersCount: 0
             , canSubscribe: true
         }
 
@@ -25,7 +25,6 @@ class VideoTitleContainer extends Component {
     componentDidMount() {
         axios.get(`/api/checkForSubscriptions/${this.props.snippet.channelTitle}`).then((res) => {
             let { result } = res.data;
-            console.log('result:', result);
             if (!result) {
                 this.setState({
                     canSubscribe: true
@@ -36,6 +35,8 @@ class VideoTitleContainer extends Component {
                 })
             }
         })
+
+        this.fetchSubscribersCount();
 
         if (!this.state.canSubscribe) {
             let subscribed = document.getElementById('unsubscribe_bttn')
@@ -49,6 +50,14 @@ class VideoTitleContainer extends Component {
                 unsubscribe.style.display = 'none';
             });
         }
+    }
+
+    fetchSubscribersCount() {
+        axios.get('/api/subscribersCount/' + this.props.snippet.channelTitle).then((res) => {
+            this.setState({
+                subscribersCount: res.data.result
+            })
+        })
     }
 
     componentDidUpdate(prevProps, prevState){
@@ -67,26 +76,25 @@ class VideoTitleContainer extends Component {
             } 
         }
     }
-    subscribeTo(str){
+    subscribeTo(str) {
         axios.post(`/api/subscribe/${ str }`).then(()=>{
             this.props.notify();
-            this.setState({
-                canSubscribe: false
-            })
+            this.setState((prev) => ({
+                canSubscribe: false,
+                subscribersCount: prev.subscribersCount + 1
+            }));
             this.props.handleSubscription();
         });
-        
     }
 
-    unsubscribeTo(str){
+    unsubscribeTo(str) {
         axios.delete(`/api/unsubscribe/${ str }`).then(()=>{
-            this.setState({
-                canSubscribe: true
-            })
+            this.setState((prev) => ({
+                canSubscribe: true,
+                subscribersCount: prev.subscribersCount - 1
+            }));
             this.props.unsubNotify();
         })
-        
-
     }
 
     renderLike() {
@@ -155,7 +163,7 @@ class VideoTitleContainer extends Component {
                         <div className='subscribe_play_button'></div>
                         <p>Subscribe</p>
                         <div className='num_subscribers_box'>
-                            <p className='num_subscribers'>{ this.state.subscribers }K </p>
+                            <p className='num_subscribers'>{ this.state.subscribersCount } </p>
                         </div>
                     </div>
                 </section>
@@ -165,14 +173,14 @@ class VideoTitleContainer extends Component {
                                 <div className='unsubscribe_play_button'></div>
                                 <p id="subscribe_words">Subscribed</p>
                                 <div className='num_subscribers_box_unsub'>
-                                    <p className='num_subscribers'>{ this.state.subscribers }K </p>
+                                    <p className='num_subscribers'>{ this.state.subscribersCount } </p>
                                 </div>
                         </div>
-                        <div id="unsubscribe_bttn_hover" className='unsubscribe_button_hover'onClick= { ()=> this.unsubscribeTo(snippet.channelTitle) }>
+                        <div id="unsubscribe_bttn_hover" className='unsubscribe_button_hover' onClick= { ()=> this.unsubscribeTo(snippet.channelTitle) }>
                             <div className='unsubscribe_play_button_hover'></div>
                             <p id="unsubscribe_words">Unsubscribe</p>
                             <div className='num_subscribers_box_unsub'>
-                                <p className='num_subscribers'>{ this.state.subscribers }K </p>
+                                <p className='num_subscribers'>{ this.state.subscribers } </p>
                             </div>
                         </div>
                     </section>

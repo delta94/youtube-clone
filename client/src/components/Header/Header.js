@@ -84,13 +84,13 @@ class Header extends Component {
                             <li id="notifications"></li>
                             <li>
                                 <div className="dropdown" >
-                                    <a className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><Avatar textSizeRatio="2" name={this.props.auth.username} size="30" round={true} /></a>
+                                    <a className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><Avatar textSizeRatio={2} name={this.props.auth.username} size={30} round={true} /></a>
                                     <ul className="dropdown-menu" style={{ width: "275px" }}>
                                         <li>
                                             <div style={{ height: "60px", cursor: "pointer", backgroundColor: "#dfdfdf", paddingBottom: "10px", paddingTop: "1px" }} className="clearfix">
                                                 <div style={{
                                                     float: "left", verticalAlign: "middle", lineHeight: "60px", padding: "0 5px 0 20px"
-                                                }}><Avatar name={this.props.auth.username} size="35" round={true} textSizeRatio="2"/> </div>
+                                                }}><Avatar name={this.props.auth.username} size={35} round={true} textSizeRatio={2}/> </div>
                                                 <div style={{ float: "left", padding: "8px 15px", verticalAlign: "middle" }}>
                                                     <p style={{ marginBottom: "5px", marginTop: "5px", fontWeight: "bold" }}><b>{this.props.auth.username}</b></p>
                                                     <p style={{ margin: 0 }}>{this.props.auth.gmail || 'dummy@gmail.com'}</p>

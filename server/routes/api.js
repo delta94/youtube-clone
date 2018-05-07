@@ -114,6 +114,7 @@ router.post('/unlike/:videoId', (req, res) => {
         });
 });
 
+
 /* get like status */
 router.get('/checkLike/:videoId', (req, res) => {
     db.query(`SELECT CheckLike('${req.user.username}', '${req.params.videoId}')`)
@@ -122,5 +123,52 @@ router.get('/checkLike/:videoId', (req, res) => {
             res.json({ result: obj[Object.keys(obj)[0]] });
         });
 });
+
+/******************************************** COMMENT *********************************************/
+
+router.post('/likeComment/:cmtId', (req, res) => {
+    db.query(`SELECT Comment_Like('${req.user.username}', ${req.params.cmtId}, 1)`).then(() => res.end());
+})
+
+router.post('/dislikeComment/:cmtId', (req, res) => {
+    db.query(`SELECT Comment_Like('${req.user.username}', ${req.params.cmtId}, -1)`).then(() => res.end());
+})
+
+router.post('/unlikeComment/:cmtId', (req, res) => {
+    db.query(`SELECT Comment_UnLike('${req.user.username}', ${req.params.cmtId})`).then(() => res.end());
+})
+
+router.get('/subscribersCount/:chnl', (req, res) => {
+    db.query(`SELECT Account_SubscribersCount('${req.params.chnl}')`)
+        .then((rows) => {
+            let obj = rows[0];
+            res.json({ result: obj[Object.keys(obj)[0]] });
+        });
+})
+
+router.get('/comments/:videoId', (req, res) => {
+    db.query(`CALL Comment_List(${req.params.videoId})`)
+        .then((rows) => res.json(rows[0]));
+});
+
+router.post('/comments', (req, res) => {
+    db.query(`SELECT Comment_Insert('${req.user.username}', ${req.body.videoId}, '${req.body.content}')`).then(() => res.end());
+});
+
+router.delete('/comment', (req, res) => {
+    db.query(`SELECT Comment_Delete('${req.user.username}', ${req.query.videoId}, ${req.query.commentId})`).then(() => res.end());
+});
+
+router.get('/checkCommentLike/:cmtId', (req, res) => {
+    db.query(`SELECT CheckCommentLike('${req.user.username}', ${req.params.cmtId})`)
+        .then((rows) => {
+        let obj = rows[0];
+        res.json({ result: obj[Object.keys(obj)[0]] });
+    });
+});
+
+router.post('/reply', (req, res) => {
+    db.query(`SELECT Reply_Insert('${req.user.username}', ${req.body.cmtId}, '${req.body.content}')`).then(() => res.end());
+})
 
 module.exports = router;

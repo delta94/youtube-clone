@@ -246,7 +246,7 @@ class SearchResults extends Component{
                     <div className="list-item-container">
                         <div className="list-item">
                             <div className="list-item-image">
-                                <Avatar src={image} size="140" round={true}/>
+                                <Avatar src={image} size={140} round={true}/>
                             </div>
                             <div className="list-item-content">
                                 <h4>This is the video name</h4>

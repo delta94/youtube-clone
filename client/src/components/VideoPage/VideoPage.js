@@ -39,7 +39,8 @@ class VideoPage extends Component {
             .then(res => {
                 let videoInfo = res.data;
                 axios.post('/api/view/' + this.props.videoId);
-                axios.get('/api/checkLike/' + this.props.videoId, this.props.videoId).then((res) => {
+                axios.get('/api/checkLike/' + this.props.videoId).then((res) => {
+                    console.log('checklike', res);
                     this.setState({ videoInfo: videoInfo, isLoading: false, likeStatus: res.data.result });
                 });
                 // axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&order=relevance&q=${searchTerm}&type=video&key=AIzaSyA6QnEmVEZ_b2ZQO8GLc7CTEU3g-xDyhFY`)
@@ -121,7 +122,8 @@ class VideoPage extends Component {
     }
 
     handleDislike() {
-        if (this.state.likeStatus == 1) {
+        if (this.state.likeStatus === 1) {
+
             axios.post('/api/unlike/' + this.state.videoId).then((res) => {
                 axios.post('/api/dislike/' + this.state.videoId).then((res) => {
                     this.setState({
@@ -135,7 +137,7 @@ class VideoPage extends Component {
                     });
                 })
             });
-        } else if (this.state.likeStatus == 0) {
+        } else if (this.state.likeStatus === 0) {
             axios.post('/api/dislike/' + this.state.videoId).then((res) => {
                 this.setState({
                     videoInfo: Object.assign({}, this.state.videoInfo, {
@@ -147,6 +149,8 @@ class VideoPage extends Component {
                 });
             })
         } else {
+            console.log('->-1');
+
             axios.post('/api/unlike/' + this.state.videoId).then((res) => {
                 this.setState({
                     videoInfo: Object.assign({}, this.state.videoInfo, {
@@ -224,7 +228,6 @@ class VideoPage extends Component {
                             handleDislike={this.handleDislike}
                             notify={this.handleSubscription}
                             unsubNotify={this.handleUnsubscription}
-                            handleDislike={this.handleDislike}
                             showShareBox={this.handleShowSharebox}
                             likeStatus={this.state.likeStatus}
                         />

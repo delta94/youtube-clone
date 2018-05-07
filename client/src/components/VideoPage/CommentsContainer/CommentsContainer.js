@@ -4,6 +4,9 @@ import './CommentsContainer.css';
 import bullet from './../../Header/img/bullet.png';
 import userImg from './../../Header/img/photo.jpg';
 import down_arrow from './../../Header/img/drop_down_arrow.png';
+import Avatar from 'react-avatar';
+import { connect } from 'react-redux';
+import Comment from '../Comment/Comment';
 
 class CommentsContainer extends Component {
 
@@ -22,6 +25,7 @@ class CommentsContainer extends Component {
             clicked: false,
             reportClicked: false,
             likeCount: 0,
+            isLoading: true
         }
 
         this.formatDate = this.formatDate.bind(this);
@@ -30,18 +34,18 @@ class CommentsContainer extends Component {
         this.handleUserInputChange = this.handleUserInputChange.bind(this);
         this.postUserComment = this.postUserComment.bind(this);
         this.handleCommentFilterChange = this.handleCommentFilterChange.bind(this);
-        this.handleReportClick = this.handleReportClick.bind(this)
+        this.handleReportClick = this.handleReportClick.bind(this);
+        this.handleDeleteComment = this.handleDeleteComment.bind(this);
     }
 
-   componentDidMount(){
+   componentWillMount(){
         axios.get( '/api/comments/' + this.props.videoId )
         .then( res => {
             this.setState({
-                comments: res.data
+                comments: res.data, isLoading: false
             })
         })
     }
-
 
     componentDidUpdate(prevProps, prevState){
         if ( this.props !== prevProps ){
@@ -62,12 +66,13 @@ class CommentsContainer extends Component {
 
     postUserComment(e){
         e.preventDefault();
-        axios.post( '/api/comments/' + this.props.videoId, {
-            "text": this.state.userInput
+        axios.post('/api/comments', {
+            content: this.state.userInput,
+            videoId: this.props.videoId
         })
         .then( () => {
             axios.get( '/api/comments/' + this.props.videoId )
-            .then( res => {
+                .then(res => {
                 this.setState({
                     comments: res.data,
                     userInput: ''
@@ -105,10 +110,24 @@ class CommentsContainer extends Component {
             likeCount: this.state.likeCount + 1
         })
     }
+
     handleDislike(){
         let count = 0;
         count++
     }
+
+    handleDeleteComment(videoId, commentId) {
+        axios.delete(`/api/comment?videoId=${videoId}&commentId=${commentId}`).then(() => {
+            axios.get('/api/comments/' + this.props.videoId)
+                .then(res => {
+                    this.setState({
+                        comments: res.data,
+                        userInput: ''
+                    })
+                })
+        })
+    }
+    
     render() {
         let filterBttn = null;
         if(this.state.clicked){
@@ -117,12 +136,9 @@ class CommentsContainer extends Component {
                 <p>Newest First</p>
             </div>
         }
-        let reportBttn = null;
-        if(this.state.reportClicked){
-            reportBttn = <div id="report_content">
-                    <p>Report spam or abuse</p>
-                </div>
-        }
+        if (this.state.isLoading) {
+            return null;
+        } else
         return (
             <div className='comments_wrapper'>
                 <div className='comments_container'>
@@ -157,31 +173,19 @@ class CommentsContainer extends Component {
                     </div>
                     { filterBttn }
                 {
-                    this.state.comments.map( (comment, index) => {
-                        return  <div key={index} className='individual_comment'>
-                                    <div className='user_comment_thumbnail'></div>
-                                    <ul id="user_info_comment">
-                                        <li id="comment_user_name">{ comment.firstname }</li>
-                                        <li id="comment_posted">{ comment.vid_date }</li>
-                                    </ul>
-                                    <p id="comment_comment">{ comment.content }</p>
-                                            
-                                            <div className='comment_reply_box'>
-                                                <ul id="reply_functions">
-                                                    <li>Reply</li>
-                                                    <li><img src={ bullet }/></li>
-                                                    <li>{ this.state.likeCount }</li>
-                                                    <li onClick={ this.handleLike }><div id="thumb_up"></div></li>
-                                                    <li onClick={ this.handleDislike }><div id="thumb_down"></div></li>
-                                                </ul>
-                                            </div>
-                                            <div id="report_bttn" >
-                                                <div id="report_bttn_img" onClick={ this.handleReportClick }></div>
-                                            </div>
-                                            {reportBttn}
-                                        </div>
-                                    
-                        })
+                    this.state.comments.map((comment) =>
+                            <Comment
+                                key={comment.dtime}
+                                name={comment.name}
+                                dtime={comment.dtime}
+                                content={comment.content}
+                                currentUser={this.props.auth.username}
+                                handleDeleteComment={this.handleDeleteComment}
+                                video_id={comment.video_id}
+                                comment_id={comment.comment_id}
+                                likeCount={comment.likeCount}
+                            />
+                    )
                     }
                     </section>
 
@@ -190,4 +194,10 @@ class CommentsContainer extends Component {
     }
 }
 
-export default CommentsContainer;
+const mapStateToProps = (state) => {
+    return {
+        auth: state.auth
+    }
+}
+
+export default connect(mapStateToProps)(CommentsContainer);
