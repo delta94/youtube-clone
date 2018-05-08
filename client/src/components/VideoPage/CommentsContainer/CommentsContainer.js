@@ -184,6 +184,7 @@ class CommentsContainer extends Component {
                                 video_id={comment.video_id}
                                 comment_id={comment.comment_id}
                                 likeCount={comment.likeCount}
+                                replyCount={comment.replyCount}
                             />
                     )
                     }

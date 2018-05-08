@@ -149,7 +149,6 @@ class VideoPage extends Component {
                 });
             })
         } else {
-            console.log('->-1');
 
             axios.post('/api/unlike/' + this.state.videoId).then((res) => {
                 this.setState({

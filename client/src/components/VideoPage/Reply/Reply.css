@@ -1,0 +1,45 @@
+.reply-item {
+    left: 200px;
+    padding-left: 100px;
+    height: auto;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    line-height: 25px;
+}
+
+#delete-btn {
+    cursor: pointer;
+}
+
+.reply-item b {
+    font-weight: bold;
+}
+
+#reply_functions_bar li {
+    display: inline;
+}
+
+#reply_functions_bar li div {
+    display: inline
+}
+
+#reply_functions_bar li {
+    padding-right: 3px;
+    padding-left: 3px;
+}
+
+#reply_functions_bar li img{
+    cursor: pointer;
+}
+
+.reply-item #username {
+    padding-left: 10px;
+    font-weight: bold;
+}
+
+.reply-item #dtime {
+   color: #767676;
+   font-size: 11px;
+   vertical-align: middle;
+   line-height: 15px;
+}

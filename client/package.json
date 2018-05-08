@@ -19,8 +19,8 @@
     "/images/*": {
       "target": "http://localhost:5000"
     },
-    "/upload/*" :{
-        "target": "http://localhost:5000"
+    "/upload/*": {
+      "target": "http://localhost:5000"
     }
   },
   "dependencies": {
@@ -39,6 +39,7 @@
     "passport-google-oauth": "^1.0.0",
     "react": "^15.6.1",
     "react-avatar": "^2.5.1",
+    "react-bootstrap": "^0.32.1",
     "react-dom": "^15.6.1",
     "react-icons-kit": "^1.1.0",
     "react-modal": "^3.4.4",

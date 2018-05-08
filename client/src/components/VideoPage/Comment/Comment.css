@@ -179,14 +179,15 @@
     width: 855px;
     border: 1px solid white;
     position: relative;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .user_comment_thumbnail {
     height: 57px;
     width: 63px;
-    margin: 14px 15px 15px 20px;
+    margin: 10px 15px 5px 20px;
     text-align: right;
-    padding-top: 5px;
 }
 
 .individual_comment #user_info_comment {
@@ -197,6 +198,7 @@
     position: absolute;
     top: 18px;
     left: 99px;
+
 }
 
 #user_info_comment li {
@@ -232,14 +234,10 @@
 .comment_reply_box {
     /*border: 2px solid blueviolet;*/
     width: 500px;
-    position: absolute;
-    top: 64px;
-    left: 98px;
 }
 
 .comment_reply_box #reply_functions {
     display: flex;
-    position: relative;
 }
 
 #reply_functions li {
@@ -386,5 +384,50 @@
 
 .reply-form input {
     width: 700px;
-    height: 50px;
+    height: 30px;
+}
+
+.reply-form {
+    left: 200px;
+    padding-left: 100px;
+    height: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.reply-form input{
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    margin-left: 10px;
+    font-size: 13px;
+    width: 650px;
+    border-bottom: 2px solid black;
+}
+
+
+.reply-form input:focus {
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    margin-left: 10px;
+    font-size: 13px;
+    width: 650px;
+    border-bottom: 2px solid black;
+}
+
+
+.cancel-btn {
+    background-color: transparent;
+    color: #afafaf;
+    outline: none;
+    border: none;
+    font-size: 16px;
+}
+
+#show-btn {
+    padding-left: 97px;
+    font-weight: bold;
+    line-height: 30px;
+    cursor: pointer;
 }
