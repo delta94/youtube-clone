@@ -26,6 +26,7 @@ router.post('/signup', (req, res) => {
 
 });
 
+/******************************************** VIDEO *********************************************/
 router.get('/video/:id', (req, res) => {
     let snippet = {};
     let localized = {};
@@ -126,16 +127,16 @@ router.get('/checkLike/:videoId', (req, res) => {
 
 /******************************************** COMMENT *********************************************/
 
-router.post('/likeComment/:cmtId', (req, res) => {
-    db.query(`SELECT Comment_Like('${req.user.username}', ${req.params.cmtId}, 1)`).then(() => res.end());
+router.post('/likeComment', (req, res) => {
+    db.query(`SELECT Comment_Like('${req.user.username}', ${req.body.cmtId}, 1)`).then(() => res.end());
 })
 
-router.post('/dislikeComment/:cmtId', (req, res) => {
-    db.query(`SELECT Comment_Like('${req.user.username}', ${req.params.cmtId}, -1)`).then(() => res.end());
+router.post('/dislikeComment', (req, res) => {
+    db.query(`SELECT Comment_Like('${req.user.username}', ${req.body.cmtId}, -1)`).then(() => res.end());
 })
 
-router.post('/unlikeComment/:cmtId', (req, res) => {
-    db.query(`SELECT Comment_UnLike('${req.user.username}', ${req.params.cmtId})`).then(() => res.end());
+router.post('/unlikeComment/', (req, res) => {
+    db.query(`SELECT Comment_UnLike('${req.user.username}', ${req.body.cmtId})`).then(() => res.end());
 })
 
 router.get('/subscribersCount/:chnl', (req, res) => {
@@ -169,6 +170,44 @@ router.get('/checkCommentLike/:cmtId', (req, res) => {
 
 router.post('/reply', (req, res) => {
     db.query(`SELECT Reply_Insert('${req.user.username}', ${req.body.cmtId}, '${req.body.content}')`).then(() => res.end());
+})
+
+
+/******************************************** REPLY *********************************************/
+router.get('/replies/:cmtId', (req, res) => {
+    db.query(`CALL Reply_List(${req.params.cmtId})`)
+        .then((rows) => res.json(rows[0]));
+});
+
+router.get('/checkReplyLike/:repId', (req, res) => {
+    db.query(`SELECT CheckReplyLike('${req.user.username}', ${req.params.repId})`)
+        .then((rows) => {
+            let obj = rows[0];
+            res.json({ result: obj[Object.keys(obj)[0]] });
+        });
+});
+
+router.post('/likeReply/:repId', (req, res) => {
+    db.query(`SELECT Reply_Like('${req.user.username}', ${req.params.repId}, 1)`).then(() => res.end());
+
+});
+
+router.post('/dislikeReply/:repId', (req, res) => {
+    db.query(`SELECT Reply_Like('${req.user.username}', ${req.params.repId}, -1)`).then(() => res.end());
+
+});
+
+router.post('/unlikeReply/:repId', (req, res) => {
+    db.query(`SELECT Reply_UnLike('${req.user.username}', ${req.params.repId})`).then(() => res.end());
+})
+
+router.post('/reply', (req, res) => {
+    db.query(`SELECT Reply_Insert('${req.body.username}', ${req.body.cmtId}, ${req.body.content})`).then(() => res.end());
+})
+
+router.delete('/reply/:repId', (req, res) => {
+    console.log('inside delete');
+    db.query(`SELECT Reply_Delete(${req.params.repId})`).then(() => res.end());
 })
 
 module.exports = router;
