@@ -58,7 +58,7 @@
     right: 25px;
     font-size: 12.5px;
     /*font-family: 'Muli', sans-serif;*/
-    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 .language_select #language_img{
     background: no-repeat url(//s.ytimg.com/yts/imgbin/www-hitchhiker-vflXBOoAR.webp) 0 -150px;
@@ -100,7 +100,7 @@
     padding-left: 8px;
     font-size: 12.5px;
     /*font-family: 'Muli', sans-serif;*/
-    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 .location_select img{
     height: 20px;
@@ -130,7 +130,7 @@
     padding-left: 8px;
     font-size: 12.5px;
     /*font-family: 'Muli', sans-serif;*/
-    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Roboto', sans-serif;
 } 
 .restricted_settings img{
     height: 20px;
@@ -160,7 +160,7 @@
     top: 9px;
     font-size: 12.5px;
     /*font-family: 'Muli', sans-serif;*/
-    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Roboto', sans-serif;
 } 
 .history_bttn #hourglass{
     background: no-repeat url(//s.ytimg.com/yts/imgbin/www-hitchhiker-vflXBOoAR.webp) -926px -182px;
@@ -194,7 +194,7 @@
     top: 9px;
     font-size: 12.5px;
     /*font-family: 'Muli', sans-serif;*/
-    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Roboto', sans-serif;
 } 
 .help_bttn #help_icon{
     background: no-repeat url(//s.ytimg.com/yts/imgbin/www-hitchhiker-vflXBOoAR.webp) -605px -143px;
@@ -224,7 +224,7 @@
     font-size: 12px;
     font-weight: bold;
     /*font-family: 'Muli', sans-serif;*/
-    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Roboto', sans-serif;
     color: #333333;
 }
 
@@ -266,7 +266,7 @@
     flex-wrap: wrap;
     font-size: 11px;
     /*font-family: 'Muli', sans-serif;*/
-    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Roboto', sans-serif;
     color: #666666;
 }
 #third_row li:hover:not(:last-child){

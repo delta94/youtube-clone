@@ -195,7 +195,7 @@ class SearchResults extends Component{
                 { filterBttn }
 
                 <section className='main_video_search_container'>
-                    {/*{videos.map( (video, id) => {
+                    {videos.map( (video, id) => {
                         return <div  key={ id }id='search_video_container'>
                         <Link to={ '/video/' + videos[id].id.videoId }><div id="video_display_container">
                             <img id="search_video_img" src={ videos[id].snippet.thumbnails.medium.url} />
@@ -215,18 +215,8 @@ class SearchResults extends Component{
                         </div>
                     </div>
                     }
-                    )}*/}
+                    )}
 
-                    <div className="list-item-container">
-                        <div className="list-item">
-                            <div className="list-item-image"><img src={image} /></div>
-                            <div className="list-item-content">
-                                <h4>This is the video name</h4>
-                                <small>Channel name • 1.2K views • 3 years ago</small>
-                                <p>Lorem ipsum dolor sit amet consectetur adipi</p>
-                            </div>
-                        </div>
-                    </div>
                     <div className="list-item-container">
                         <div className="list-item">
                             <div className="list-item-image">

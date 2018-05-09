@@ -45,7 +45,7 @@ router.post('/upload/video', upload.single('video'), function (req, res, next) {
         });
         setTimeout(() => {
             res.json({
-                imageUrl: 'thumbnails/' + video_id + '.png',
+                imageUrl: video_id + '.png',
                 id: video_id
             });
         }, 5000);

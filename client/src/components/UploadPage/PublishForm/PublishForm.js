@@ -7,7 +7,7 @@ class PublishForm extends Component {
             return <div className="loader-container"><div className="loader" /></div>;
         } else {
             console.log(this.props.imageUrl);
-            return <img src={"/images/" + this.props.imageUrl} style={{ borderRadius: 3, boxShadow: "0 8px 6px -6px black", width: "100%", height: "auto"}}/>;
+            return <img src={"/images/thumbnails/" + this.props.imageUrl} style={{ borderRadius: 3, boxShadow: "0 8px 6px -6px black", width: "100%", height: "auto"}}/>;
         } 
     }
 

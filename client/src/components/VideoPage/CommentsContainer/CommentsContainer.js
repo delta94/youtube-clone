@@ -175,7 +175,7 @@ class CommentsContainer extends Component {
                 {
                     this.state.comments.map((comment) =>
                             <Comment
-                                key={comment.dtime}
+                                key={comment.comment_id}
                                 name={comment.name}
                                 dtime={comment.dtime}
                                 content={comment.content}

@@ -17,12 +17,15 @@ import AboutPage from './components/Footer/Press/About.js'
 import TeamPage from './components/Footer/Press/Team.js'
 import MoviePage from './components/Footer/Press/Movie.js'
 import UploadPage from './components/UploadPage/UploadPage';
+import WatchLaterPage from './components/WatchLater/WatchLater';
+import HistoryPage from './components/History/History';
+import Subscriptions from './components/Subscriptions/Subscriptions';
+import TrendingPage from './components/Trending/Trending';
 
 
 export default (
     <Switch>
         <Route component={ LandingPage } path='/' exact />
-        <Route component= { SubscriptionPage } path='/subscriptions'/>
         <Route component={ LoginPage } path ='/login'/>
         <Route component={ VideoPage } path='/video/:videoId' />
         <Route component={SearchResults} path='/search/:userInput' />
@@ -36,6 +39,9 @@ export default (
         <Route component={TeamPage} path='/Team' />
         <Route component={MoviePage} path='/Movie' />
         <Route component={UploadPage} path='/upload' />
-
+        <Route component={WatchLaterPage} path='/wl' />
+        <Route component={HistoryPage} path='/history' />
+        <Route component={Subscriptions} path='/subscriptions' />
+        <Route component={TrendingPage} path='/trending' />
     </Switch>
 )

@@ -43,35 +43,35 @@ class VideoPage extends Component {
                     console.log('checklike', res);
                     this.setState({ videoInfo: videoInfo, isLoading: false, likeStatus: res.data.result });
                 });
-                // axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&order=relevance&q=${searchTerm}&type=video&key=AIzaSyA6QnEmVEZ_b2ZQO8GLc7CTEU3g-xDyhFY`)
-                //     .then(RecommendedVideos => {
-                //         console.log('recommended: ', RecommendedVideos.data.items);
-                //         this.setState({
-                //             videoInfo: videoInfo,
-                //             videoList: RecommendedVideos.data.items
-                //         })
-                //     })
-            })
+                axios.get(`/api/recommendedVideo/` + this.props.videoId)
+                    .then(RecommendedVideos => {
+                        console.log('recommended: ', RecommendedVideos.data);
+                        this.setState({
+                            videoList: RecommendedVideos.data
+                        })
+                    });
+            });
         document.body.scrollTop = 0;
     }
 
     componentDidUpdate(prevProps, prevState) {
         if ( this.props !== prevProps ){
             axios.get(`/api/video/${this.props.videoId}`)
-            .then( res => {
-                let videoInfo = res.data;
-                let searchTerm = this.snippet.tags || 'react';
-                axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&order=relevance&q=${ searchTerm }&type=video&key=AIzaSyA6QnEmVEZ_b2ZQO8GLc7CTEU3g-xDyhFY`)
-                .then( RecommendedVideos => {
-                    this.setState({
-                        videoInfo: videoInfo,
-                        videoList: RecommendedVideos.data.items
-                    })
-                })
-            })
-            this.setState({
-                showShareBox: false
-            })
+                .then(res => {
+                    let videoInfo = res.data;
+                    axios.post('/api/view/' + this.props.videoId);
+                    axios.get('/api/checkLike/' + this.props.videoId).then((res) => {
+                        console.log('checklike', res);
+                        this.setState({ videoInfo: videoInfo, isLoading: false, likeStatus: res.data.result });
+                    });
+                    axios.get(`/api/recommendedVideo/` + this.props.videoId)
+                        .then(RecommendedVideos => {
+                            console.log('recommended: ', RecommendedVideos.data);
+                            this.setState({
+                                videoList: RecommendedVideos.data
+                            })
+                        });
+                });
         }
     }
 

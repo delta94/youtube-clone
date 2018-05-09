@@ -18,7 +18,7 @@
 }
 #landing{
     /*font-family: 'Muli', sans-serif;*/
-    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Roboto', sans-serif;
     color: #666666;
     font-size: 13.4px;
     /*font-weight: bold;*/
@@ -42,7 +42,7 @@
 }
 
 #landing a{
-    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Roboto', sans-serif;
     color: #666666;
     font-size: 13.4px;
     text-align: center;
@@ -52,5 +52,5 @@
 
 #landing a{
     cursor:pointer;
-    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }

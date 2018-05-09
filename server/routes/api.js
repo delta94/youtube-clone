@@ -3,6 +3,8 @@ var router = express.Router();
 var User = require('../models/User');
 var Database = require('../models/Database');
 let db = new Database();
+let SyncDatabase = require('../models/SyncDatabase');
+let sdb = new SyncDatabase();   
 
 router.get('/current_user', (req, res) => { // this line shows the result after deserializing user from cookie
     res.json(req.user);
@@ -125,19 +127,68 @@ router.get('/checkLike/:videoId', (req, res) => {
         });
 });
 
+router.get('/recommendedVideo/:videoId', (req, res) => {
+    let tags = [];
+    let videos = [];
+    db.query(`SELECT tags FROM video WHERE id=${req.params.videoId}`)
+        .then((rows) => {
+            if (!rows[0]) return res.end();
+            else {
+                tags = rows[0].tags.split(' ');
+                for (tag of tags) {
+                    videos = videos.concat(sdb.query(`SELECT id, name AS title, upload_account AS channelTitle, GetVideoViewCount(id) AS viewCount FROM video WHERE LOCATE('${tag}', tags) <> 0`));
+                }
+                videos = videos.filter((video) => video.id != req.params.videoId);
+                res.json(videos);
+            }
+        });
+});
+
+router.post('/watchLater/:videoId', (req, res) => {
+    db.query(`CALL AccWatchsLaterVid('${req.user.username}', ${req.params.videoId})`).then((rows) => res.end());
+});
+
+router.get('/checkWatchLater/:videoId', (req, res) => {
+    console.log('check');
+    console.log(req.user.username, req.params.videoId);
+    db.query(`SELECT * FROM a_watch_later_v WHERE account_name='${req.user.username}' AND video_id=${req.params.videoId}`)
+        .then((rows) => res.json({result: !!rows[0]}))
+});
+
+router.get('/watchLater', (req, res) => {
+    db.query(`CALL GetWatchedLaterVideos('${req.user.username}')`)
+        .then((rows) => res.json(rows[0]));
+});
+
+router.get('/history', (req, res) => {
+    db.query(`CALL GetHistory('${req.user.username}')`).then((rows) => res.json(rows[0]));
+});
+
+router.get('/subscriptions', (req, res) => {
+    db.query(`CALL GetVideosOfSubscribedChannels('${req.user.username}')`).then((rows) => res.json(rows[0]));
+});
+
+router.get('/trending/:bound', (req, res) => {
+    db.query(`CALL GetTrending(${req.params.bound})`).then((rows) => res.json(rows[0]));
+});
+
+router.get('/subscriptionCount', (req, res) => {
+    db.query(`SELECT COUNT(*) AS count FROM subscribes WHERE subscriber_name = '${req.user.username}'`).then((rows) => res.json(rows[0].count));
+})
+
 /******************************************** COMMENT *********************************************/
 
 router.post('/likeComment', (req, res) => {
     db.query(`SELECT Comment_Like('${req.user.username}', ${req.body.cmtId}, 1)`).then(() => res.end());
-})
+});
 
 router.post('/dislikeComment', (req, res) => {
     db.query(`SELECT Comment_Like('${req.user.username}', ${req.body.cmtId}, -1)`).then(() => res.end());
-})
+});
 
 router.post('/unlikeComment/', (req, res) => {
     db.query(`SELECT Comment_UnLike('${req.user.username}', ${req.body.cmtId})`).then(() => res.end());
-})
+});
 
 router.get('/subscribersCount/:chnl', (req, res) => {
     db.query(`SELECT Account_SubscribersCount('${req.params.chnl}')`)
@@ -145,7 +196,7 @@ router.get('/subscribersCount/:chnl', (req, res) => {
             let obj = rows[0];
             res.json({ result: obj[Object.keys(obj)[0]] });
         });
-})
+});
 
 router.get('/comments/:videoId', (req, res) => {
     db.query(`CALL Comment_List(${req.params.videoId})`)
@@ -170,7 +221,7 @@ router.get('/checkCommentLike/:cmtId', (req, res) => {
 
 router.post('/reply', (req, res) => {
     db.query(`SELECT Reply_Insert('${req.user.username}', ${req.body.cmtId}, '${req.body.content}')`).then(() => res.end());
-})
+});
 
 
 /******************************************** REPLY *********************************************/
@@ -199,15 +250,16 @@ router.post('/dislikeReply/:repId', (req, res) => {
 
 router.post('/unlikeReply/:repId', (req, res) => {
     db.query(`SELECT Reply_UnLike('${req.user.username}', ${req.params.repId})`).then(() => res.end());
-})
+});
 
 router.post('/reply', (req, res) => {
     db.query(`SELECT Reply_Insert('${req.body.username}', ${req.body.cmtId}, ${req.body.content})`).then(() => res.end());
-})
+});
 
 router.delete('/reply/:repId', (req, res) => {
     console.log('inside delete');
     db.query(`SELECT Reply_Delete(${req.params.repId})`).then(() => res.end());
-})
+});
+
 
 module.exports = router;

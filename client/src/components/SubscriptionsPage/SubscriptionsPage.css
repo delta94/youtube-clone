@@ -6,7 +6,7 @@
 }
 
 #subscriptions_title{
-    font-family: Roboto Condensed,sans-serif;
+    font-family: Roboto,sans-serif;
     font-weight: 700;
     font-size: 13.1px;
     position: absolute;
@@ -28,7 +28,7 @@
 }
 #subscription{
     /*font-family: 'Muli', sans-serif;*/
-    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Roboto', sans-serif;
     color: #666666;
     font-size: 13.4px;
     /*font-weight: bold;*/
@@ -54,5 +54,5 @@
 #subscription a{
     cursor: pointer;
     opacity: 0.6;
-    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }

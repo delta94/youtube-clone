@@ -23,6 +23,20 @@ a{
     overflow: hidden;
 }
 
+.video_box #watch-later-btn {
+    position: absolute;
+    top: 20px;
+    left:150px;
+    width: 20px;
+    height: 20px;
+    opacity: 0;
+    z-index: 5;
+}
+
+.video_box:hover #watch-later-btn {
+    opacity: 1;
+}
+
 .video_box_img{
     width: 168px;
     height: 94px;
@@ -30,9 +44,9 @@ a{
 
 .video_box_title{
     position: absolute;
-    left: 186px;
-    top: 13px;
-    font-size: 13px;
+    left: 190px;
+    top: 15px;
+    font-size: 14px;
     font-weight: 600;
 }
 
@@ -42,18 +56,18 @@ a{
 
 .video_box_channel{
     position: absolute;
-    left: 186px;
+    left: 190px;
     top: 60px;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 400;
     color: #666;
 }
 
 .video_box_views{
     position: absolute;
-    left: 186px;
+    left: 190px;
     top: 75px;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 400;
     color: #666;
 }
