@@ -1,9 +1,8 @@
-import './WatchLater.css';
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-class WatchLater extends Component {
+class LikedVideosPage extends Component {
     constructor(props) {
         super(props);
 
@@ -14,13 +13,13 @@ class WatchLater extends Component {
     }
 
     componentWillMount() {
-        axios.get('/api/watchLater')
+        axios.get('/api/likedVideos')
             .then((res) => this.setState((prev) => ({ isLoading: !prev.isLoading, videos: res.data })));
     }
 
     render() {
+        console.log('renderd');
         if (this.state.isLoading) return null;
-        console.log('->', this.state.videos);
         return (
             <div id="watchlater-container">
                 {this.state.videos.map((video) => {
@@ -33,7 +32,7 @@ class WatchLater extends Component {
                             <h2 id="search_video_channel">{video.channelTitle}</h2>
                             <ul>
                                 <li>{video.publishedAt}</li>
-                                <li>•</li>
+                                <li>&ensp;•&ensp;</li>
                                 <li>{video.viewCount} views</li>
                             </ul>
                             <p id="search_video_desc">{video.description}</p>
@@ -46,4 +45,4 @@ class WatchLater extends Component {
     }
 }
 
-export default WatchLater;
+export default LikedVideosPage;

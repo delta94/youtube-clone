@@ -20,11 +20,14 @@ import UploadPage from './components/UploadPage/UploadPage';
 import WatchLaterPage from './components/WatchLater/WatchLater';
 import HistoryPage from './components/History/History';
 import Subscriptions from './components/Subscriptions/Subscriptions';
+import LikedVideosPage from './components/LikedVideosPage/LikedVideosPage';
 import TrendingPage from './components/Trending/Trending';
+import ChannelVideoPage from './components/ChannelPage/ChannelVideoPage';
 
 
 export default (
     <Switch>
+        <Route component={ChannelVideoPage} path='/channel/:username/home' exact/>    
         <Route component={ LandingPage } path='/' exact />
         <Route component={ LoginPage } path ='/login'/>
         <Route component={ VideoPage } path='/video/:videoId' />
@@ -43,5 +46,6 @@ export default (
         <Route component={HistoryPage} path='/history' />
         <Route component={Subscriptions} path='/subscriptions' />
         <Route component={TrendingPage} path='/trending' />
+        <Route component={LikedVideosPage} path='/lv' />
     </Switch>
 )

@@ -6,6 +6,9 @@ let db = new Database();
 let SyncDatabase = require('../models/SyncDatabase');
 let sdb = new SyncDatabase();   
 
+
+/************************************* USER *********************************/
+
 router.get('/current_user', (req, res) => { // this line shows the result after deserializing user from cookie
     res.json(req.user);
 });
@@ -28,7 +31,44 @@ router.post('/signup', (req, res) => {
 
 });
 
+router.get('/subscriptionCount', (req, res) => {
+    db.query(`SELECT COUNT(*) AS count FROM subscribes WHERE subscriber_name = '${req.user.username}'`).then((rows) => res.json(rows[0].count));
+});
+
+//list all user's video
+router.get('/videos/:username', (req, res) => {
+    db.query(`select id,  name as title, 
+    dtime_upload as publishedAt, 
+    GetVideoViewCount(id) as viewCount
+    from video
+    where upload_account='${req.params.username}'`).then((rows) => res.json(rows));
+});
+
+router.get('/checkForSubscriptions/:chnl', (req, res) => {
+    db.query(`SELECT Subscribes_CheckExist('${req.params.chnl}', '${req.user.username}')`)
+        .then((rows) => {
+            let obj = rows[0];
+            res.json({ result: obj[Object.keys(obj)[0]] });
+        });
+});
+
+router.get('/channelInfo/:chnl', (req, res) => {
+    db.query(`SELECT Account_SubscribersCount('${req.params.chnl}') AS subscriberCount, name as channelTitle, username
+                FROM account
+                WHERE username='${req.params.chnl}'`)
+        .then((rows) => res.json(rows[0]));
+});
+
+router.get('/subscribersCount/:chnl', (req, res) => {
+    db.query(`SELECT Account_SubscribersCount('${req.params.chnl}')`)
+        .then((rows) => {
+            let obj = rows[0];
+            res.json({ result: obj[Object.keys(obj)[0]] });
+        });
+});
+
 /******************************************** VIDEO *********************************************/
+// get video's information
 router.get('/video/:id', (req, res) => {
     let snippet = {};
     let localized = {};
@@ -45,7 +85,6 @@ router.get('/video/:id', (req, res) => {
             snippet["tags"] = rows[0].tags || '';
             return db.query(`SELECT name, description FROM account WHERE username='${rows[0].upload_account}'`);
         }).then((rows) => {
-            snippet["channelTitle"] = rows[0].name;
             snippet["description"] = rows[0].description;
             return db.query(`SELECT COUNT(video_id) AS view_count FROM a_views_v WHERE video_id=${req.params.id}`)
         }).then((rows) => {
@@ -64,13 +103,6 @@ router.get('/video/:id', (req, res) => {
         });
 });
 
-router.get('/checkForSubscriptions/:chnl', (req, res) => {
-    db.query(`SELECT Subscribes_CheckExist('${req.params.chnl}', '${req.user.username}')`)
-        .then((rows) => {
-            let obj = rows[0];
-            res.json({ result: obj[Object.keys(obj)[0]] });
-        });
-});
 
 router.post('/subscribe/:chnl', (req, res) => {
     db.query(`SELECT Subscribes_Insert('${req.params.chnl}', '${req.user.username}')`)
@@ -164,16 +196,13 @@ router.get('/history', (req, res) => {
     db.query(`CALL GetHistory('${req.user.username}')`).then((rows) => res.json(rows[0]));
 });
 
-router.get('/subscriptions', (req, res) => {
-    db.query(`CALL GetVideosOfSubscribedChannels('${req.user.username}')`).then((rows) => res.json(rows[0]));
-});
 
 router.get('/trending/:bound', (req, res) => {
     db.query(`CALL GetTrending(${req.params.bound})`).then((rows) => res.json(rows[0]));
 });
 
-router.get('/subscriptionCount', (req, res) => {
-    db.query(`SELECT COUNT(*) AS count FROM subscribes WHERE subscriber_name = '${req.user.username}'`).then((rows) => res.json(rows[0].count));
+router.get('/likedVideos', (req, res) => {
+    db.query(`CALL GetLikedVideos('${req.user.username}')`).then((rows) => res.json(rows[0]));
 })
 
 /******************************************** COMMENT *********************************************/
@@ -190,13 +219,7 @@ router.post('/unlikeComment/', (req, res) => {
     db.query(`SELECT Comment_UnLike('${req.user.username}', ${req.body.cmtId})`).then(() => res.end());
 });
 
-router.get('/subscribersCount/:chnl', (req, res) => {
-    db.query(`SELECT Account_SubscribersCount('${req.params.chnl}')`)
-        .then((rows) => {
-            let obj = rows[0];
-            res.json({ result: obj[Object.keys(obj)[0]] });
-        });
-});
+
 
 router.get('/comments/:videoId', (req, res) => {
     db.query(`CALL Comment_List(${req.params.videoId})`)

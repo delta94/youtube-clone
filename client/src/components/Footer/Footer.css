@@ -105,7 +105,7 @@
 .location_select img{
     height: 20px;
     position: absolute;
-    right: 4px;
+    right: -3px;
     top: 4px;
 }
 .restricted_settings{
@@ -135,7 +135,7 @@
 .restricted_settings img{
     height: 20px;
     position: absolute;
-    right: 2px;
+    right: -3px;
     top: 4px;
 }
 .history_bttn{

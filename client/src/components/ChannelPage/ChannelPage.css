@@ -1,0 +1,146 @@
+.channel-header {
+    display: grid;
+    grid-template-columns: 90px auto 150px;
+    padding: 20px 100px 10px 100px;
+    background-color: #fafafa;
+}
+
+.channel-page {
+    font-family: Roboto;
+    margin-bottom: 200px;
+}
+
+.channel-name-container {
+   display: flex;
+   align-items: center;
+}
+
+.channel-name-container h3 {
+    font-weight: 300px;
+    font-size: 24px;
+    line-height: 38px;
+}
+
+.channel-name-container h4 {
+    font-size: 14px;
+    font-weight: 300;
+    color: #afafaf;
+}
+
+.channel-subscribe-btn {
+    border: 0;
+    background-color: #FF0000;
+    color: white;
+    border-radius: 3px;
+    padding: 9px 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.channel-edit-btn {
+    border: 0;
+    background-color: rgb(73, 151, 165);
+    color: white;
+    border-radius: 3px;
+    padding: 9px 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.channel-subscribe-button-container {
+    display: flex;
+    align-items: center;
+}
+
+.channel-subscribed-btn {
+    border: 0;
+    background-color: #eaeaea;
+    color: hsla(0, 0%, 6.7%, .4);
+    border-radius: 3px;
+    padding: 9px 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.channel-navigation  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0 0 0 100px;
+    overflow: hidden;
+    background-color: #fafafa;
+}
+
+.channel-navigation li {
+    float: left;
+}
+
+.channel-navigation  li a {
+    display: block;
+    text-align: center;
+    padding: 16px;
+    text-decoration: none;
+    font-family: Roboto;
+    color: #3f3f3f;
+    font-size: 14px;
+}
+
+.channel-video-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 200px);
+    grid-column-gap: 15px;
+    grid-template-rows: repeat(auto-fit, 175px);
+    grid-row-gap:15px;
+    padding: 10px 30px;
+}
+
+.channel-video-container .video-item {
+     overflow:hidden;
+     display:inline-block;
+     text-overflow: ellipsis;
+     white-space: nowrap;
+     position: relative;
+     cursor: pointer;
+}
+
+.channel-navigation-active {
+    font-weight: bold;
+}
+
+.channel-video-container .video-item img {
+    width: 100%;
+}
+
+.channel-video-container .video-item p {
+    font-family: Roboto;
+    font-weight: 500;
+    padding: 5px 0;
+    font-size: 15px;
+}
+
+.channel-video-container .video-item h4 {
+    font-family: Roboto;
+    font-size: 13px;
+    color: #3f3f3f;
+    
+}
+
+.video-item #watch-later-btn {
+    position: absolute;
+    top: 10px;
+    left: 165px;
+    width: 20px;
+    height: 20px;
+    opacity: 0;
+    z-index: 5;
+}
+
+.video-item a {
+    text-decoration: none;
+}
+
+.video-item:hover #watch-later-btn {
+    opacity: 1;
+}

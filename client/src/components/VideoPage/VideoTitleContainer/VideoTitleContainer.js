@@ -1,9 +1,10 @@
+import './VideoTitleContainer.css';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import {handleSubscription} from './../../../ducks/reducer'
+import { handleSubscription } from './../../../ducks/reducer';
+import { Link } from 'react-router-dom';
 
-import './VideoTitleContainer.css';
 
 class VideoTitleContainer extends Component {
     constructor(props){
@@ -198,7 +199,7 @@ class VideoTitleContainer extends Component {
                     onClick={ ()=> {console.log(this.state.canSubscribe)} } >
                     </div>
                     <div className='channel_container'>
-                        <p key={1} className='channel_title'>{snippet.channelTitle}</p>
+                        <Link to={'/channel/' + snippet.channelTitle + '/home'}><p key={1} className='channel_title'> {snippet.channelTitle}</p> </Link>
                         { editBtn }
                         { subbtn }
                         { subbtnTwo }

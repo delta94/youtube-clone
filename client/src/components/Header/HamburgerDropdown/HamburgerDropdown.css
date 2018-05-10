@@ -251,7 +251,8 @@ font-weight: bold;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    color:black;
+    color:rgba(0, 0,0, 0.8);
+    font-family: Roboto;
 }
 
 .nav-link-numbers {
@@ -279,7 +280,6 @@ hr {
 }
 
 .nav-main-section-header-a:hover {
-    text-decoration: underline;
 }
 
 ::-webkit-scrollbar {

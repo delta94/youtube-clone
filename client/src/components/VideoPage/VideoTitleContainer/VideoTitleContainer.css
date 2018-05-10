@@ -43,6 +43,7 @@
     font-weight: bold;
     margin-bottom: 5px;
     overflow: hidden;
+    cursor: pointer;
 }
 
 .subscribe_button{
@@ -324,4 +325,8 @@
     sans-serif;
     font-weight: bold;
     font-size: 14px;
+}
+
+.channel_container a {
+    text-decoration: none;
 }

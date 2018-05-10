@@ -21,7 +21,11 @@ class MySideNav extends React.Component {
         axios.get('/api/subscriptionCount').then((res) => this.setState({ subscriptionCount: res.data }));
     }
 
+
+
     render() {
+        console.log('abc:', this.props.user);
+        let getUsername = () =>  this.props.user ? this.props.user.username : '';
         return (
             <div className="sidebar" style={this.props.style}>
                 <div className="nav-outer-container">
@@ -49,12 +53,13 @@ class MySideNav extends React.Component {
                                 <div className="nav-main-section-inner-container">
                                     <ul className="nav-main-section-links">
                                         <li className="nav-main-section-link">
-                                            <a href="#" className="nav-main-section-link-a">
-                                                <span className="link-container">
+                                            <NavLink exact to={'/channel/' + getUsername() + '/home'} className="nav-main-section-link-a" activeClassName="hamburger-item-active" >
+                                            <span className="link-container">
+
                                                     <span className="nav-link-icon"><i className="ion-person icon"></i></span>
                                                     <span className="nav-link-text">My Channel</span>
                                                 </span>
-                                            </a>
+                                            </NavLink>
                                         </li>
                                     </ul>
                                 </div>
@@ -113,7 +118,18 @@ class MySideNav extends React.Component {
                                     </ul>
                                 </div>
                             </li>
-
+                            <li className="nav-main-section">
+                                <div className="nav-main-section-inner-container">
+                                    <ul className="nav-main-section-links">
+                                        <NavLink to='/lv' className="nav-main-section-link-a" exact>
+                                                <span className="link-container">
+                                                    <span className="nav-link-icon"><i className="ion-thumbsup icon"></i></span>
+                                                    <span className="nav-link-text">Liked videos</span>
+                                                </span>
+                                        </NavLink>
+                                    </ul>
+                                </div>
+                            </li>
                         </ul>
 
 
@@ -174,20 +190,7 @@ class MySideNav extends React.Component {
                                 </div>
                             </li>
 
-                            <li className="nav-main-section">
-                                <div className="nav-main-section-inner-container">
-                                    <ul className="nav-main-section-links">
-                                        <li className="nav-main-section-link">
-                                            <a href="#" className="nav-main-section-link-a">
-                                                <span className="link-container">
-                                                    <span className="nav-link-icon"><i className="ion-thumbsup icon"></i></span>
-                                                    <span className="nav-link-text">Liked videos</span>
-                                                </span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
+
 
                         </ul>
 

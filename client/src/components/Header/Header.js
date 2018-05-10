@@ -138,7 +138,7 @@ class Header extends Component {
                     </section>
                     {this.renderContent()}
                 </div>
-                <MySideNav style={this.state.css} />
+                <MySideNav style={this.state.css} user={this.props.auth}/>
             </section>
         )
     }

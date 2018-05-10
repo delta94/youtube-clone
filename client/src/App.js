@@ -19,7 +19,6 @@ import './App.css';
 class App extends Component {
     constructor(props) {
         super(props);
-        console.log('asdflsafkdj');
         this.props.fetchUser();
     }
 
@@ -36,7 +35,7 @@ class App extends Component {
                 <Footer />
             </div>        
         </BrowserRouter>
-      </div>
+      </div>  
     );
   }
 }

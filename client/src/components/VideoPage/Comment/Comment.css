@@ -129,7 +129,7 @@
     width: 16px;
     position: absolute;
     top: 7px;
-    right: 7px;
+    right: 0px;
 }
 
 #comment_filter:hover {
