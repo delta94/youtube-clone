@@ -93,7 +93,7 @@ class ChannelVideoPage extends Component {
                 </div>
                     <div className="channel-video-container">
                         {this.state.videos.map((video) => <VideoContainer key={video.id} id={video.id} viewCount={video.viewCount} title={video.title} publishedAt={video.publishedAt}/>)}        
- 
+  
                 </div>    
                 </div>
             </div>    

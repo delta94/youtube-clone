@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import { handleSubscription } from './../../../ducks/reducer';
 import { Link } from 'react-router-dom';
+import PlaylistCheckBox from './PlaylistCheckBox';
 
 
 class VideoTitleContainer extends Component {
@@ -12,9 +13,35 @@ class VideoTitleContainer extends Component {
 
         this.state={
             subscribersCount: 0
-            , canSubscribe: true
+            , canSubscribe: true,
+            showDropdownPlaylist: false,
+            showCreateButton: true,
+            playlists: [],
+            playlistIsLoading: true,
+            playlistName: ''
         }
 
+        this.handleOnAddToPlaylistOnClick = this.handleOnAddToPlaylistOnClick.bind(this);
+        this.handleCreateNewPlaylist = this.handleCreateNewPlaylist.bind(this);
+        this.handlePlaylistNameOnChange = this.handlePlaylistNameOnChange.bind(this);
+    }
+
+    handleCreateNewPlaylist(e) {
+        e.preventDefault();
+
+        axios.post('/api/playlist', {
+            name: this.state.playlistName,
+            username: this.props.auth.username
+        }).then((res) => {
+            axios.post('/api/insertVideo', {
+                pid: res.data.result,
+                vid: this.props.videoId
+            }).then((rows) => this.setState((prev) => ({ showDropdownPlaylist: !prev.showDropdownPlaylist })));
+        });
+    }
+
+    handlePlaylistNameOnChange(e) {
+        this.setState({ playlistName: e.target.value });
     }
 
     componentWillReceiveProps(newProps){
@@ -22,6 +49,7 @@ class VideoTitleContainer extends Component {
             this.props = newProps;
         }
     }
+
 
     componentDidMount() {
         axios.get(`/api/checkForSubscriptions/${this.props.snippet.channelTitle}`).then((res) => {
@@ -51,6 +79,16 @@ class VideoTitleContainer extends Component {
                 unsubscribe.style.display = 'none';
             });
         }
+    }
+
+    handleOnAddToPlaylistOnClick() {
+        if (!this.state.showCreateButton)
+            this.setState((prev) => ({ showDropdownPlaylist: !prev.showDropdownPlaylist, showCreateButton: true }));
+        else this.setState((prev) => ({ showDropdownPlaylist: !prev.showDropdownPlaylist }));
+        axios.get('/api/playlists').then((res) => {
+            console.log('==', res.data)
+            this.setState({ playlists: res.data, playlistIsLoading: false });
+        });
     }
 
     fetchSubscribersCount() {
@@ -152,7 +190,7 @@ class VideoTitleContainer extends Component {
     }
 
     render() {
-        console.log('video-title rerender');
+        console.log('->>', this.props.auth);
         let subbtn;
         let subbtnTwo;
         let editBtn;
@@ -190,7 +228,59 @@ class VideoTitleContainer extends Component {
             snippet,
             statistics,
             id
-        }=this.props;
+        } = this.props;
+        
+        let checkForm =
+            <form onSubmit={(e) => e.preventDefault()}>
+                {!this.state.playlistIsLoading && this.state.playlists.map((playlist) => {
+                    console.log('-------->', playlist.videoInPlaylist);
+                    console.log('playlists: ', this.state.playlists);
+                    return <PlaylistCheckBox key={playlist.playlist_id} playlistId ={playlist.playlist_id} name={playlist.name} videoId={this.props.videoId}/>
+            
+                })}    
+            </form>
+
+        let dropdown =
+            <div className="add-dropdown-menu" >
+                <div id="add-dropdown-menu-header">Add to...</div>
+                {
+                    this.state.showCreateButton ?
+                    <div className="add-dropdown-form1">
+                        {checkForm}
+                    </div>
+                        :
+                    <div className="add-dropdown-form">
+                        {checkForm}
+                    </div>
+                }
+                
+            {/* show create playlist button */}
+            {
+                this.state.showCreateButton &&
+                <div className="create-playlist-button"
+                    onClick={() => {
+                    this.setState({ showCreateButton: false });
+                }}>
+                    <i className="ion-plus"></i>&ensp;Create new playlist
+                    </div>
+            }
+            
+            {/* show create playlist fomr */}
+            {
+                !this.state.showCreateButton &&
+                <div className="create-new-playlist">
+                        <form onSubmit={this.handleCreateNewPlaylist}>
+                        <label>Name</label>
+                        <br />
+                            <input ref={input => input && input.focus()} onChange={this.handlePlaylistNameOnChange}/>
+                        <div>
+                            <button type="submit">CREATE</button>
+                        </div>
+                    </form>
+                </div>
+            }
+
+        </div>
         return (
             <div className='video_title_wrapper'>
                 <div className='video_title_container'>
@@ -208,9 +298,10 @@ class VideoTitleContainer extends Component {
                     <div className='video_title_line'></div>
                     <div className='video_title_bottom'>
                         <ul className='add_share_list'>
-                            <li className='video_title_add_box'>
+                            <li className='video_title_add_box' onClick={this.handleOnAddToPlaylistOnClick}>
                                 <div className='video_title_plus_button'></div>
                                 <p>Add to</p>
+
                             </li>
                             <li onClick={ this.props.showShareBox } >
                                 <div className='video_title_share_arrow'></div>
@@ -221,6 +312,7 @@ class VideoTitleContainer extends Component {
                                 <p>More</p>
                             </li>
                         </ul>
+                        {this.state.showDropdownPlaylist && dropdown}
                         {this.renderLike()}
                     </div>
                 </div>

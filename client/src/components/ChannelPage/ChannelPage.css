@@ -144,3 +144,22 @@
 .video-item:hover #watch-later-btn {
     opacity: 1;
 }
+
+
+.channel-playlist-image {
+    background: rgba(0, 0, 0, 0.75);
+    height: 133.33px;
+    position: absolute;
+    width: 100px;
+    left: 100px;
+    z-index: 10;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 25px;
+}
+
+.channel-playlist-image>div {
+    text-align: center;
+}

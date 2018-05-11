@@ -330,3 +330,99 @@
 .channel_container a {
     text-decoration: none;
 }
+
+.add-dropdown-menu {
+    width: 200px;
+       box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+       0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    z-index: 101;
+    background: white;
+    top: 30px;
+    position: absolute;
+    left: -2px;
+}
+
+.add-dropdown-menu #add-dropdown-menu-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid #cfcfcf;
+    font-family: Roboto;
+}
+
+.add-dropdown-form {
+    padding: 10px 20px;
+    height: 165px;
+    overflow-y: scroll;
+}
+
+.add-dropdown-form1 {
+    padding: 10px 20px;
+    overflow-y: scroll;
+}
+
+.checkbox-item {
+    display: flex;
+    align-content: center;
+    padding:5px 0;
+}
+
+.create-new-playlist {
+    padding: 15px 20px;
+    border-top: 1px solid #cfcfcf;
+}
+
+.create-new-playlist label {
+    font-family: Roboto;
+    font-size:13px;
+}
+
+.create-new-playlist input:focus {
+    border: 0;
+    width: 160px;
+    outline: 0;
+    border-bottom: 1px solid black;
+}
+.create-new-playlist input {
+    border: 0;
+    width: 160px;
+    outline: 0;
+    font-family: Roboto;
+    font-size: 14px;
+    padding: 2px 0;
+    border-bottom: 1px solid black;
+}
+
+.create-playlist-button {
+    padding: 15px 20px;
+        border-top: 1px solid #cfcfcf;
+    font-family: Roboto;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.create-new-playlist button {
+    border: 0;
+    background: transparent;
+    color: #ff0000;
+    font-size:14px;
+    font-weight: bold;
+    float:right;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.dropdown-playlist-name {
+    line-height: 15px;
+    font-size: 14px;
+}
+
+.checkbox-item div {
+    display: flex;
+    align-content: center;
+    align-items: center;
+}
+
+.checkbox-item p {
+    padding-top: 5px;
+    margin-left: 10px;
+    font-family: Roboto;
+}

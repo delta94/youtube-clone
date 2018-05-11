@@ -1,3 +1,4 @@
+import './RecommendedVideo.css';
 import watchLater from './images/watch_later.png';
 import tick from './images/tick.png';
 import React, { Component } from 'react';
@@ -47,7 +48,7 @@ class RecommendedVideo extends Component {
 
     render() {
         let btn = this.state.watchedLater ? <img onClick={this.handleWatchLater} id="watch-later-btn" src={tick} /> :
-              <img onClick={this.handleWatchLater} id="watch-later-btn" src={watchLater} />
+            <img onClick={this.handleWatchLater} id="watch-later-btn" src={watchLater} />
 
         return (
             <div className='video_box'>
@@ -59,7 +60,7 @@ class RecommendedVideo extends Component {
                         <p className='video_box_views' > {this.props.viewCount} views </p>
                     </div>
                 </Link>
-                { btn }
+                {btn}
             </div>
         );
     }

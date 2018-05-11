@@ -9,10 +9,11 @@ import ShareLinkBox from './ShareLinkBox/ShareLinkBox.js';
 import VideoDescriptionBox from './VideoDescriptionBox/VideoDescriptionBox.js';
 import CommentsContainer from './CommentsContainer/CommentsContainer.js';
 import RecommendedVideosContainer from './RecommendedVideosContainer/RecommendedVideosContainer.js';
+import PlaylistContainer from './PlaylistContainer/PlaylistContainer';
 
-import './VideoPage.css';
+import './PlaylistPage.css';
 
-class VideoPage extends Component {
+class PlaylistPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -24,7 +25,12 @@ class VideoPage extends Component {
             unsubNotify: false,
             showShareBox: false,
             isLoading: true,
-            likeStatus: 0
+            likeStatus: 0,
+            isPlaying: 0,
+            playlistVideos: [],
+            playlistId: props.playlistId,
+            playlistName: '',
+            playlistOwner: ''
         }
 
         this.handleDislike = this.handleDislike.bind(this);
@@ -32,47 +38,66 @@ class VideoPage extends Component {
         this.handleUnsubscription = this.handleUnsubscription.bind(this);
         this.handleLike = this.handleLike.bind(this);
         this.handleShowSharebox = this.handleShowSharebox.bind(this);
+        this.fetchVideoInfo = this.fetchVideoInfo.bind(this);
     }
 
     componentWillMount() {
-        axios.get(`/api/video/${this.props.videoId}`)
-            .then(res => {
+        let playlistId = this.props.match.params.playlistId;
+        axios.get(`/api/videosForPlaylist/${playlistId}`).then((res) => {
+            let firstVideoId = this.props.match.params.videoId || res.data[0].id;
+            console.log('will mount', firstVideoId, 'aa');
+            this.setState({ isPlaying: firstVideoId, playlistVideos: res.data, playlistId: playlistId });
+            axios.get(`/api/playlist/${playlistId}`).then((res) => this.setState({ playlistName: res.data.name, owner: res.data.owner }));
+            axios.get(`/api/video/${firstVideoId}`)
+                .then(res => {
                     let videoInfo = res.data;
-                    axios.post('/api/view/' + this.props.videoId);
-                    axios.get('/api/checkLike/' + this.props.videoId).then((res) => {
+                    axios.post('/api/view/' + firstVideoId);
+                    axios.get('/api/checkLike/' + firstVideoId).then((res) => {
                         console.log('checklike', res);
                         this.setState({ videoInfo: videoInfo, isLoading: false, likeStatus: res.data.result });
                     });
-                    axios.get(`/api/recommendedVideo/` + this.props.videoId)
+                    axios.get(`/api/recommendedVideo/` + firstVideoId)
                         .then(RecommendedVideos => {
                             console.log('recommended: ', RecommendedVideos.data);
                             this.setState({
                                 videoList: RecommendedVideos.data
                             })
                         });
-                
-            }).catch((err) => this.props.history.push('/404'));
+                }).catch ((err) => this.props.history.push('/404'));
+        }).catch((err) => this.props.history.push('/404'));
         document.body.scrollTop = 0;
     }
 
+    fetchVideoInfo(videoId) {
+
+    } 
+
     componentDidUpdate(prevProps, prevState) {
-        if ( this.props !== prevProps ){
-            axios.get(`/api/video/${this.props.videoId}`)
-                .then(res => {
-                    let videoInfo = res.data;
-                    axios.post('/api/view/' + this.props.videoId);
-                    axios.get('/api/checkLike/' + this.props.videoId).then((res) => {
-                        console.log('checklike', res);
-                        this.setState({ videoInfo: videoInfo, isLoading: false, likeStatus: res.data.result });
-                    });
-                    axios.get(`/api/recommendedVideo/` + this.props.videoId)
-                        .then(RecommendedVideos => {
-                            console.log('recommended: ', RecommendedVideos.data);
-                            this.setState({
-                                videoList: RecommendedVideos.data
-                            })
+        if (this.props !== prevProps) {
+            let playlistId = this.props.match.params.playlistId;
+            axios.get(`/api/videosForPlaylist/${playlistId}`).then((res) => {
+                let firstVideoId = this.props.match.params.videoId || res.data[0].id;
+                console.log('will mount', firstVideoId, 'aa');
+                this.setState({ isPlaying: firstVideoId, playlistVideos: res.data, playlistId: playlistId });
+                axios.get(`/api/playlist/${playlistId}`).then((res) => this.setState({ playlistName: res.data.name, owner: res.data.owner }));
+                axios.get(`/api/video/${firstVideoId}`)
+                    .then(res => {
+                        let videoInfo = res.data;
+                        axios.post('/api/view/' + firstVideoId);
+                        axios.get('/api/checkLike/' + firstVideoId).then((res) => {
+                            console.log('checklike', res);
+                            this.setState({ videoInfo: videoInfo, isLoading: false, likeStatus: res.data.result });
                         });
-                });
+                        axios.get(`/api/recommendedVideo/` + firstVideoId)
+                            .then(RecommendedVideos => {
+                                console.log('recommended: ', RecommendedVideos.data);
+                                this.setState({
+                                    videoList: RecommendedVideos.data
+                                })
+                            });
+                    });
+            });
+            document.body.scrollTop = 0;
         }
     }
 
@@ -187,6 +212,7 @@ class VideoPage extends Component {
     }
 
     render() {
+        console.log('00', this.props.match.params);
         let notifyPrompt = null;
         if (this.state.notify) {
             notifyPrompt = <SubscriptionNotify />
@@ -205,20 +231,23 @@ class VideoPage extends Component {
         if (this.state.isLoading) {
             return null;
         } else {
+            console.log('is playing: ', this.state.isPlaying);
+            console.log('playlist id ', this.state.playlistId);
             return (
                 <section className='videopage_main_container'>
                     {notifyPrompt}
                     {unsubNotifyPrompt}
-                    <section className='main_content_wrapper'>
+                    <section className='playlist-iframe_placeholder'>
 
                         <div className='iframe_placeholder'>
                             <video
                                 className='iframe'
                                 allowFullScreen
-                                src={'/watch/' + this.props.videoId}
+                                src={'/watch/' + this.state.isPlaying}
                                 autoPlay
                                 controls>
                             </video>
+                            <PlaylistContainer name={this.state.playlistName} owner={this.state.owner} playlistId={this.state.playlistId} videos={this.state.playlistVideos} isPlaying={this.state.isPlaying}/>
                         </div>
                         <VideoTitleContainer
                             snippet={this.state.videoInfo.snippet || { title: '' }}
@@ -242,7 +271,7 @@ class VideoPage extends Component {
 
                     </section>
 
-                    <section className='rightside_videos_wrapper'>
+                    <section className='playlist-rightside_videos_wrapper'>
                         <RecommendedVideosContainer
                             videoList={this.state.videoList || [{}]} />
                     </section>
@@ -259,4 +288,4 @@ function mapStateToProps(state, ownProps) {
     }
 }
 
-export default connect(mapStateToProps, {})(VideoPage);
+export default connect(mapStateToProps, {})(PlaylistPage);

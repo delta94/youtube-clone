@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import RecommendedVideo from '../RecommendedVideo/RecommendedVideo';
+import RecommendedPlaylist from '../RecommendedPlaylist/RecommendedPlaylist';
 
 class RecommendedVideosContainer extends Component {
     render() {
