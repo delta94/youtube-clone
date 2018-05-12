@@ -38,7 +38,7 @@ class PlaylistVideoItem extends Component {
                         <div className="play-btn">
                         {this.props.isPlaying && <i className="ion-play"></i>}
                         </div>
-                        <img src="/images/thumbnails/5.png"/>
+                        <img src={`/images/thumbnails/${this.props.id}.png`}/>
                         <div className="playlist-video-detail">
                             <div className="playlist-video-title">{this.props.title}</div>
                         <div className="playlist-channel-title">{this.props.owner}</div>

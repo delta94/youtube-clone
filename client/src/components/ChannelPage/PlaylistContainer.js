@@ -1,5 +1,6 @@
 import './ChannelPage.css';
 import React, { Component } from 'react';
+import play from './images/play.png';
 import { Link } from 'react-router-dom';
 
 class PlaylistContainer extends Component {
@@ -10,7 +11,7 @@ class PlaylistContainer extends Component {
                 <div className="channel-playlist-image">
                     <div>
                         <p className="video-count">{this.props.videoCount}</p>
-                        <p className="play-button"><i className="ion-ios-play" /></p>
+                            <div className="play-button"><img src={play}/></div>
                     </div>
                 </div>
                 <img src={'/images/thumbnails/' + this.props.videoId + '.png'} />
