@@ -50,6 +50,7 @@ export default (
         <Route component={Subscriptions} path='/subscriptions' />
         <Route component={TrendingPage} path='/trending' />
         <Route component={LikedVideosPage} path='/lv' />
-        <Route component={NotFoundPage} path='/404'/>
+        <Route component={NotFoundPage} path='/404' />
+        <Route component={NotFoundPage} />
     </Switch>
 )

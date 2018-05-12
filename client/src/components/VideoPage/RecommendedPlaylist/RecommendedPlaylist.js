@@ -10,15 +10,14 @@ class RecommendedPlaylist extends Component {
                     <div className="playlist-image-container">
                         <div className="playlist-image">
                             <div>
-                                <p>50</p>
+                                <p>{this.props.videoCount}</p>
                                 <p><i className="ion-ios-play" /></p>
                             </div>
                         </div>
-                        <img className='video_box_img' src={'/images/thumbnails/' + this.props.id + '.png'} />
+                        <img className='video_box_img' src={'/images/thumbnails/' + this.props.videoId + '.png'} />
                     </div>
-                    <h5 className='video_box_title'>{this.formatTitle(this.props.title)}</h5>
-                    <h6 className='video_box_channel'>{this.formatChannelTitle(this.props.channelTitle)}</h6>
-                    <p className='video_box_views' > {this.props.viewCount} views </p>
+                    <h5 className='video_box_title'>{this.props.name}</h5>
+                    <h6 className='video_box_channel'>{this.props.owner}</h6>
                 </Link>
             </div>
         );

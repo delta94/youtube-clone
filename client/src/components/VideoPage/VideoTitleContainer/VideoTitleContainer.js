@@ -85,7 +85,7 @@ class VideoTitleContainer extends Component {
         if (!this.state.showCreateButton)
             this.setState((prev) => ({ showDropdownPlaylist: !prev.showDropdownPlaylist, showCreateButton: true }));
         else this.setState((prev) => ({ showDropdownPlaylist: !prev.showDropdownPlaylist }));
-        axios.get('/api/playlists').then((res) => {
+        axios.get('/api/playlists?type=my').then((res) => {
             console.log('==', res.data)
             this.setState({ playlists: res.data, playlistIsLoading: false });
         });
@@ -134,6 +134,14 @@ class VideoTitleContainer extends Component {
             }));
             this.props.unsubNotify();
         })
+    }
+
+    renderPLaylistDropdown() {
+        if (this.state.playlistIsLoading) return null;
+
+        if (this.state.playlists.length <= 0) return <p className="dropdown-playlist-name-noplaylist">You don't have any playlists</p>
+
+        return this.state.playlists.map((playlist) => <PlaylistCheckBox key={playlist.playlist_id} playlistId={playlist.playlist_id} name={playlist.name} videoId={this.props.videoId} />);
     }
 
     renderLike() {
@@ -232,12 +240,7 @@ class VideoTitleContainer extends Component {
         
         let checkForm =
             <form onSubmit={(e) => e.preventDefault()}>
-                {!this.state.playlistIsLoading && this.state.playlists.map((playlist) => {
-                    console.log('-------->', playlist.videoInPlaylist);
-                    console.log('playlists: ', this.state.playlists);
-                    return <PlaylistCheckBox key={playlist.playlist_id} playlistId ={playlist.playlist_id} name={playlist.name} videoId={this.props.videoId}/>
-            
-                })}    
+                {this.renderPLaylistDropdown()}
             </form>
 
         let dropdown =

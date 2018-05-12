@@ -51,25 +51,23 @@ class Comment extends Component {
         } else if (this.state.likeStatus == 0) {
             axios.post('/api/likeComment', {
                 cmtId: this.state.commentId
-            }).then((res) => {
-                this.setState((prev) => ({
-                    likeCount: prev.likeCount + 1,
-                    likeStatus: 1
-                }));
-            })
+            });
+            this.setState((prev) => ({
+                likeCount: prev.likeCount + 1,
+                likeStatus: 1
+            }));
         } else {
             axios.post('/api/unlikeComment', {
                 cmtId: this.state.commentId
             }).then((res) => {
                 axios.post('/api/likeComment', {
                     cmtId: this.state.commentId
-                }).then((res) => {
-                    this.setState((prev) => ({
-                        likeCount: prev.likeCount + 1,
-                        likeStatus: 1
-                    }));
-                })
-            });
+                });
+                });
+            this.setState((prev) => ({
+                likeCount: prev.likeCount + 1,
+                likeStatus: 1
+            }));
         }
     }
 
@@ -80,29 +78,26 @@ class Comment extends Component {
             }).then((res) => {
                 axios.post('/api/dislikeComment', {
                     cmtId: this.state.commentId
-                }).then((res) => {
-                    this.setState((prev) => ({
-                        likeCount: prev.likeCount-1,
-                        likeStatus: -1
-                    }));
-                })
+                });
             });
+            this.setState((prev) => ({
+                likeCount: prev.likeCount - 1,
+                likeStatus: -1
+            }));
         } else if (this.state.likeStatus == 0) {
             axios.post('/api/dislikeComment', {
                 cmtId: this.state.commentId
-            }).then((res) => {
-                this.setState({
-                    likeStatus: -1
-                });
-            })
+            });
+            this.setState({
+                likeStatus: -1
+            });
         } else {
             axios.post('/api/unlikeComment', {
                 cmtId: this.state.commentId
-            }).then((res) => {
-                this.setState({
-                    likeStatus: 0
-                });
-            })
+            });
+            this.setState({
+                likeStatus: 0
+            });
         }
     }
 
@@ -196,7 +191,6 @@ class Comment extends Component {
     renderReplies() {
         if (!this.state.showReplies) return null;
         if (this.state.isLoading) return null;
-        console.log('abc: ', this.state.replies);
         return this.state.replies.map((reply) =>
             <Reply key={reply.reply_id}
                 content={reply.content}

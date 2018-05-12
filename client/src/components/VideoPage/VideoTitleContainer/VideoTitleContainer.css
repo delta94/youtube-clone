@@ -426,3 +426,9 @@
     margin-left: 10px;
     font-family: Roboto;
 }
+.dropdown-playlist-name-noplaylist {
+    line-height: 15px;
+    font-family: Roboto;
+    font-size: 13px;
+    text-align: center;
+}

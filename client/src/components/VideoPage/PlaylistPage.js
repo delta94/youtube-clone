@@ -18,7 +18,7 @@ class PlaylistPage extends Component {
         super(props);
         this.state = {
             videoInfo: {},
-            videoList: [],
+            recommendedList: [],
             videoId: props.videoId,
             uniqueId: Math.floor(Math.random() * 999),
             notify: false,
@@ -46,7 +46,7 @@ class PlaylistPage extends Component {
         axios.get(`/api/videosForPlaylist/${playlistId}`).then((res) => {
             let firstVideoId = this.props.match.params.videoId || res.data[0].id;
             console.log('will mount', firstVideoId, 'aa');
-            this.setState({ isPlaying: firstVideoId, playlistVideos: res.data, playlistId: playlistId });
+            this.setState({ isPlaying: firstVideoId, playlistVideos: res.data, playlistId: playlistId, videoId: firstVideoId });
             axios.get(`/api/playlist/${playlistId}`).then((res) => this.setState({ playlistName: res.data.name, owner: res.data.owner }));
             axios.get(`/api/video/${firstVideoId}`)
                 .then(res => {
@@ -60,7 +60,7 @@ class PlaylistPage extends Component {
                         .then(RecommendedVideos => {
                             console.log('recommended: ', RecommendedVideos.data);
                             this.setState({
-                                videoList: RecommendedVideos.data
+                                recommendedList: RecommendedVideos.data
                             })
                         });
                 }).catch ((err) => this.props.history.push('/404'));
@@ -78,7 +78,7 @@ class PlaylistPage extends Component {
             axios.get(`/api/videosForPlaylist/${playlistId}`).then((res) => {
                 let firstVideoId = this.props.match.params.videoId || res.data[0].id;
                 console.log('will mount', firstVideoId, 'aa');
-                this.setState({ isPlaying: firstVideoId, playlistVideos: res.data, playlistId: playlistId });
+                this.setState({ isPlaying: firstVideoId, playlistVideos: res.data, playlistId: playlistId, videoId: firstVideoId });
                 axios.get(`/api/playlist/${playlistId}`).then((res) => this.setState({ playlistName: res.data.name, owner: res.data.owner }));
                 axios.get(`/api/video/${firstVideoId}`)
                     .then(res => {
@@ -92,7 +92,7 @@ class PlaylistPage extends Component {
                             .then(RecommendedVideos => {
                                 console.log('recommended: ', RecommendedVideos.data);
                                 this.setState({
-                                    videoList: RecommendedVideos.data
+                                    recommendedList: RecommendedVideos.data
                                 })
                             });
                     });
@@ -109,83 +109,76 @@ class PlaylistPage extends Component {
 
     handleLike() {
         if (this.state.likeStatus == 1) {
-            axios.post('/api/unlike/' + this.state.videoId).then((res) => {
-                this.setState({
-                    videoInfo: Object.assign({}, this.state.videoInfo, {
-                        statistics: Object.assign({}, this.state.videoInfo.statistics, {
-                            likeCount: Number(this.state.videoInfo.statistics.likeCount) - 1
-                        })
-                    }),
-                    likeStatus: 0
-                });
-            })
+            axios.post('/api/unlike/' + this.state.videoId);
+            this.setState({
+                videoInfo: Object.assign({}, this.state.videoInfo, {
+                    statistics: Object.assign({}, this.state.videoInfo.statistics, {
+                        likeCount: Number(this.state.videoInfo.statistics.likeCount) - 1
+                    })
+                }),
+                likeStatus: 0
+            });
         } else if (this.state.likeStatus == 0) {
-            axios.post('/api/like/' + this.state.videoId).then((res) => {
-                this.setState({
-                    videoInfo: Object.assign({}, this.state.videoInfo, {
-                        statistics: Object.assign({}, this.state.videoInfo.statistics, {
-                            likeCount: Number(this.state.videoInfo.statistics.likeCount) + 1
-                        })
-                    }),
-                    likeStatus: 1
-                });
-            })
+            axios.post('/api/like/' + this.state.videoId);
+            this.setState({
+                videoInfo: Object.assign({}, this.state.videoInfo, {
+                    statistics: Object.assign({}, this.state.videoInfo.statistics, {
+                        likeCount: Number(this.state.videoInfo.statistics.likeCount) + 1
+                    })
+                }),
+                likeStatus: 1
+            });
         } else {
             axios.post('/api/unlike/' + this.state.videoId).then((res) => {
-                axios.post('/api/like/' + this.state.videoId).then((res) => {
-                    this.setState({
-                        videoInfo: Object.assign({}, this.state.videoInfo, {
-                            statistics: Object.assign({}, this.state.videoInfo.statistics, {
-                                likeCount: Number(this.state.videoInfo.statistics.likeCount) + 1,
-                                dislikeCount: Number(this.state.videoInfo.statistics.dislikeCount) - 1
-                            })
-                        }),
-                        likeStatus: 1
-                    });
-                })
+                axios.post('/api/like/' + this.state.videoId);
+            });
+            this.setState({
+                videoInfo: Object.assign({}, this.state.videoInfo, {
+                    statistics: Object.assign({}, this.state.videoInfo.statistics, {
+                        likeCount: Number(this.state.videoInfo.statistics.likeCount) + 1,
+                        dislikeCount: Number(this.state.videoInfo.statistics.dislikeCount) - 1
+                    })
+                }),
+                likeStatus: 1
             });
         }
     }
 
     handleDislike() {
         if (this.state.likeStatus === 1) {
-
             axios.post('/api/unlike/' + this.state.videoId).then((res) => {
-                axios.post('/api/dislike/' + this.state.videoId).then((res) => {
-                    this.setState({
-                        videoInfo: Object.assign({}, this.state.videoInfo, {
-                            statistics: Object.assign({}, this.state.videoInfo.statistics, {
-                                likeCount: Number(this.state.videoInfo.statistics.likeCount) - 1,
-                                dislikeCount: Number(this.state.videoInfo.statistics.dislikeCount) + 1
-                            })
-                        }),
-                        likeStatus: -1
-                    });
-                })
+                axios.post('/api/dislike/' + this.state.videoId);
+            });
+            this.setState({
+                videoInfo: Object.assign({}, this.state.videoInfo, {
+                    statistics: Object.assign({}, this.state.videoInfo.statistics, {
+                        likeCount: Number(this.state.videoInfo.statistics.likeCount) - 1,
+                        dislikeCount: Number(this.state.videoInfo.statistics.dislikeCount) + 1
+                    })
+                }),
+                likeStatus: -1
             });
         } else if (this.state.likeStatus === 0) {
-            axios.post('/api/dislike/' + this.state.videoId).then((res) => {
-                this.setState({
-                    videoInfo: Object.assign({}, this.state.videoInfo, {
-                        statistics: Object.assign({}, this.state.videoInfo.statistics, {
-                            dislikeCount: Number(this.state.videoInfo.statistics.dislikeCount) + 1
-                        })
-                    }),
-                    likeStatus: -1
-                });
-            })
+            axios.post('/api/dislike/' + this.state.videoId);
+            this.setState({
+                videoInfo: Object.assign({}, this.state.videoInfo, {
+                    statistics: Object.assign({}, this.state.videoInfo.statistics, {
+                        dislikeCount: Number(this.state.videoInfo.statistics.dislikeCount) + 1
+                    })
+                }),
+                likeStatus: -1
+            });
         } else {
 
-            axios.post('/api/unlike/' + this.state.videoId).then((res) => {
-                this.setState({
-                    videoInfo: Object.assign({}, this.state.videoInfo, {
-                        statistics: Object.assign({}, this.state.videoInfo.statistics, {
-                            dislikeCount: Number(this.state.videoInfo.statistics.dislikeCount) - 1
-                        })
-                    }),
-                    likeStatus: 0
-                });
-            })
+            axios.post('/api/unlike/' + this.state.videoId);
+            this.setState({
+                videoInfo: Object.assign({}, this.state.videoInfo, {
+                    statistics: Object.assign({}, this.state.videoInfo.statistics, {
+                        dislikeCount: Number(this.state.videoInfo.statistics.dislikeCount) - 1
+                    })
+                }),
+                likeStatus: 0
+            });
         }
     }
 
@@ -273,7 +266,7 @@ class PlaylistPage extends Component {
 
                     <section className='playlist-rightside_videos_wrapper'>
                         <RecommendedVideosContainer
-                            videoList={this.state.videoList || [{}]} />
+                            recommendedList={this.state.recommendedList || [{}]} />
                     </section>
 
                 </section>

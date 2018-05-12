@@ -17,7 +17,7 @@ class VideoPage extends Component {
         super(props);
         this.state = {
             videoInfo: {},
-            videoList: [],
+            recommendedList: [],
             videoId: props.videoId,
             uniqueId: Math.floor(Math.random() * 999),
             notify: false,
@@ -42,17 +42,32 @@ class VideoPage extends Component {
                     axios.get('/api/checkLike/' + this.props.videoId).then((res) => {
                         console.log('checklike', res);
                         this.setState({ videoInfo: videoInfo, isLoading: false, likeStatus: res.data.result });
+                });
+                
+
+                let _recommendedList = [];
+                axios.get('/api/recommendedVideo/' + this.props.videoId)
+                    .then((res) => {
+                        _recommendedList = _recommendedList.concat(res.data);
+                        return axios.get('/api/recommendedPlaylist/' + this.props.videoId);
+                    })
+                    .then((res) => {
+                        _recommendedList = _recommendedList.concat(res.data);
+                        _recommendedList = this.shuffle(_recommendedList);
+                        console.log('recommended: ', _recommendedList);
+                        this.setState({ recommendedList: _recommendedList });
                     });
-                    axios.get(`/api/recommendedVideo/` + this.props.videoId)
-                        .then(RecommendedVideos => {
-                            console.log('recommended: ', RecommendedVideos.data);
-                            this.setState({
-                                videoList: RecommendedVideos.data
-                            })
-                        });
                 
             }).catch((err) => this.props.history.push('/404'));
         document.body.scrollTop = 0;
+    }
+
+    shuffle(a) {
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -69,7 +84,7 @@ class VideoPage extends Component {
                         .then(RecommendedVideos => {
                             console.log('recommended: ', RecommendedVideos.data);
                             this.setState({
-                                videoList: RecommendedVideos.data
+                                recommendedList: RecommendedVideos.data
                             })
                         });
                 });
@@ -84,40 +99,37 @@ class VideoPage extends Component {
 
     handleLike() {
         if (this.state.likeStatus == 1) {
-            axios.post('/api/unlike/' + this.state.videoId).then((res) => {
-                this.setState({
-                    videoInfo: Object.assign({}, this.state.videoInfo, {
-                        statistics: Object.assign({}, this.state.videoInfo.statistics, {
-                            likeCount: Number(this.state.videoInfo.statistics.likeCount) - 1
-                        })
-                    }),
-                    likeStatus: 0
-                });
-            })
+            axios.post('/api/unlike/' + this.state.videoId);
+            this.setState({
+                videoInfo: Object.assign({}, this.state.videoInfo, {
+                    statistics: Object.assign({}, this.state.videoInfo.statistics, {
+                        likeCount: Number(this.state.videoInfo.statistics.likeCount) - 1
+                    })
+                }),
+                likeStatus: 0
+            });
         } else if (this.state.likeStatus == 0) {
-            axios.post('/api/like/' + this.state.videoId).then((res) => {
+            axios.post('/api/like/' + this.state.videoId);
+            this.setState({
+                videoInfo: Object.assign({}, this.state.videoInfo, {
+                    statistics: Object.assign({}, this.state.videoInfo.statistics, {
+                        likeCount: Number(this.state.videoInfo.statistics.likeCount) + 1
+                    })
+                }),
+                likeStatus: 1
+            });
+        } else {
+            axios.post('/api/unlike/' + this.state.videoId).then((res) => {
+                axios.post('/api/like/' + this.state.videoId);
                 this.setState({
                     videoInfo: Object.assign({}, this.state.videoInfo, {
                         statistics: Object.assign({}, this.state.videoInfo.statistics, {
-                            likeCount: Number(this.state.videoInfo.statistics.likeCount) + 1
+                            likeCount: Number(this.state.videoInfo.statistics.likeCount) + 1,
+                            dislikeCount: Number(this.state.videoInfo.statistics.dislikeCount) - 1
                         })
                     }),
                     likeStatus: 1
                 });
-            })
-        } else {
-            axios.post('/api/unlike/' + this.state.videoId).then((res) => {
-                axios.post('/api/like/' + this.state.videoId).then((res) => {
-                    this.setState({
-                        videoInfo: Object.assign({}, this.state.videoInfo, {
-                            statistics: Object.assign({}, this.state.videoInfo.statistics, {
-                                likeCount: Number(this.state.videoInfo.statistics.likeCount) + 1,
-                                dislikeCount: Number(this.state.videoInfo.statistics.dislikeCount) - 1
-                            })
-                        }),
-                        likeStatus: 1
-                    });
-                })
             });
         }
     }
@@ -126,41 +138,38 @@ class VideoPage extends Component {
         if (this.state.likeStatus === 1) {
 
             axios.post('/api/unlike/' + this.state.videoId).then((res) => {
-                axios.post('/api/dislike/' + this.state.videoId).then((res) => {
-                    this.setState({
-                        videoInfo: Object.assign({}, this.state.videoInfo, {
-                            statistics: Object.assign({}, this.state.videoInfo.statistics, {
-                                likeCount: Number(this.state.videoInfo.statistics.likeCount) - 1,
-                                dislikeCount: Number(this.state.videoInfo.statistics.dislikeCount) + 1
-                            })
-                        }),
-                        likeStatus: -1
-                    });
-                })
-            });
-        } else if (this.state.likeStatus === 0) {
-            axios.post('/api/dislike/' + this.state.videoId).then((res) => {
+                axios.post('/api/dislike/' + this.state.videoId);
                 this.setState({
                     videoInfo: Object.assign({}, this.state.videoInfo, {
                         statistics: Object.assign({}, this.state.videoInfo.statistics, {
+                            likeCount: Number(this.state.videoInfo.statistics.likeCount) - 1,
                             dislikeCount: Number(this.state.videoInfo.statistics.dislikeCount) + 1
                         })
                     }),
                     likeStatus: -1
                 });
-            })
+            });
+        } else if (this.state.likeStatus === 0) {
+            axios.post('/api/dislike/' + this.state.videoId);
+            this.setState({
+                videoInfo: Object.assign({}, this.state.videoInfo, {
+                    statistics: Object.assign({}, this.state.videoInfo.statistics, {
+                        dislikeCount: Number(this.state.videoInfo.statistics.dislikeCount) + 1
+                    })
+                }),
+                likeStatus: -1
+            });
         } else {
 
-            axios.post('/api/unlike/' + this.state.videoId).then((res) => {
-                this.setState({
-                    videoInfo: Object.assign({}, this.state.videoInfo, {
-                        statistics: Object.assign({}, this.state.videoInfo.statistics, {
-                            dislikeCount: Number(this.state.videoInfo.statistics.dislikeCount) - 1
-                        })
-                    }),
-                    likeStatus: 0
-                });
-            })
+            axios.post('/api/unlike/' + this.state.videoId);
+            this.setState({
+                videoInfo: Object.assign({}, this.state.videoInfo, {
+                    statistics: Object.assign({}, this.state.videoInfo.statistics, {
+                        dislikeCount: Number(this.state.videoInfo.statistics.dislikeCount) - 1
+                    })
+                }),
+                likeStatus: 0
+            });
         }
     }
 
@@ -244,7 +253,7 @@ class VideoPage extends Component {
 
                     <section className='rightside_videos_wrapper'>
                         <RecommendedVideosContainer
-                            videoList={this.state.videoList || [{}]} />
+                            recommendedList={this.state.recommendedList || [{}]} />
                     </section>
 
                 </section>

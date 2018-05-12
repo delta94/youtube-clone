@@ -7,19 +7,30 @@ import RecommendedPlaylist from '../RecommendedPlaylist/RecommendedPlaylist';
 
 class RecommendedVideosContainer extends Component {
     render() {
-        let videos = this.props.videoList;
+        let recommendedList = this.props.recommendedList;
         return (
             <div className='more_videos_container'>
                 { 
-                videos.map( (video) => {
+                    recommendedList.map(
+                        (item) => {
+                        if (typeof(item.playlist_id) === 'undefined') {
                         return <RecommendedVideo
-                            key={video.id}    
-                            id={video.id}
-                            title={video.title}
-                            channelTitle={video.channelTitle}
-                            viewCount={video.viewCount}
-                        />
-                }) 
+                            key={item.id}    
+                            id={item.id}
+                            title={item.title}
+                            channelTitle={item.channelTitle}
+                            viewCount={item.viewCount}/>;
+                        }
+                        else {
+                            return <RecommendedPlaylist
+                                key={item.playlist_id + item.name}
+                                videoCount={item.videoCount}
+                                videoId={item.video_id}
+                                owner={item.owner}
+                                name={item.name}
+                            />;
+                        }
+                    }) 
                 }
             </div>
         );
