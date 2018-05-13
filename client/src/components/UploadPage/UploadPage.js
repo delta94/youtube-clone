@@ -38,7 +38,7 @@ class UploadPage extends Component {
         var imagefile = document.querySelector('#file');
         formData.append("video", imagefile.files[0]);
         formData.append("username", this.props.auth.username)
-        console.log(formData);
+         
         axios.post('user/upload/video', formData, {
             headers: { 'Content-Type': 'multipart/form-data' }
         }).then(res => {
@@ -47,7 +47,7 @@ class UploadPage extends Component {
     }
 
     handlePublishButtonOnClick() {
-        console.log('id: ', this.state.id);
+         
         axios.put('/user/video/' + this.state.id, {
             state: this.state.state,
             name: this.state.name,
@@ -60,7 +60,7 @@ class UploadPage extends Component {
     }
 
     handleCancelButtonOnClick() {
-        console.log(this.state.id);
+         
         this.setState({ toggle: true, imageUrl: undefined, id: undefined });
         axios.delete('user/video/' + this.state.id);
     }

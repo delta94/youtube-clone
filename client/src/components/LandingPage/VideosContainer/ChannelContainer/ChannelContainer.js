@@ -134,7 +134,7 @@ class ChannelContainer extends Component{
     }
 
     testFn(){
-        console.log('test');
+         
     }
     render() {
         if (this.state.isLoading) return null;
@@ -159,7 +159,7 @@ class ChannelContainer extends Component{
 
 
 
-        console.log('video ', this.state.videosArr);
+         
 
         let videos = this.state.videosArr;
         return (

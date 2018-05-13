@@ -45,7 +45,7 @@ class PlaylistPage extends Component {
         let playlistId = this.props.match.params.playlistId;
         axios.get(`/api/videosForPlaylist/${playlistId}`).then((res) => {
             let firstVideoId = this.props.match.params.videoId || res.data[0].id;
-            console.log('will mount', firstVideoId, 'aa');
+             
             this.setState({ isPlaying: firstVideoId, playlistVideos: res.data, playlistId: playlistId, videoId: firstVideoId });
             axios.get(`/api/playlist/${playlistId}`).then((res) => this.setState({ playlistName: res.data.name, owner: res.data.owner }));
             axios.get(`/api/video/${firstVideoId}`)
@@ -53,14 +53,14 @@ class PlaylistPage extends Component {
                     let videoInfo = res.data;
                     axios.post('/api/view/' + firstVideoId);
                     axios.post('/api/incrementInteraction/' + videoInfo.snippet.channelTitle);
-                    console.log('after post', videoInfo.snippet.channelTitle);
+                     
                     axios.get('/api/checkLike/' + firstVideoId).then((res) => {
-                        console.log('checklike', res);
+                         
                         this.setState({ videoInfo: videoInfo, isLoading: false, likeStatus: res.data.result });
                     });
                     axios.get(`/api/recommendedVideo/` + firstVideoId)
                         .then(RecommendedVideos => {
-                            console.log('recommended: ', RecommendedVideos.data);
+                             
                             this.setState({
                                 recommendedList: RecommendedVideos.data
                             })
@@ -79,7 +79,7 @@ class PlaylistPage extends Component {
             let playlistId = this.props.match.params.playlistId;
             axios.get(`/api/videosForPlaylist/${playlistId}`).then((res) => {
                 let firstVideoId = this.props.match.params.videoId || res.data[0].id;
-                console.log('will mount', firstVideoId, 'aa');
+                 
                 this.setState({ isPlaying: firstVideoId, playlistVideos: res.data, playlistId: playlistId, videoId: firstVideoId });
                 axios.get(`/api/playlist/${playlistId}`).then((res) => this.setState({ playlistName: res.data.name, owner: res.data.owner }));
                 axios.get(`/api/video/${firstVideoId}`)
@@ -88,12 +88,12 @@ class PlaylistPage extends Component {
                         axios.post('/api/view/' + firstVideoId);
                         axios.post('/api/incrementInteraction/' + videoInfo.snippet.channelTitle);
                         axios.get('/api/checkLike/' + firstVideoId).then((res) => {
-                            console.log('checklike', res);
+                             
                             this.setState({ videoInfo: videoInfo, isLoading: false, likeStatus: res.data.result });
                         });
                         axios.get(`/api/recommendedVideo/` + firstVideoId)
                             .then(RecommendedVideos => {
-                                console.log('recommended: ', RecommendedVideos.data);
+                                 
                                 this.setState({
                                     recommendedList: RecommendedVideos.data
                                 })
@@ -208,7 +208,7 @@ class PlaylistPage extends Component {
     }
 
     render() {
-        console.log('00', this.props.match.params);
+         
         let notifyPrompt = null;
         if (this.state.notify) {
             notifyPrompt = <SubscriptionNotify />
@@ -227,8 +227,8 @@ class PlaylistPage extends Component {
         if (this.state.isLoading) {
             return null;
         } else {
-            console.log('is playing: ', this.state.isPlaying);
-            console.log('playlist id ', this.state.playlistId);
+             
+             
             return (
                 <section className='videopage_main_container'>
                     {notifyPrompt}

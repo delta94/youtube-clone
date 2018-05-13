@@ -41,14 +41,14 @@ class LoginPage extends Component {
 
     handleOnSubmitI(e) {
         e.preventDefault();
-        console.log(this.state.usernameI, this.state.passwordI);
+         
         axios.post('/auth/local', {
             username: this.state.usernameI,
             password: this.state.passwordI
         }).then(res => {
-            console.log(res);
+             
             if (!res.data.success) {
-                console.log('not sucess');
+                 
             } else {
                 window.location.href = "/";
             }
@@ -69,7 +69,7 @@ class LoginPage extends Component {
 
 
     handleCloseButtonOnClick() {
-        console.log('close');
+         
         this.setState({ signupModalOn: false, loginModalOn: false });
     }
 
@@ -82,7 +82,7 @@ class LoginPage extends Component {
 
         axios.post('api/signup', { username: this.state.username, password: this.state.password }).then(res => {
             if (!res.data.success) {
-                console.log('usrname already exists');
+                 
             } else {
                 this.handleLoginAccountOnClick();
             }
@@ -94,12 +94,12 @@ class LoginPage extends Component {
     }
 
     handleCreateAccountOnClick() {
-        console.log('adfalskj');
+         
         this.setState((prevState) => ({ toggle: !prevState.toggle }))
     }
 
     handleLoginAccountOnClick() {
-        console.log('asdfsdfadddddddddddd');
+         
         this.setState((prevState) => ({toggle: !prevState.toggle}))
     }
 

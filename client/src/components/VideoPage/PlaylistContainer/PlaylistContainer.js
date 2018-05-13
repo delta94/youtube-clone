@@ -31,10 +31,10 @@ class PlaylistContainer extends Component {
     }
 
     componentDidMount() {
-        console.log('did mnt');
+         
         axios.get(`/api/checkPlaylistOwner/${this.props.playlistId}`)
             .then((res) => {
-                console.log('--->', res.data.result);
+                 
                 this.setState({ isOwner: res.data.result });
             });
         axios.get(`/api/checkSavePlaylist/${this.props.playlistId}`)
@@ -54,7 +54,7 @@ class PlaylistContainer extends Component {
     }
 
     render() {
-        console.log('auth in playlist container: ', this.props.auth);
+         
         return (
             <div className="playlist-container">
                 <div className="playlist-header">

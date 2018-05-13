@@ -46,7 +46,7 @@ class VideoPage extends Component {
                 axios.post('/api/incrementInteraction/' + videoInfo.snippet.channelTitle);
 
                 axios.get('/api/checkLike/' + this.props.videoId).then((res) => {
-                    console.log('checklike', res);
+                     
                     this.setState({
                         videoInfo: videoInfo,
                         isLoading: false,
@@ -63,7 +63,7 @@ class VideoPage extends Component {
                     })
                     .then((res) => {
                         if (res.data) _recommendedList = _recommendedList.concat(res.data);
-                        console.log('recommended xy', _recommendedList);
+                         
                         this.setState({
                             recommendedList: _recommendedList
                         });
@@ -81,7 +81,7 @@ class VideoPage extends Component {
                     axios.post('/api/view/' + this.props.videoId);
                     axios.post('/api/incrementInteraction/' + videoInfo.snippet.channelTitle);
                     axios.get('/api/checkLike/' + this.props.videoId).then((res) => {
-                        console.log('checklike', res);
+                         
                         this.setState({
                             videoInfo: videoInfo,
                             isLoading: false,
@@ -97,7 +97,7 @@ class VideoPage extends Component {
                         })
                         .then((res) => {
                             if (res.data)  _recommendedList = _recommendedList.concat(res.data);
-                            console.log('recommended xx: ', _recommendedList);
+                             
                             this.setState({
                                 recommendedList: _recommendedList
                             });
@@ -233,7 +233,7 @@ class VideoPage extends Component {
         if (this.state.isLoading) {
             return null;
         } else {
-            console.log('recommended video', this.state.recommendedList);
+             
             return (
                 <section className='videopage_main_container'>
                     {notifyPrompt}

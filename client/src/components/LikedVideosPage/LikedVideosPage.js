@@ -19,7 +19,7 @@ class LikedVideosPage extends Component {
     }
 
     render() {
-        console.log('renderd');
+         
         if (this.state.isLoading) return null;
         return (
             <div id="watchlater-container">

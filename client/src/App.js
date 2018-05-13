@@ -21,7 +21,7 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.props.fetchUser();
-        console.log('fetch channel');
+         
     }
 
     componentWillMount() {

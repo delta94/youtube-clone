@@ -35,7 +35,7 @@ class VideoContainer extends Component {
 
     render() {
         if (this.state.isLoading) return null;
-        console.log('watch later', this.state.watchedLater);
+         
         return (
             <Link to={'/video/' + this.props.id} >
                 <div className="videos_info_container">

@@ -23,7 +23,7 @@ class MySideNav extends React.Component {
     }
 
     componentDidMount() {
-        console.log('sidenav did mnt');
+         
         axios.get('/api/subscriptionCount').then((res) => this.setState({ subscriptionCount: res.data }));
         axios.get('/api/subscribedChannels').then((res) => this.setState({ subscribedChannels: res.data }));
         axios.get('/api/playlists?type=saved').then((res) => this.setState({ savedPlaylists: res.data }));
@@ -32,7 +32,7 @@ class MySideNav extends React.Component {
 
 
     render() {
-        console.log('playlist', this.state.savedPlaylists);
+         
         let getUsername = () =>  this.props.user ? this.props.user.username : '';
         return (
             <div className="sidebar" style={this.props.style}>

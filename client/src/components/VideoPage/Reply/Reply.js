@@ -23,7 +23,7 @@ class Reply extends Component {
     }
 
     componentDidMount() {
-        console.log('props: ', this.props);
+         
         axios.get('/api/checkReplyLike/' + this.props.id)
             .then((res) => {
                 this.setState({ likeStatus: res.data.result });
@@ -119,7 +119,7 @@ class Reply extends Component {
     }
 
     handleDeleteButtonOnClick() {
-        console.log('reply delet');
+         
         this.props.handleDeleteReplyOnClick(this.props.id);
     }
 

@@ -18,10 +18,10 @@ class Clock extends Component {
 
     calculateDiff() {
         let now = new Date();
-        console.log('now: ', this.props.date);
+         
         let diff = (now - new Date(this.props.date)) / (60 * 1000);
         let str = '';
-        console.log('diff', diff);
+         
         if (diff < 1) str = 'Just now';
         else if (diff == 1) str = 'A minute ago';
         else if (diff < 60) str = parseInt(diff) + ' minutes ago';
@@ -37,10 +37,10 @@ class Clock extends Component {
 
     calculateDiffAndSetState() {
         let now = new Date();
-        console.log('now: ', this.props.date);
+         
         let diff = (now - new Date(this.props.date))/(60*1000);
         let str = '';
-        console.log('diff', diff);
+         
         if (diff < 1) str = 'Just now';
         else if (diff == 1) str = 'A minute ago';
         else if (diff < 60) str = parseInt(diff) + ' minutes ago';

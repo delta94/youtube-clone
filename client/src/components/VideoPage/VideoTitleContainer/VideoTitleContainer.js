@@ -198,7 +198,7 @@ class VideoTitleContainer extends Component {
     }
 
     render() {
-        console.log('->>', this.props.auth);
+         
         let subbtn;
         let subbtnTwo;
         let editBtn;

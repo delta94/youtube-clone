@@ -103,10 +103,10 @@ class Comment extends Component {
     }
 
     componentDidMount() {
-        console.log('will mount', this.props.comment_id);
+         
         axios.get('/api/checkCommentLike/' + this.props.comment_id)
             .then((res) => {
-                console.log('result cmt like', res.data.result);
+                 
                 this.setState({ likeStatus: res.data.result })
             });
         
@@ -126,7 +126,7 @@ class Comment extends Component {
 
     handleReplyOnSubmit(e) {
         e.preventDefault();
-        console.log('submited');
+         
         this.state.isLoading = true;
         axios.post('/api/reply', {
             username: this.props.currentUser,
@@ -134,7 +134,7 @@ class Comment extends Component {
             content: this.state.replyContent
         }).then((res) => {
             axios.get('/api/replies/' + this.state.commentId).then((res) => {
-                console.log('fetch new reply');
+                 
                 this.setState({ replies: res.data, showReplies: true, showReplyInput: false, isLoading: false });
             });   
         })
@@ -184,7 +184,7 @@ class Comment extends Component {
 
     handleShowOnClick() {
         axios.get('/api/replies/' + this.state.commentId).then((res) => {
-            console.log('fetch');
+             
             this.setState((prev) => ({ replies: res.data, showReplies: !prev.showReplies, isLoading: false }));
         });
     }
@@ -206,12 +206,12 @@ class Comment extends Component {
     }
 
     handleDeleteReplyOnClick(rep_id) {
-        console.log('comment delete');
+         
         this.state.isLoading = true;
         axios.delete('/api/reply/' + rep_id)
             .then((res) => {
                 axios.get('/api/replies/' + this.state.commentId).then((res) => {
-                    console.log('fetch new reply');
+                     
                     this.setState({ replies: res.data, showReplies: true, showReplyInput: false, isLoading: false, replyCount: res.data.length > 0 });
                 }); 
         })
