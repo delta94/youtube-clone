@@ -121,7 +121,7 @@ class ChannelContainer extends Component{
         this.setState({
             canSubscribe: true
         })
-        axios.post('/api/unsubscribe/' + this.props.channelName);
+        axios.delete('/api/unsubscribe/' + this.props.channelName);
         this.setState((prev) => ({ subscriberCount: prev.subscriberCount - 1 }));
     }
 
