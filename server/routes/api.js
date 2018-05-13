@@ -4,7 +4,7 @@ var User = require('../models/User');
 var Database = require('../models/Database');
 let db = new Database();
 let SyncDatabase = require('../models/SyncDatabase');
-let sdb = new SyncDatabase();   
+let sdb = new SyncDatabase();
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -23,10 +23,19 @@ router.get('/logout', (req, res) => {
 router.post('/signup', (req, res) => {
     User.findUserByUsername(req.body.username, (user) => {
         if (user) {
-            return res.json({ success: false, message: "username already exists" });
+            return res.json({
+                success: false,
+                message: "username already exists"
+            });
         } else {
-            User.createUser({ username: req.body.username, password: req.body.password, name: req.body.username }, () => {
-                return res.json({ success: true });
+            User.createUser({
+                username: req.body.username,
+                password: req.body.password,
+                name: req.body.username
+            }, () => {
+                return res.json({
+                    success: true
+                });
             });
         }
     });
@@ -40,7 +49,7 @@ router.get('/subscriptionCount', (req, res) => {
 
 // list all user's video
 router.get('/videos/:username', (req, res) => {
-    db.query(`select id,  name AS title, dtime_upload AS publishedAt,  GetVideoViewCount(id) AS viewCount
+    db.query(`SELECT id,  name AS title, dtime_upload AS publishedAt,  GetVideoViewCount(id) AS viewCount
     FROM video
     WHERE upload_account='${req.params.username}'`).then((rows) => res.json(rows));
 });
@@ -50,7 +59,9 @@ router.get('/checkForSubscriptions/:chnl', (req, res) => {
     db.query(`SELECT Subscribes_CheckExist('${req.params.chnl}', '${req.user.username}')`)
         .then((rows) => {
             let obj = rows[0];
-            res.json({ result: obj[Object.keys(obj)[0]] });
+            res.json({
+                result: obj[Object.keys(obj)[0]]
+            });
         });
 });
 
@@ -66,7 +77,9 @@ router.get('/subscribersCount/:chnl', (req, res) => {
     db.query(`SELECT Account_SubscribersCount('${req.params.chnl}')`)
         .then((rows) => {
             let obj = rows[0];
-            res.json({ result: obj[Object.keys(obj)[0]] });
+            res.json({
+                result: obj[Object.keys(obj)[0]]
+            });
         });
 });
 
@@ -87,9 +100,13 @@ router.get('/checkPlaylistOwner/:playlistId', (req, res) => {
      WHERE playlist_id=${req.params.playlistId} AND owner='${req.user.username}'`)
         .then((rows) => {
             console.log('rows[0]', rows[0]);
-            if (rows[0]) res.json({ result: !!rows[0].owner });
-            else res.json({ result: false });
-    })
+            if (rows[0]) res.json({
+                result: !!rows[0].owner
+            });
+            else res.json({
+                result: false
+            });
+        })
 });
 
 router.get('/subscriptions', (req, res) => {
@@ -110,11 +127,27 @@ router.get('/playlists', (req, res) => {
     SELECT *, COUNT(*) AS videoCount
     FROM playlist NATURAL JOIN p_contains_v
     WHERE owner='${req.user.username}' 
-    GROUP BY playlist_id`).then((rows) => res.json(rows)); 
+    GROUP BY playlist_id`).then((rows) => res.json(rows));
+
     else if (req.query.type == 'saved') db.query(`SELECT *, COUNT(*) AS videoCount 
     FROM a_saves_playlist NATURAL JOIN playlist NATURAL JOIN p_contains_v
-     WHERE username='${req.user.username}' 
-     GROUP BY playlist_id`).then((rows) => res.json(rows)); 
+    WHERE username='${req.user.username}' 
+    GROUP BY playlist_id`)
+        .then((rows) => res.json(rows));
+});
+
+router.post('/incrementInteraction/:channel', (req, res) => {
+    db.query(`UPDATE account
+    SET interaction=interaction + 1
+    WHERE username='${req.params.channel}'`)
+        .then((rows) => res.end());
+});
+
+router.post('/decrementInteraction/:channel', (req, res) => {
+    db.query(`UPDATE account
+    SET interaction=interaction - 1
+    WHERE username='${req.params.channel}'`)
+        .then((rows) => res.end());
 });
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -179,14 +212,16 @@ router.get('/video/:id', (req, res) => {
                 });
         }
     })
-   });
+});
 
 
 router.post('/subscribe/:chnl', (req, res) => {
     db.query(`SELECT Subscribes_Insert('${req.params.chnl}', '${req.user.username}')`)
         .then((rows) => {
             let obj = rows[0];
-            res.json({ result: obj[Object.keys(obj)[0]] });
+            res.json({
+                result: obj[Object.keys(obj)[0]]
+            });
         });
 });
 
@@ -194,7 +229,9 @@ router.delete('/unsubscribe/:chnl', (req, res) => {
     db.query(`SELECT Subscribes_Delete('${req.params.chnl}', '${req.user.username}')`)
         .then((rows) => {
             let obj = rows[0];
-            res.json({ result: obj[Object.keys(obj)[0]] });
+            res.json({
+                result: obj[Object.keys(obj)[0]]
+            });
         });
 });
 
@@ -233,7 +270,9 @@ router.get('/checkLike/:videoId', (req, res) => {
     db.query(`SELECT CheckLike('${req.user.username}', '${req.params.videoId}')`)
         .then((rows) => {
             let obj = rows[0];
-            res.json({ result: obj[Object.keys(obj)[0]] });
+            res.json({
+                result: obj[Object.keys(obj)[0]]
+            });
         });
 });
 
@@ -267,7 +306,9 @@ router.get('/checkWatchLater/:videoId', (req, res) => {
     db.query(`SELECT * 
     FROM a_watch_later_v
     WHERE account_name='${req.user.username}' AND video_id=${req.params.videoId}`)
-        .then((rows) => res.json({result: !!rows[0]}))
+        .then((rows) => res.json({
+            result: !!rows[0]
+        }))
 });
 
 router.get('/watchLater', (req, res) => {
@@ -292,7 +333,9 @@ router.get('/checkSavePlaylist/:pid', (req, res) => {
     db.query(`SELECT playlist_id 
     FROM a_saves_playlist 
     WHERE username='${req.user.username}' AND playlist_id=${req.params.pid}
-    `).then((rows) => res.json({ result: rows[0] !== undefined }));
+    `).then((rows) => res.json({
+        result: rows[0] !== undefined
+    }));
 })
 
 
@@ -332,9 +375,11 @@ router.delete('/comment', (req, res) => {
 router.get('/checkCommentLike/:cmtId', (req, res) => {
     db.query(`SELECT CheckCommentLike('${req.user.username}', ${req.params.cmtId})`)
         .then((rows) => {
-        let obj = rows[0];
-        res.json({ result: obj[Object.keys(obj)[0]] });
-    });
+            let obj = rows[0];
+            res.json({
+                result: obj[Object.keys(obj)[0]]
+            });
+        });
 });
 
 router.post('/reply', (req, res) => {
@@ -356,7 +401,9 @@ router.get('/checkReplyLike/:repId', (req, res) => {
     db.query(`SELECT CheckReplyLike('${req.user.username}', ${req.params.repId})`)
         .then((rows) => {
             let obj = rows[0];
-            res.json({ result: obj[Object.keys(obj)[0]] });
+            res.json({
+                result: obj[Object.keys(obj)[0]]
+            });
         });
 });
 
@@ -411,7 +458,9 @@ router.get('/playlist/:playlistId', (req, res) => {
 
 router.get('/checkVideoInPlaylist', (req, res) => {
     db.query(`SELECT Playlist_CheckVideoInPlaylist(${req.query.pid}, ${req.query.vid}) AS ret`)
-        .then((rows) => res.json({ result: rows[0].ret }));
+        .then((rows) => res.json({
+            result: rows[0].ret
+        }));
 });
 
 router.post('/deleteVideo', (req, res) => {
@@ -428,18 +477,20 @@ router.post('/insertVideo', (req, res) => {
 router.post('/playlist', (req, res) => {
     console.log(req.body);
     db.query(`INSERT INTO playlist(name, public, dtime, owner) VALUES('${req.body.name}',1,NOW(), '${req.body.username}')`)
-        .then((rows) => 
+        .then((rows) =>
             db.query(`SELECT AUTO_INCREMENT AS max_id
             FROM INFORMATION_SCHEMA.TABLES 
             WHERE TABLE_SCHEMA = 'assignment' AND TABLE_NAME = 'playlist'`)
-            .then((rows) => res.json({ 'result': rows[0].max_id - 1 }))
+            .then((rows) => res.json({
+                'result': rows[0].max_id - 1
+            }))
         );
 });
 
 
 router.get('/recommendedPlaylist/:videoId', (req, res) => {
     let tags = [];
-    let playlists= [];
+    let playlists = [];
     db.query(`SELECT tags FROM video WHERE id=${req.params.videoId}`)
         .then((rows) => {
             if (!rows[0]) return res.end();
@@ -457,7 +508,7 @@ router.get('/recommendedPlaylist/:videoId', (req, res) => {
                 }
                 res.json(playlists);
             }
-        }); 
+        });
 })
 
 module.exports = router;

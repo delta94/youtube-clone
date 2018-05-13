@@ -52,6 +52,8 @@ class PlaylistPage extends Component {
                 .then(res => {
                     let videoInfo = res.data;
                     axios.post('/api/view/' + firstVideoId);
+                    axios.post('/api/incrementInteraction/' + videoInfo.snippet.channelTitle);
+                    console.log('after post', videoInfo.snippet.channelTitle);
                     axios.get('/api/checkLike/' + firstVideoId).then((res) => {
                         console.log('checklike', res);
                         this.setState({ videoInfo: videoInfo, isLoading: false, likeStatus: res.data.result });
@@ -84,6 +86,7 @@ class PlaylistPage extends Component {
                     .then(res => {
                         let videoInfo = res.data;
                         axios.post('/api/view/' + firstVideoId);
+                        axios.post('/api/incrementInteraction/' + videoInfo.snippet.channelTitle);
                         axios.get('/api/checkLike/' + firstVideoId).then((res) => {
                             console.log('checklike', res);
                             this.setState({ videoInfo: videoInfo, isLoading: false, likeStatus: res.data.result });

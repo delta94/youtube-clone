@@ -39,55 +39,68 @@ class VideoPage extends Component {
             .then(res => {
                     let videoInfo = res.data;
                     axios.post('/api/view/' + this.props.videoId);
+                axios.post('/api/incrementInteraction/' + videoInfo.snippet.channelTitle);
+                console.log('after post', videoInfo.snippet.channelTitle);
+
                     axios.get('/api/checkLike/' + this.props.videoId).then((res) => {
                         console.log('checklike', res);
-                        this.setState({ videoInfo: videoInfo, isLoading: false, likeStatus: res.data.result });
-                });
+                        this.setState({
+                            videoInfo: videoInfo,
+                            isLoading: false,
+                            likeStatus: res.data.result
+                        });
+                    });
                 
 
                 let _recommendedList = [];
-                axios.get('/api/recommendedVideo/' + this.props.videoId)
+                axios.get('/api/recommendedPlaylist/' + this.props.videoId)
                     .then((res) => {
                         _recommendedList = _recommendedList.concat(res.data);
-                        return axios.get('/api/recommendedPlaylist/' + this.props.videoId);
+                        return axios.get('/api/recommendedVideo/' + this.props.videoId);
                     })
                     .then((res) => {
                         _recommendedList = _recommendedList.concat(res.data);
-                        _recommendedList = this.shuffle(_recommendedList);
-                        console.log('recommended: ', _recommendedList);
-                        this.setState({ recommendedList: _recommendedList });
+                        this.setState({
+                            recommendedList: _recommendedList
+                        });
                     });
                 
             }).catch((err) => this.props.history.push('/404'));
         document.body.scrollTop = 0;
     }
 
-    shuffle(a) {
-        for (let i = a.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [a[i], a[j]] = [a[j], a[i]];
-        }
-        return a;
-    }
-
     componentDidUpdate(prevProps, prevState) {
-        if ( this.props !== prevProps ){
+        if (this.props !== prevProps) {
             axios.get(`/api/video/${this.props.videoId}`)
                 .then(res => {
                     let videoInfo = res.data;
                     axios.post('/api/view/' + this.props.videoId);
+                    axios.post('/api/incrementInteraction/' + videoInfo.snippet.channelTitle);
                     axios.get('/api/checkLike/' + this.props.videoId).then((res) => {
                         console.log('checklike', res);
-                        this.setState({ videoInfo: videoInfo, isLoading: false, likeStatus: res.data.result });
-                    });
-                    axios.get(`/api/recommendedVideo/` + this.props.videoId)
-                        .then(RecommendedVideos => {
-                            console.log('recommended: ', RecommendedVideos.data);
-                            this.setState({
-                                recommendedList: RecommendedVideos.data
-                            })
+                        this.setState({
+                            videoInfo: videoInfo,
+                            isLoading: false,
+                            likeStatus: res.data.result
                         });
-                });
+                    });
+
+                    let _recommendedList = [];
+                    axios.get('/api/recommendedVideo/' + this.props.videoId)
+                        .then((res) => {
+                            _recommendedList = _recommendedList.concat(res.data);
+                            return axios.get('/api/recommendedPlaylist/' + this.props.videoId);
+                        })
+                        .then((res) => {
+                            _recommendedList = _recommendedList.concat(res.data);
+                            console.log('recommended: ', _recommendedList);
+                            this.setState({
+                                recommendedList: _recommendedList
+                            });
+                        });
+
+                }).catch((err) => this.props.history.push('/404'));
+            document.body.scrollTop = 0;
         }
     }
 
@@ -100,6 +113,7 @@ class VideoPage extends Component {
     handleLike() {
         if (this.state.likeStatus == 1) {
             axios.post('/api/unlike/' + this.state.videoId);
+            axios.post('/api/decrementInteraction/' + this.state.videoInfo.snippet.channelTitle);
             this.setState({
                 videoInfo: Object.assign({}, this.state.videoInfo, {
                     statistics: Object.assign({}, this.state.videoInfo.statistics, {
@@ -110,6 +124,7 @@ class VideoPage extends Component {
             });
         } else if (this.state.likeStatus == 0) {
             axios.post('/api/like/' + this.state.videoId);
+            axios.post('/api/incrementInteraction/' + this.state.videoInfo.snippet.channelTitle);
             this.setState({
                 videoInfo: Object.assign({}, this.state.videoInfo, {
                     statistics: Object.assign({}, this.state.videoInfo.statistics, {
@@ -119,6 +134,7 @@ class VideoPage extends Component {
                 likeStatus: 1
             });
         } else {
+            axios.post('/api/incrementInteraction/' + this.state.videoInfo.snippet.channelTitle);
             axios.post('/api/unlike/' + this.state.videoId).then((res) => {
                 axios.post('/api/like/' + this.state.videoId);
                 this.setState({
@@ -136,7 +152,6 @@ class VideoPage extends Component {
 
     handleDislike() {
         if (this.state.likeStatus === 1) {
-
             axios.post('/api/unlike/' + this.state.videoId).then((res) => {
                 axios.post('/api/dislike/' + this.state.videoId);
                 this.setState({

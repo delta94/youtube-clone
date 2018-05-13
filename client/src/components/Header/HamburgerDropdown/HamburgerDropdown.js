@@ -1,3 +1,4 @@
+import play from './images/playlist.png';
 import React from 'react';
 import { Route, Link, NavLink } from 'react-router-dom';
 import SideNav, { Nav, NavIcon, NavText } from 'react-sidenav';
@@ -16,20 +17,22 @@ class MySideNav extends React.Component {
 
         this.state = {
             subscriptionCount: 0,
-            subscribedChannels: []
+            subscribedChannels: [],
+            savedPlaylists: []
         }
     }
 
     componentDidMount() {
         console.log('sidenav did mnt');
         axios.get('/api/subscriptionCount').then((res) => this.setState({ subscriptionCount: res.data }));
-        axios.get('/api/subscribedChannels').then((res) => { console.log('data',res.data); this.setState({ subscribedChannels: res.data }) });
-    
+        axios.get('/api/subscribedChannels').then((res) => this.setState({ subscribedChannels: res.data }));
+        axios.get('/api/playlists?type=saved').then((res) => this.setState({ savedPlaylists: res.data }));
     }
 
 
 
     render() {
+        console.log('playlist', this.state.savedPlaylists);
         let getUsername = () =>  this.props.user ? this.props.user.username : '';
         return (
             <div className="sidebar" style={this.props.style}>
@@ -166,9 +169,20 @@ class MySideNav extends React.Component {
                                                     </span>
                                                 </span>
                                             </Link>
-                                        </li>)}    
+                                        </li>)
+                                        }    
 
-
+                                        {this.state.savedPlaylists.map((playlist) => <li key={playlist.playlist_id} className="nav-main-section-link">
+                                            <Link to={`/playlist/` + playlist.playlist_id} className="nav-main-section-link-a">
+                                                <span className="link-container">
+                                                    <span className="nav-link-img">
+                                                        <img src={play} />
+                                                    </span>
+                                                    <span className="nav-link-text">{playlist.name}
+                                                    </span>
+                                                </span>
+                                            </Link>
+                                        </li>)}
 
                                     </ul>
                                 </div>
