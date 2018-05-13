@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css?family=Muli:600');
+
+
 a{
     text-decoration: none;
     color: black;
@@ -5,26 +8,36 @@ a{
 }
 #main_videos_container{
     width: 100%;
-    height: 229px;
+    height: 250px;
     /*background: lightcoral;*/
     position: relative;
     border-bottom: 2px solid white;
     display: flex;
-    justify-content: space-around;
     flex-wrap: wrap;
     border-top: 1px solid #e3e3e3;
     padding-right: 20px;
     padding-left: 20px;
     padding-top: 8px;
+    overflow-x: scroll;
 }
+
+
+#main_videos_container a {
+    text-decoration: none;
+}
+
+#main_videos_container a:hover {
+    text-decoration: none;
+}
+
 #video_channel_name{
     position: absolute;
     /*border: 2px solid black;*/
     left: 22px;
     top: 9px;
     color: #333333;
+    font-family: 'Muli';
     font-weight: bold;
-    font-family: 'Roboto', sans-serif;
     font-size: 15px;
 }
 #subscribe_bttn{
@@ -89,12 +102,12 @@ a{
 }
 #subscribers_count{
     position: absolute;
-    right: 41px;
+    left: 1173px;
     top: 8px;
     font-family: 'Roboto', sans-serif;
     font-size: 13px;
     height: 22px;
-    width: 55px;
+    min-width: 30px;
     color: #737373;
     background: #fafafa;
     border: 1px solid #b8b8b8;
@@ -120,7 +133,7 @@ a{
     width: 16px;
     height: 12px;
     position: absolute;
-    left: 2px;
+    left: -1px;
     top: 4px;
 }
 #not_interested_bttn{
@@ -156,6 +169,8 @@ a{
     /*background: lightcyan;*/
     position: relative;
     font-family: 'Roboto', sans-serif;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 #video_info_img{
     height: 110px;
@@ -164,13 +179,12 @@ a{
     cursor: pointer;
 }
 .videos_info_container h1{
-    font-size: 13px;
+    font-size: 14px;
     font-family: 'Roboto', sans-serif;
     color: #167ac6;
     /*text-overflow: ellipsis;*/
     height: 37px;
     width: 97%;
-    font-weight: 600;
     margin-top: 5px;
     line-height: 14px;
     /*white-space: nowrap;
@@ -251,7 +265,7 @@ a{
 }
 
 .channel-title {
-    margin-top: 10px;
+    margin-top: 5px;
     font-size: 13px;
     color: #767676;
     font-family: 'Roboto',sans-serif;

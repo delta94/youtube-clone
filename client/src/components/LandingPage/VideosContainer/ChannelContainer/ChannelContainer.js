@@ -3,85 +3,19 @@ import { connect } from 'react-redux'
 import { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import VideoContainer from './VideoItemContainer';
 
-import watch_later from './../../../Header/img/watch_later.png';
-import bullet from './../../../Header/img/bullet.png';
 import './ChannelContainer.css'
 
-export default class ChannelContainer extends Component{
+class ChannelContainer extends Component{
     constructor(props){
         super(props);
         
         this.state = {
-            videosArr: [
-                {
-                    snippet:{
-                        thumbnails: {
-                            medium: {},
-                        },
-                    },
-                    id: {
-                        videoId: ''
-                    }
-                },
-            //     statistics: {}
-            // },
-                {
-                    snippet:{
-                        thumbnails: {
-                            medium: {},
-                        },
-                    },
-                    id: {
-                        videoId: ''
-                    }
-                },
-
-                {
-                    snippet:{
-                        thumbnails: {
-                            medium: {},
-                        },
-                    },
-                    id: {
-                        videoId: ''
-                    }
-                },
-
-                {
-                    snippet:{
-                        thumbnails: {
-                            medium: {},
-                        },
-                    },
-                    id: {
-                        videoId: ''
-                    }
-                },
-
-                {
-                    snippet:{
-                        thumbnails: {
-                            medium: {},
-                        },
-                    },
-                    id: {
-                        videoId: ''
-                    }
-                },
-
-                {
-                    snippet:{
-                        thumbnails: {
-                            medium: {},
-                        },
-                    },
-                    id: {
-                        videoId: ''
-                    }
-                }
-            ],
-            canSubscribe: true
+            videosArr: [],
+            canSubscribe: true,
+            isLoading: true,
+            subscriberCount: 0
         }
 
         this.displayDate = this.displayDate.bind(this);
@@ -92,23 +26,25 @@ export default class ChannelContainer extends Component{
         this.handleUnsubscribe = this.handleUnsubscribe.bind(this);
     }
 
-    componentDidMount(){
-        axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=6&order=relevance&q=${ this.props.search }&type=video&key=AIzaSyA6QnEmVEZ_b2ZQO8GLc7CTEU3g-xDyhFY`).then( videosArr => {
+    componentWillMount(){
+        axios.get(`/api/videos/` + this.props.channelName).then((res) => {
             this.setState({
-                videosArr: videosArr.data.items,
-            })
-            axios.get(`/api/checkForSubscriptions/${ this.state.videosArr[0].snippet.channelTitle }`).then((response)=>{
-                let arr = response.data;
-                if (arr.length === 0){
+                videosArr: res.data
+            });
+            axios.get('/api/channelInfo/' + this.props.channelName)
+                .then((res) => this.setState({ subscriberCount: res.data.subscriberCount }));
+            axios.get(`/api/checkForSubscriptions/` + this.props.channelName).then((res)=>{
+                let result = res.data.result;
+                if (!result){
                     this.setState({
                         canSubscribe: true
                     })
-                }else if (arr.length > 0){
+                }else {
                     this.setState({
                         canSubscribe: false
                     })
                 }
-
+                this.setState({ isLoading: false });
                 // if(!this.state.canSubscribe){
                 //     let landingSubscribe = document.getElementById('landing_unsubscribe_bttn');
                 //     let landingUnsubscribe = document.getElementById('landing_unsubscribe_bttn_hover');
@@ -176,15 +112,17 @@ export default class ChannelContainer extends Component{
     handleSubscribe(str){
         this.setState({
             canSubscribe: false
-        })
-        this.props.subscribeTo(str)
+        });
+        axios.post('/api/subscribe/' + this.props.channelName);
+        this.setState((prev) => ({subscriberCount: prev.subscriberCount +1}));
     }
 
     handleUnsubscribe(str){
         this.setState({
             canSubscribe: true
         })
-        this.props.unsubscribeTo(str)
+        axios.post('/api/unsubscribe/' + this.props.channelName);
+        this.setState((prev) => ({ subscriberCount: prev.subscriberCount - 1 }));
     }
 
     getViews(){
@@ -192,17 +130,18 @@ export default class ChannelContainer extends Component{
     }
 
     getSubscribers(){
-        return Math.floor(Math.random() * 899) + ',' + Math.floor(Math.random() * 899 + 100);
+
     }
 
     testFn(){
         console.log('test');
     }
-    render(){
+    render() {
+        if (this.state.isLoading) return null;
         let landingSubbtn;
         let landingSubbtnTwo;
         if(this.state.canSubscribe){
-            landingSubbtn = <div id="subscribe_bttn" onClick= { ()=> this.handleSubscribe(videos[0].snippet.channelTitle) }>
+            landingSubbtn = <div id="subscribe_bttn" onClick= { this.handleSubscribe}>
                     <div id="bttn_img">
                 </div>Subscribe</div>
         } else {
@@ -211,7 +150,7 @@ export default class ChannelContainer extends Component{
                         <div id="unsub_bttn_img">
                     </div>Subscribed</div>*/}
                     
-                    <div id="landing_unsubscribe_bttn_hover" onClick= { ()=> this.handleUnsubscribe(videos[0].snippet.channelTitle) }>
+                <div id="landing_unsubscribe_bttn_hover" onClick={this.handleUnsubscribe }>
                         <div id="unsub_bttn_img_hover">
                     </div>Unsubscribe</div>
                 </section>
@@ -220,38 +159,20 @@ export default class ChannelContainer extends Component{
 
 
 
-        
+        console.log('video ', this.state.videosArr);
+
         let videos = this.state.videosArr;
-        return(
+        return (
             <div id="main_videos_container">
-                <div id="video_channel_name">{videos[0].snippet.channelTitle}</div>
+                <div id="video_channel_name">{this.props.channelTitle}</div>
                 { landingSubbtn }
                 { landingSubbtnTwo }
-                <div id="subscribers_count">{this.getSubscribers()}</div>
-                <div id="not_interested_bttn"></div>
-                { videos.map( (video, id) => {
-                    return <Link to={'/video/' + videos[id].id.videoId}>
-                                <div key={ id } className="videos_info_container">
-                                    <img id="video_info_img"src={videos[id].snippet.thumbnails.medium.url}/>
-                                    <h1>{videos[id].snippet.title}</h1>
-                                    <div className="watch_container">
-                                        <img id="watch_later" src={watch_later}/>
-                                    </div>
-                                    <p className="channel-title">{videos[id].snippet.channelTitle}</p>
-                                    <ul>
-                                        <li>{
-                                            this.getViews()
-                                        } </li> 
-                                        <li><img src={bullet}/></li>
-                                        <li>{
-                                            this.displayDate(videos[id].snippet.publishedAt)
-                                        } </li>
-                                    </ul>
-                            </div>
-                          </Link>
-                } )}
+                <div id="subscribers_count">{this.state.subscriberCount}</div>
+                {videos.map((video) => <VideoContainer id={video.id} key={video.id}/>)}
             </div>
         )
     }
     
 }
+
+export default ChannelContainer;

@@ -150,6 +150,18 @@ router.post('/decrementInteraction/:channel', (req, res) => {
         .then((rows) => res.end());
 });
 
+router.get('/interactiveChannels', (req, res) => {
+    let bound = req.query.bound || 0;
+    if (!req.user) db.query(`SELECT username, name 
+    FROM account
+    WHERE interaction >= ${bound}
+    ORDER BY interaction DESC`).then((rows) => res.json(rows));
+    
+    else db.query(`SELECT username, name 
+    FROM account WHERE username <> '${req.user.username}' AND interaction >= ${bound}
+    ORDER BY interaction DESC`).then((rows) => res.json(rows));
+})
+
 //////////////////////////////////////////////////////////////////////////////////////////////////
 /******************************************** VIDEO *********************************************/
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -311,6 +323,7 @@ router.get('/checkWatchLater/:videoId', (req, res) => {
         }))
 });
 
+// get watched later videos for user
 router.get('/watchLater', (req, res) => {
     db.query(`CALL GetWatchedLaterVideos('${req.user.username}')`)
         .then((rows) => res.json(rows[0]));

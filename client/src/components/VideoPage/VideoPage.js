@@ -1,5 +1,9 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {
+    Component
+} from 'react';
+import {
+    connect
+} from 'react-redux';
 import axios from 'axios';
 
 import SubscriptionNotify from './../SubscribeNotify/SubscribeNotify';
@@ -37,20 +41,19 @@ class VideoPage extends Component {
     componentWillMount() {
         axios.get(`/api/video/${this.props.videoId}`)
             .then(res => {
-                    let videoInfo = res.data;
-                    axios.post('/api/view/' + this.props.videoId);
+                let videoInfo = res.data;
+                axios.post('/api/view/' + this.props.videoId);
                 axios.post('/api/incrementInteraction/' + videoInfo.snippet.channelTitle);
-                console.log('after post', videoInfo.snippet.channelTitle);
 
-                    axios.get('/api/checkLike/' + this.props.videoId).then((res) => {
-                        console.log('checklike', res);
-                        this.setState({
-                            videoInfo: videoInfo,
-                            isLoading: false,
-                            likeStatus: res.data.result
-                        });
+                axios.get('/api/checkLike/' + this.props.videoId).then((res) => {
+                    console.log('checklike', res);
+                    this.setState({
+                        videoInfo: videoInfo,
+                        isLoading: false,
+                        likeStatus: res.data.result
                     });
-                
+                });
+
 
                 let _recommendedList = [];
                 axios.get('/api/recommendedPlaylist/' + this.props.videoId)
@@ -64,7 +67,7 @@ class VideoPage extends Component {
                             recommendedList: _recommendedList
                         });
                     });
-                
+
             }).catch((err) => this.props.history.push('/404'));
         document.body.scrollTop = 0;
     }
