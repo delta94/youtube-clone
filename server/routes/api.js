@@ -17,7 +17,7 @@ router.get('/current_user', (req, res) => { // this line shows the result after 
 
 router.get('/logout', (req, res) => {
     req.logout();
-    res.redirect('/');
+    res.redirect('/login');
 });
 
 router.post('/signup', (req, res) => {
@@ -293,8 +293,9 @@ router.get('/recommendedVideo/:videoId', (req, res) => {
     let videos = [];
     db.query(`SELECT tags FROM video WHERE id=${req.params.videoId}`)
         .then((rows) => {
-            if (!rows[0]) return res.end();
+            if (rows[0].tags === null) return res.end();
             else {
+                console.log('==', rows[0].tags);
                 tags = rows[0].tags.split(' ');
                 for (tag of tags) {
                     videos = videos.concat(sdb.query(`SELECT id, name AS title, upload_account AS channelTitle, GetVideoViewCount(id) 
@@ -506,7 +507,7 @@ router.get('/recommendedPlaylist/:videoId', (req, res) => {
     let playlists = [];
     db.query(`SELECT tags FROM video WHERE id=${req.params.videoId}`)
         .then((rows) => {
-            if (!rows[0]) return res.end();
+            if (rows[0].tags === null) return res.end();
             else {
                 tags = rows[0].tags.split(' ');
                 for (tag of tags) {

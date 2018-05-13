@@ -53,7 +53,7 @@ class RecommendedVideo extends Component {
         return (
             <div className='video_box'>
                 <Link to={'/video/' + this.props.id}>
-                    <div key={this.props.id} >
+                    <div >
                         <img className='video_box_img' src={'/images/thumbnails/' + this.props.id + '.png'} />
                         <h5 className='video_box_title'>{this.props.title}</h5>
                         <h6 className='video_box_channel'>{this.props.channelTitle}</h6>

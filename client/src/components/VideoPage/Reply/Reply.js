@@ -7,7 +7,7 @@ import bullet from './../../Header/img/bullet.png';
 import React, { Component } from 'react';
 import Avatar from 'react-avatar';
 import axios from 'axios';
-
+import Clock from '../../Clock/Clock';
 
 class Reply extends Component {
     constructor(props) {
@@ -133,7 +133,7 @@ class Reply extends Component {
             <div className="reply-item">
             <div>    
                 <Avatar className="pull-left" name={this.props.name} size={25} round={true} textSizeRatio={2} />
-                    <p><b id="username">{this.props.name}</b>&ensp;&ensp;<span id="dtime">{this.props.dtime}</span>&ensp;&ensp;&ensp;{this.renderDelete()}</p>
+                    <p><b id="username">{this.props.name}</b>&ensp;&ensp;<span id="dtime"><Clock date={this.props.dtime} /></span>&ensp;&ensp;&ensp;{this.renderDelete()}</p>
                     
                 <p id="content">{this.props.content}</p>
                     {this.renderLike()}

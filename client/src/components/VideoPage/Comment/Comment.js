@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import Avatar from 'react-avatar';
 import axios from 'axios';
 import Reply from '../Reply/Reply';
+import Clock from '../../Clock/Clock';
 
 class Comment extends Component {
     constructor(props) {
@@ -251,7 +252,7 @@ class Comment extends Component {
             <div className="user_comment_thumbnail"><Avatar name={this.props.name} size={35} round={true} textSizeRatio={2} /></div>
             <ul id="user_info_comment">
                 <li id="comment_user_name">{this.props.name}</li>
-                <li id="comment_posted">{this.props.dtime}</li>
+                    <li id="comment_posted"><Clock date={this.props.dtime}/></li>
             </ul>
             <p id="comment_comment">{this.props.content}</p>
 

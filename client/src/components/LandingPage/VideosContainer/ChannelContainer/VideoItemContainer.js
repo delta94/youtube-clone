@@ -5,6 +5,7 @@ import bullet from './../../../Header/img/bullet.png';
 import './ChannelContainer.css';
 import watchLater from '../../../VideoPage/RecommendedVideo/images/watch_later.png';
 import tick from '../../../VideoPage/RecommendedVideo/images/tick.png';
+import Clock from '../../../Clock/Clock';
 
 class VideoContainer extends Component {
     constructor(props) {
@@ -52,7 +53,7 @@ class VideoContainer extends Component {
                     <ul>
                         <li>{this.state.viewCount} views </li>
                         <li><img src={bullet} /></li>
-                        <li>{this.state.publishedAt} </li>
+                        <li><Clock date={this.state.publishedAt} /></li>
                     </ul>
                 </div>
             </Link>

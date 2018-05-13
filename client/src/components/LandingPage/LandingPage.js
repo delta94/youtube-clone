@@ -74,11 +74,7 @@ class LandingPage extends Component {
                     { notifyPrompt }
                     { unsubNotifyPrompt }
                 </div>
-                <VideosContainer 
-                subscribe={ this.handleSubscription } 
-                unsubscribe={ this.handleUnsubscription }
-                canSubscribe={this.state.canSubscribe}
-                />
+                <VideosContainer/>
             </section>
             
         );

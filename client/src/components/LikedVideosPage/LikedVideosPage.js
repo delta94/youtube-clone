@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import Clock from '../Clock/Clock';
 
 class LikedVideosPage extends Component {
     constructor(props) {
@@ -31,7 +32,7 @@ class LikedVideosPage extends Component {
                             <Link to={'/video/' + video.id}><h1 id="search_video_title">{video.title}</h1></Link>
                             <h2 id="search_video_channel">{video.channelTitle}</h2>
                             <ul>
-                                <li>{video.publishedAt}</li>
+                                <li><Clock date={video.publishedAt} /></li>
                                 <li>&ensp;•&ensp;</li>
                                 <li>{video.viewCount} views</li>
                             </ul>
