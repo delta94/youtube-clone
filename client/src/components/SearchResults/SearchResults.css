@@ -119,6 +119,10 @@
     margin-top: 15px;
     /*margin-bottom: 15px;*/
     height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    
 }
 #search_video_container{
     width: 710px;
@@ -369,4 +373,112 @@ small {
 
 .list-item-content small {
     font-size: 12px;
+}
+
+/* result ccontainer */
+.result_container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;    
+    width: 800px;
+    height: 150px;
+    margin-left: 15px;
+}
+.result_text {
+    display: flex;
+    flex: 4;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 40px;
+}
+.result_title {
+    font-size: 120%;
+    font-weight: 400;
+    line-height: 20px;
+    cursor: pointer;
+}
+.result_title:hover {
+    color: #ed2939;
+    transition: 0.5s;
+}
+.result_subtitle {
+    color: rgb(26, 25, 25);
+    font-size: 80%;
+    font-weight: 300;
+    line-height: 30px;
+}
+#subcribers_count:after {
+    content: '•';
+    margin: 0 4px;
+}
+.result_description {
+    line-height: 12px;
+    font-size: 90%;
+    font-weight: 300;
+    color: #767676;
+}
+.image_container {
+    width: 246px;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.result_image_circle {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    height: 120px;
+    width: 120px;
+    border-radius: 100%;
+}
+.result_image_rect {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    height: 100%;
+}
+.playlist_overlay {
+    position: absolute;
+    height: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 45%;
+    background-color: rgba(1, 1, 1, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #eee;
+    flex-direction: column;
+}
+.playlist_videos_count {
+    font-size: 120%;
+}
+.playlist_icon > svg {
+    font-size: 110%;
+    fill: #eee;
+}
+.end_bullet:after {
+    content: '•';
+    margin: 0 4px;
+}
+.video_entries_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 2px;
+}
+.video_entries_container:after {
+    content: '•••';
+    margin: 4px 0;
+    color: #161616;
+}
+.video_entry {
+    font-size: 80%;
+    margin-top: 8px;
+}
+.video_entry:hover {
+    cursor: pointer;
 }

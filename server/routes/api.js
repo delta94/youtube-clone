@@ -28,7 +28,6 @@ router.post('/signup', (req, res) => {
             });
         }
     });
-
 });
 
 router.get('/subscriptionCount', (req, res) => {
@@ -268,7 +267,6 @@ router.post('/likeReply/:repId', (req, res) => {
 
 router.post('/dislikeReply/:repId', (req, res) => {
     db.query(`SELECT Reply_Like('${req.user.username}', ${req.params.repId}, -1)`).then(() => res.end());
-
 });
 
 router.post('/unlikeReply/:repId', (req, res) => {
@@ -284,5 +282,23 @@ router.delete('/reply/:repId', (req, res) => {
     db.query(`SELECT Reply_Delete(${req.params.repId})`).then(() => res.end());
 });
 
+/*** search */
+router.get('/search/:keyword', (req, res) => {
+    let keyword = req.params.keyword;
+    let db = new Database();
+    // SEARCH ACROSS ALL THREE TABLES USING MY STORED PROCEDURE
+    db.connection.query(`CALL search(?)`, [keyword], (err, results, fields) => {
+        if (err) {
+            console.log(err);
+            throw error;
+        }
+        let ret = {
+            playlists: results[0], // playlist
+            accounts: results[1], // accounts
+            videos: results[2], // videos
+        };
+        res.json(ret);
+    });
+});
 
 module.exports = router;

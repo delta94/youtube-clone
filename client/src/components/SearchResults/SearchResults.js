@@ -28,6 +28,8 @@ class SearchResults extends Component{
                     }
                 },
             ],
+            playlistArr: [],
+            accountArr: [],
             filterClicked: false,
             pagination: {},
             views: [
@@ -53,22 +55,26 @@ class SearchResults extends Component{
     }
 
     componentDidMount(){
-        axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&order=viewCount&pageToken=CAoQAA&q=${this.props.userInput }&type=video&key=AIzaSyA6QnEmVEZ_b2ZQO8GLc7CTEU3g-xDyhFY`).then( videoArr => {
+        axios.get(`/api/search/${this.props.userInput}`).then(result => {
             this.setState({
-                videoArr: videoArr.data.items,
-                pagination: videoArr.data
-            })
-            console.log(this.state.pagination)
+                videoArr: result.data.videos,
+                playlistArr: result.data.playlists,
+                accountArr: result.data.accounts,
+                // pagination: videoArr.data
+            });
         })
         document.body.scrollTop = 0;
     }
 
     componentDidUpdate(prevProps, prevState){
         if(this.props !== prevProps){
-            axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&order=viewCount&pageToken=CAoQAA&q=${this.props.userInput }&type=video&key=AIzaSyA6QnEmVEZ_b2ZQO8GLc7CTEU3g-xDyhFY`).then( videoArr => {
-                this.setState({
-                    videoArr: videoArr.data.items,
-                    pagination: videoArr.data
+            axios.get(`/api/search/${this.props.userInput}`).then(result => {
+            console.log(result);
+            this.setState({
+                    videoArr: result.data.videos,
+                    playlistArr: result.data.playlists,
+                    accountArr: result.data.accounts,
+                    // pagination: videoArr.data
                 })
             })
         }
@@ -135,7 +141,7 @@ class SearchResults extends Component{
 
 
     render(){
-        let filterBttn = null
+        let filterBttn = null;
         if(this.state.filterClicked){
             filterBttn = <section id="menu_dropdown">
                 <ul className="first_column">
@@ -180,7 +186,79 @@ class SearchResults extends Component{
             filterBttn = null;
         }
         let videos = this.state.videoArr;
-        console.log(videos)
+        let playlists = this.state.playlistArr;
+        let accounts = this.state.accountArr;
+        let orderedResults = [];
+        let id = 0;
+        videos.map( (video) => {
+            orderedResults.push({
+                code: <div key={id++} className="result_container">
+                <a className="image_container" href={`/video/${id}`}>
+                    <img className="result_image_rect" src="https://avatarfiles.alphacoders.com/122/122465.jpg"/>
+                </a>
+                <div className="result_text">
+                    <a className="result_title" href={`/video/${id}`}>{video.name}</a>
+                    <div>
+                        <span className="result_subtitle end_bullet">{video.upload_account}</span>
+                        <span className="result_subtitle end_bullet">{video.views} Views</span>
+                        <span className="result_subtitle">{video.published_dtime}</span>
+                    </div>
+                    <div className="result_description">{video.description}</div>
+                </div>
+            </div>
+            , relevance: video.relevance});
+        }
+        );
+        playlists.map((playlist) => {
+            let samples = JSON.parse(playlist.samples);
+            orderedResults.push({ code: <div key={id++} className="result_container">
+                <a className="image_container" href={`/playlist/${id}`}>
+                    <img className="result_image_rect" src="https://avatarfiles.alphacoders.com/122/122465.jpg"></img>
+                    <div className="playlist_overlay">
+                        <div className="playlist_videos_count">
+                            {playlist.videos_count}
+                        </div>
+                        <div className="playlist_icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path fill="none" d="M0 0h24v24H0V0z"/>
+                                <path d="M4 10h12v2H4zm0-4h12v2H4zm0 8h8v2H4zm10 0v6l5-3z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </a>
+                <div className="result_text">
+                    <a className="result_title" href={`/playlist/${id}`}>{playlist.name}</a>
+                    <div className="video_entries_container">{samples.slice(0,2).map(sample => {
+                        return <a className="video_entry" href={`/video/${sample.id}`}>{sample.name} - {sample.length}</a>
+                    })}</div>
+                </div>
+            </div>, relevance: playlist.relevance});
+        });
+        accounts.map((account) => {
+            orderedResults.push({code: <div key={id++} className="result_container">
+                        <a className="image_container" href={`/channelinfo/${account.username}`}>
+                            <img className="result_image_circle" src="https://avatarfiles.alphacoders.com/122/122465.jpg"/>
+                        </a>
+                    <div className="result_text">
+                        <a className="result_title" href={`/channelinfo/${account.username}`}>{account.name}</a>
+                        <div>
+                            <span className="result_subtitle" id="subcribers_count">{account.subscribes} subcribers</span>
+                            <span className="result_subtitle" id="videos_count">{account.videos} videos</span>                                    
+                        </div>
+                        <div className="result_description">{account.description}</div>
+                    </div>
+                </div>, relevance: account.relevance});
+            });
+        console.log(orderedResults);
+        orderedResults = orderedResults.sort((a, b) => {
+            if (a.relevance < b.relevance) {
+                return 1;
+            } else if (a.relevance == b.relevance) {
+                return 0;
+            } else {
+                return -1;
+            }
+        });
         return (
             <section className='main_search_container'>
 
@@ -195,65 +273,9 @@ class SearchResults extends Component{
                 { filterBttn }
 
                 <section className='main_video_search_container'>
-                    {videos.map( (video, id) => {
-                        return <div  key={ id }id='search_video_container'>
-                        <Link to={ '/video/' + videos[id].id.videoId }><div id="video_display_container">
-                            <img id="search_video_img" src={ videos[id].snippet.thumbnails.medium.url} />
-                            <div className="watch_container">
-                                <img id="watch_later" src={watch_later}/>
-                            </div>
-                        </div></Link>
-                        <div className="search_words_container">
-                            <Link to={ '/video/' + videos[id].id.videoId }><h1 id="search_video_title">{videos[id].snippet.title}</h1></Link>
-                            <h2 id="search_video_channel">{videos[id].snippet.channelTitle}</h2>
-                            <ul>
-                                <li>{this.displayDate(videos[id].snippet.publishedAt)}</li>
-                                <li><img id="bullet_img" src={bullet}/></li>
-                                <li>{ this.getViews(id) }</li>
-                            </ul>
-                            <p id="search_video_desc">{videos[id].snippet.description}</p>
-                        </div>
-                    </div>
-                    }
-                    )}
-
-                    <div className="list-item-container">
-                        <div className="list-item">
-                            <div className="list-item-image">
-                                <img src={image} />
-                            </div>
-                            <div className="list-item-content">
-                                <h4>This is the video name</h4>
-                                <small>1,233,233 subscribers • 1000 videos</small>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                            </div>
-                            <div className="subscribe-btn-container">
-                                <button className="subscribe-btn">SUBSCRIBE 7M</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="list-item-container">
-                        <div className="list-item">
-                            <div className="list-item-image">
-                                <Avatar src={image} size={140} round={true}/>
-                            </div>
-                            <div className="list-item-content">
-                                <h4>This is the video name</h4>
-                                <small>1,233,233 subscribers • 1000 videos</small>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus ducimus qui fuga. Commodi reiciendis minima
-                        repellat error ipsam inventore, quasi possimus mollitia explicabo, consequatur harum fuga! A est vero hic.</p>
-                            </div>
-                            <div className="subscribe-btn-container">
-                                <button className="subscribed-btn">SUBSCRIBE 7M</button>
-                            </div>
-                        </div>
-                    </div>
-                
-                    <section className="pagination_bttn">
-                        <div id="prev_bttn" onClick={ this.getPrevPage }><p>&#171; Previous</p></div>
-                        <div id="next_bttn" onClick={ this.getNextPage }><p>Next &#187;</p></div>
-                    </section>
+                    {orderedResults.map(result => {
+                        return result.code;
+                    })};
                 </section>
             </section>
         )
