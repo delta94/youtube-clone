@@ -138,8 +138,6 @@ class SearchResults extends Component{
             console.log(this.state.pagination)
         })
     }
-
-
     render(){
         let filterBttn = null;
         if(this.state.filterClicked){
@@ -273,9 +271,9 @@ class SearchResults extends Component{
                 { filterBttn }
 
                 <section className='main_video_search_container'>
-                    {orderedResults.map(result => {
+                    {orderedResults.slice(0, 10).map(result => {
                         return result.code;
-                    })};
+                    })}
                 </section>
             </section>
         )
