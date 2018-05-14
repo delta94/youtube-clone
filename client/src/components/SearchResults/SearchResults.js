@@ -234,11 +234,11 @@ class SearchResults extends Component{
         });
         accounts.map((account) => {
             orderedResults.push({code: <div key={id++} className="result_container">
-                        <a className="image_container" href={`/channelinfo/${account.username}`}>
+                        <a className="image_container" href={`/channel/${account.username}/home`}>
                             <img className="result_image_circle" src="https://avatarfiles.alphacoders.com/122/122465.jpg"/>
                         </a>
                     <div className="result_text">
-                        <a className="result_title" href={`/channelinfo/${account.username}`}>{account.name}</a>
+                        <a className="result_title" href={`/channel/${account.username}/home`}>{account.name}</a>
                         <div>
                             <span className="result_subtitle" id="subcribers_count">{account.subscribes} subcribers</span>
                             <span className="result_subtitle" id="videos_count">{account.videos} videos</span>                                    
