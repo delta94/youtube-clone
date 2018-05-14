@@ -298,7 +298,8 @@ router.get('/recommendedVideo/:videoId', (req, res) => {
                     videos = videos.concat(sdb.query(`
                     SELECT id, name AS title, upload_account AS channelTitle, GetVideoViewCount(id) AS viewCount
                     FROM video
-                    WHERE LOCATE('${tag}', tags) <> 0`));
+                    WHERE LOCATE('${tag}', tags) <> 0
+                    `));
                 }
                 videos = videos.filter((video) => video.id != req.params.videoId);
                 res.json(videos);
@@ -523,7 +524,8 @@ router.get('/recommendedPlaylist/:videoId', (req, res) => {
                         (SELECT DISTINCT playlist_id 
                         FROM p_contains_v INNER JOIN video ON video.id=p_contains_v.video_id
                         WHERE LOCATE('${tag}', video.tags) <> 0 AND video_id <> ${req.params.videoId}) 
-                    GROUP BY playlist_id`));
+                    GROUP BY playlist_id
+                    `));
                 }
                 res.json(playlists);
             }

@@ -41,6 +41,17 @@ class PlaylistPage extends Component {
         this.fetchVideoInfo = this.fetchVideoInfo.bind(this);
     }
 
+    shuffle(a) {
+        var j, x, i;
+        for (i = a.length - 1; i > 0; i--) {
+            j = Math.floor(Math.random() * (i + 1));
+            x = a[i];
+            a[i] = a[j];
+            a[j] = x;
+        }
+        return a;
+    }
+
     componentWillMount() {
         let playlistId = this.props.match.params.playlistId;
         axios.get(`/api/videosForPlaylist/${playlistId}`).then((res) => {

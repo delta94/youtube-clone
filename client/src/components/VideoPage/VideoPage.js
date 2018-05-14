@@ -4,6 +4,7 @@ import React, {
 import {
     connect
 } from 'react-redux';
+import ReactDom from 'react-dom';
 import axios from 'axios';
 
 import SubscriptionNotify from './../SubscribeNotify/SubscribeNotify';
@@ -38,6 +39,18 @@ class VideoPage extends Component {
         this.handleShowSharebox = this.handleShowSharebox.bind(this);
     }
 
+    shuffle(a) {
+        var j, x, i;
+        for (i = a.length - 1; i > 0; i--) {
+            j = Math.floor(Math.random() * (i + 1));
+            x = a[i];
+            a[i] = a[j];
+            a[j] = x;
+        }
+        return a;
+    }
+
+
     componentWillMount() {
         axios.get(`/api/video/${this.props.videoId}`)
             .then(res => {
@@ -63,7 +76,7 @@ class VideoPage extends Component {
                     })
                     .then((res) => {
                         if (res.data) _recommendedList = _recommendedList.concat(res.data);
-                         
+                        _recommendedList = this.shuffle(_recommendedList);
                         this.setState({
                             recommendedList: _recommendedList
                         });
@@ -97,14 +110,13 @@ class VideoPage extends Component {
                         })
                         .then((res) => {
                             if (res.data)  _recommendedList = _recommendedList.concat(res.data);
-                             
+                            _recommendedList = this.shuffle(_recommendedList);
                             this.setState({
                                 recommendedList: _recommendedList
                             });
                         });
-
+                    ReactDom.findDOMNode(this).scrollIntoView();
                 }).catch((err) => this.props.history.push('/404'));
-            document.body.scrollTop = 0;
         }
     }
 

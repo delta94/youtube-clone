@@ -4,6 +4,8 @@ import watchLater from './images/watch_later.png';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Clock from '../Clock/Clock';
+
 
 export default class VideoContainer extends Component {
     constructor(props) {
@@ -35,7 +37,7 @@ export default class VideoContainer extends Component {
                 <Link to={'/video/' + this.props.id} >
                     <img src={'/images/thumbnails/' + this.props.id + '.png'} />
                     <p>{this.props.title}</p>
-                    <h4>{this.props.viewCount} views • {this.props.publishedAt}</h4>
+                    <h4>{this.props.viewCount} views • <Clock date={this.props.publishedAt}/></h4>
                 </Link>
             </div>    
 

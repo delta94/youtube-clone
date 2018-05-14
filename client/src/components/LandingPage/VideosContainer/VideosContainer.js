@@ -17,7 +17,7 @@ export default class VideosContainer extends Component{
     }
 
     componentWillMount() {
-        axios.get('/api/interactiveChannels?bound=1').then((res) => this.setState({interactiveChannels: res.data, isLoading: false}))
+        axios.get('/api/interactiveChannels?bound=5').then((res) => this.setState({interactiveChannels: res.data, isLoading: false}))
     }
 
     render() {
