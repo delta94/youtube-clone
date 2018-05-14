@@ -20,7 +20,7 @@ var storage = multer.diskStorage({
 })
 
 var upload = multer({ storage: storage })
-
+let db = new Database();
 /* upload video */
 router.post('/upload/video', upload.single('video'), function (req, res, next) {
     let duration = 0;
@@ -38,7 +38,6 @@ router.post('/upload/video', upload.single('video'), function (req, res, next) {
             folder: "./public/images/thumbnails/"
         }).on('codecData', (data) => {
             let duration = data.duration.toString();
-            var db = new Database();
             db.query(`SELECT TIME_TO_SEC('${duration}') AS duration`).then(rows => {
                 db.query(`INSERT INTO video(id, upload_account, length) VALUES ('${video_id}', '${req.body.username}', ${rows[0].duration})`);
             })
@@ -53,7 +52,6 @@ router.post('/upload/video', upload.single('video'), function (req, res, next) {
 });
 
 router.put('/video/:id', (req, res) => {
-    let db = new Database();
     console.log(req.body);
     db.query(`UPDATE video 
     SET status=${req.body.state}, name='${req.body.name}', description='${req.body.desc}', tags='${req.body.tag}' 
@@ -62,7 +60,6 @@ router.put('/video/:id', (req, res) => {
 
 /* delete video */
 router.delete('/video/:id', (req, res) => {
-    let db = new Database();
     db.query('DELETE FROM video WHERE id=' + req.params.id);
     fs.unlink('./../videos/' + req.params.id + '.mp4', (err) => {
         if (err) throw err;

@@ -441,7 +441,6 @@ router.delete('/reply/:repId', (req, res) => {
 /*** search */
 router.get('/search/:keyword', (req, res) => {
     let keyword = req.params.keyword;
-    let db = new Database();
     // SEARCH ACROSS ALL THREE TABLES USING MY STORED PROCEDURE
     db.connection.query(`CALL search(?)`, [keyword], (err, results, fields) => {
         if (err) {

@@ -192,7 +192,7 @@ class SearchResults extends Component{
             orderedResults.push({
                 code: <div key={id++} className="result_container">
                 <a className="image_container" href={`/video/${id}`}>
-                    <img className="result_image_rect" src="https://avatarfiles.alphacoders.com/122/122465.jpg"/>
+                    <img className="result_image_rect" src={`/images/thumbnails/${id}.png`}/>
                 </a>
                 <div className="result_text">
                     <a className="result_title" href={`/video/${id}`}>{video.name}</a>
@@ -211,7 +211,7 @@ class SearchResults extends Component{
             let samples = JSON.parse(playlist.samples);
             orderedResults.push({ code: <div key={id++} className="result_container">
                 <a className="image_container" href={`/playlist/${id}`}>
-                    <img className="result_image_rect" src="https://avatarfiles.alphacoders.com/122/122465.jpg"></img>
+                    <img className="result_image_rect" src={`/images/thumbnails/${samples[0].id}.png`}></img>
                     <div className="playlist_overlay">
                         <div className="playlist_videos_count">
                             {playlist.videos_count}
@@ -235,7 +235,7 @@ class SearchResults extends Component{
         accounts.map((account) => {
             orderedResults.push({code: <div key={id++} className="result_container">
                         <a className="image_container" href={`/channel/${account.username}/home`}>
-                            <img className="result_image_circle" src="https://avatarfiles.alphacoders.com/122/122465.jpg"/>
+                            <Avatar className="result_image_circle" name={account.name} round={true}/>
                         </a>
                     <div className="result_text">
                         <a className="result_title" href={`/channel/${account.username}/home`}>{account.name}</a>
