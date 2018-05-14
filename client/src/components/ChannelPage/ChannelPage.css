@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Lato:300');
+
 .channel-header {
     display: grid;
     grid-template-columns: 90px auto 150px;
@@ -7,7 +9,7 @@
 
 .channel-page {
     font-family: Roboto;
-    margin-bottom: 200px;
+    margin-bottom: 100px;
 }
 
 .channel-name-container {
@@ -44,8 +46,10 @@
     color: white;
     border-radius: 3px;
     padding: 9px 15px;
-    font-family: Arial, Helvetica, sans-serif;
+font-family: Lato,
+sans-serif;
     font-weight: bold;
+    letter-spacing: 0.1px;
     font-size: 14px;
 }
 
@@ -127,6 +131,14 @@
     
 }
 
+.channel-video-container .video-item .video-count {
+    font-size: 20px;
+}
+
+.channel-video-container .video-item .play-button{
+    width: 20px;
+}
+
 .video-item #watch-later-btn {
     position: absolute;
     top: 10px;
@@ -143,4 +155,42 @@
 
 .video-item:hover #watch-later-btn {
     opacity: 1;
+}
+
+
+.channel-playlist-image {
+    background: rgba(0, 0, 0, 0.75);
+    height: 133.33px;
+    position: absolute;
+    width: 100px;
+    left: 100px;
+    z-index: 10;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 25px;
+}
+
+.channel-playlist-image>div {
+    text-align: center;
+}
+
+.channel-page section p {
+    font-family: Roboto;
+}
+
+.channel-page section {
+    padding: 10px 115px;
+}
+
+.owner-tag {
+    font-size: 13.5px;
+    font-weight: Roboto;
+}
+
+.sorry-message {
+    text-align: center;
+    font-family: Roboto;
+    margin: 100px 0;
 }

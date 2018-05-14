@@ -1,0 +1,108 @@
+.playlist-header {
+    background: #dfdfdf;
+    padding: 15px 20px;
+
+}
+
+.playlist-header p {
+    font-size: 20px;
+    font-family: Roboto;
+}
+
+.playlist-header h3 {
+    padding-top: 5px;
+    cursor: pointer;
+}
+
+.playlist-header img {
+    width: 25px;
+}
+
+.playlist-header button {
+    background: transparent;
+    outline: none;
+    border: none;
+    font-size: 20px;
+}
+
+.playlist-video-container {
+    overflow-y: scroll;
+    padding: 10px 10px;
+    height: 370px;
+}
+
+.playlist-video-item img {
+    width: 100px;
+}
+
+.playlist-video-item {
+    display: grid;
+    grid-template-columns: 20px 100px auto;
+}
+
+.playlist-video-item {
+    cursor: pointer;
+}
+
+.playlist-video-title {
+       overflow: hidden;
+       text-overflow: ellipsis;
+       display: -webkit-box;
+       line-height: 17px;
+       /* fallback */
+       max-height: 39px;
+       /* fallback */
+
+       -webkit-line-clamp: 2;
+       /* number of lines to show */
+
+       -webkit-box-orient: vertical;
+       font-weight: bold;
+       font-size: 15px;
+       padding-top: 3px;
+}
+
+.playlist-channel-title {
+    position: absolute;
+    top: 46px;
+    font-size: 13px;
+    font-family: Roboto;
+    color: #8f8f8f;
+}
+
+.playlist-video-detail {
+    position: relative;
+    margin-left: 5px;
+}
+
+.play-btn {
+display: flex;
+align-items: center;
+}
+
+.playlist-container a {
+    font-size: 14px;
+    color: #3f3f3f;
+    text-decoration: none;
+    display: block;
+    padding: 5px 0;
+    font-family: Roboto;
+}
+
+#video-item-watch-later-btn {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 13px;
+    left: 95px;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.video-item-outer-container:hover #video-item-watch-later-btn {
+    opacity: 0.85;
+}
+
+.video-item-outer-container {
+    position: relative;
+}

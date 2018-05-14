@@ -1,0 +1,25 @@
+ @import url('https://fonts.googleapis.com/css?family=Pangolin:400,600,700');
+
+.wtf {
+    color: #37b6d6;
+    font-family: Pangolin;
+    font-size: 65px;
+}
+
+.pnf {
+    color: #5f5f5f;
+    font-size: 40px;
+    font-family: Pangolin;
+}
+
+.not-found {
+    text-align: center;
+    margin-top: 120px;
+    height: 300px;
+}
+
+.not-found p {
+    font-family: Pangolin;
+    color: rgb(219, 40, 40);
+    font-size: 60px;
+}

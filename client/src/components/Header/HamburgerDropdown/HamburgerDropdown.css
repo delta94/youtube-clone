@@ -1,140 +1,4 @@
-/* #side-nav {
-    position: fixed;
-    top: relative;
-    font-family: Roboto, Arial, sans-serif;
-    font-size: 15px;
-}
-
-#home {
-    background: '#d0171f';
-    color: #fff;
-    width: 90%;
-}
-iconH {
-    font-size: 25px;
-    font-weight: bold;
-    font-family:  'Webdings';
-}
-
-itemH {
-    margin-top: 6px;
-    height: 23px;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-item1 {
-    margin-top: 2px;
-    height: 23px;
-}
-
-item2 {
-    margin-top: 2px;
-    height: 23px;
-    text-align: left;
-}
-
-icon1 {
-    font-size: 25px;
-    font-family:  'Webdings';
-    text-align: left;
-    margin-left:  -15px;
-}
-
-icon2 {
-    font-size: 25px;
-    font-family:  'Wingdings';
-    margin-left: -5px;
-    text-align: left;
-}
-
-icon3 {
-    font-size: 20px;
-    font-family:  'Webdings';
-    background: #d0171f;
-    color:  white;
-    border-radius: 25%;
-    width: 25px;
-    padding-left: 6px;
-    margin-left: -15px;
-    margin-top: 5px;
-}
-icon3:hover{
-    font-size: 20px;
-    font-family:  'Webdings';
-    background: #fff;
-    color:  #444444;
-    border-radius: 25%;
-    width: 25px;
-    padding-left: 6px;
-    margin-left: -10px;
-    margin-top: 4px;
-    text-align: left;
-}
-
-icon4 {
-    font-weight: bold;
-    height: 23px;
-    width: 19px;
-    font-size: 23px;
-    color:  white;
-    background: #888888;
-    border-radius: 50%;
-    padding-left: 6px;
-    margin-left: -16px;
-    text-align: left;
-}
-
-h4 {
-    font-size: 15px;
-    padding-left:  35px;
-    color:  #db2532;
-    font-family: 'Arial Narrow';
-    font-weight: bold;
-}
-h4:hover {
-    font-size: 16px;
-    padding-left:  35px;
-    color:  #db2532;
-    font-family: 'Arial Narrow';
-    font-weight: bold;
-    text-decoration:  underline;
-    cursor: pointer;
-}
-hr {
-    border: .5px solid #eeeeee;
-    width: 86%;
-}
-icon6 {
-    font-size: 25px;
-    font-family:  'Webdings';
-    text-align: left;
-    margin-left: -11px;
-}
-icon7 {
-    font-size: 25px;
-    font-family:  'Wingdings';
-    margin-left: -9px;
-    text-align: left;
-}
-icon8 {
-    font-size: 25px;
-    font-family:  'Wingdings';
-    margin-left: -12px;
-    text-align: left;
-}
-icon9 {
-    font-size: 25px;
-    font-family:  'Wingdings';
-    margin-left: -10px;
-    text-align: left;
-}
-
-.sidenav {
-    overflow-y: scroll;
-    color: blue;
-    height: 2000px;
-} */
+@import url('https://fonts.googleapis.com/css?family=Muli:400,600');
 
 * {
     box-sizing: border-box;
@@ -168,7 +32,7 @@ ul {
     padding-top: 1em;
     padding-bottom: 1em;
     background-color: #f5f5f5;
-    width: 250px;
+    width: 220px;
     border-right: 1px solid #ccc;
     position: fixed;
     top: 50px;
@@ -186,6 +50,12 @@ ul {
     list-style-type: none;
 }
 
+.nav-content-container hr {
+ height: 1px;
+ background-color: #f6f6f6;
+ opacity: 0.4;
+}
+
 .nav-main-section-links {
     background-color: #f5f5f5;
 }
@@ -200,6 +70,7 @@ ul {
     width: 100%;
     display: block;
     padding: 1em 1.5em;
+    cursor: pointer;
 }
 
 
@@ -252,7 +123,8 @@ font-weight: bold;
     align-items: center;
     justify-content: space-between;
     color:rgba(0, 0,0, 0.8);
-    font-family: Roboto;
+    font-family: 'Muli', sans-serif;
+    font-weight: 600;
 }
 
 .nav-link-numbers {
@@ -275,8 +147,9 @@ hr {
 
 .nav-main-section-header-a {
     text-decoration: none;
-    color: #af1a1a;
+    color: #6f6f6f;
     font-weight: bold;
+    font-family: 'Muli', sans-serif;
 }
 
 .nav-main-section-header-a:hover {

@@ -37,7 +37,6 @@ export default class VideoContainer extends Component {
                     <p>{this.props.title}</p>
                     <h4>{this.props.viewCount} views • {this.props.publishedAt}</h4>
                 </Link>
-                {btn}
             </div>    
 
             

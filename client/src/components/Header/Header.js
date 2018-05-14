@@ -100,7 +100,7 @@ class Header extends Component {
                                             </div>
 
                                         </li>
-                                        <li><a style={{ padding: "10px 10px 10px 30px" }} ><i className="glyphicon glyphicon-cd" style={{ color: "#666666" }} />&ensp;&ensp;&ensp;My channel</a></li>
+                                        <li><Link style={{ padding: "10px 10px 10px 30px" }} to={'/channel/' + this.props.auth.username + '/home'} ><i className="glyphicon glyphicon-cd" style={{ color: "#666666" }} />&ensp;&ensp;&ensp;My channel</Link></li>
                                         <li><a style={{ padding: "10px 10px 10px 30px" }} href="/api/logout"><span className="glyphicon glyphicon-log-out" style={{ color: "#666666" }} />&ensp;&ensp;&ensp;Log out</a></li>
                                     </ul>
                                 </div>
@@ -112,7 +112,6 @@ class Header extends Component {
     }
 
     render() {
-        console.log('inside header: ', this.props.auth);
         return (
             <section className="main_header_section">
                 <div className="main_header_div">
@@ -138,7 +137,7 @@ class Header extends Component {
                     </section>
                     {this.renderContent()}
                 </div>
-                <MySideNav style={this.state.css} user={this.props.auth}/>
+                <MySideNav style={this.state.css} user={this.props.auth} username={this.props.auth}/>
             </section>
         )
     }

@@ -1,0 +1,22 @@
+.playlist-image {
+    background: rgba(0, 0,0, 0.75);
+    height: 94px;
+    position: absolute;
+    width: 82px;
+    left: 100px;
+    z-index: 10;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 25px;
+}
+
+.playlist-image>div {
+    text-align: center;
+}
+
+.playlist-image p {
+    font-family: Roboto;
+    font-size: 20px;
+}

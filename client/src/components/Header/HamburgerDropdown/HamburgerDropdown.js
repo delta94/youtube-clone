@@ -4,27 +4,32 @@ import SideNav, { Nav, NavIcon, NavText } from 'react-sidenav';
 import './HamburgerDropdown.css';
 import SvgIcon from 'react-icons-kit';
 import axios from 'axios';
+import { connect } from 'react-redux';
 
 import { ic_aspect_ratio } from 'react-icons-kit/md/ic_aspect_ratio';
 import { ic_business } from 'react-icons-kit/md/ic_business';
+import Avatar from 'react-avatar';
   
 class MySideNav extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            subscriptionCount: 0
+            subscriptionCount: 0,
+            subscribedChannels: []
         }
     }
 
     componentDidMount() {
+        console.log('sidenav did mnt');
         axios.get('/api/subscriptionCount').then((res) => this.setState({ subscriptionCount: res.data }));
+        axios.get('/api/subscribedChannels').then((res) => { console.log('data',res.data); this.setState({ subscribedChannels: res.data }) });
+    
     }
 
 
 
     render() {
-        console.log('abc:', this.props.user);
         let getUsername = () =>  this.props.user ? this.props.user.username : '';
         return (
             <div className="sidebar" style={this.props.style}>
@@ -38,7 +43,7 @@ class MySideNav extends React.Component {
                                 <div className="nav-main-section-inner-container">
                                     <ul className="nav-main-section-links">
                                         <li className="nav-main-section-link">
-                                            <NavLink exact to='/' className="nav-main-section-link-a" activeClassName="hamburger-item-active">
+                                            <NavLink exact={true} strict={true} to='/' className="nav-main-section-link-a" activeClassName="hamburger-item-active">
                                                 <span className="link-container">
                                                     <span className="nav-link-icon"><i className="ion-home icon"></i></span>
                                                     <span className="nav-link-text">Home</span>
@@ -49,21 +54,6 @@ class MySideNav extends React.Component {
                                 </div>
                             </li>
 
-                            <li className="nav-main-section">
-                                <div className="nav-main-section-inner-container">
-                                    <ul className="nav-main-section-links">
-                                        <li className="nav-main-section-link">
-                                            <NavLink exact to={'/channel/' + getUsername() + '/home'} className="nav-main-section-link-a" activeClassName="hamburger-item-active" >
-                                            <span className="link-container">
-
-                                                    <span className="nav-link-icon"><i className="ion-person icon"></i></span>
-                                                    <span className="nav-link-text">My Channel</span>
-                                                </span>
-                                            </NavLink>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
 
                             <li className="nav-main-section">
                                 <div className="nav-main-section-inner-container">
@@ -94,49 +84,7 @@ class MySideNav extends React.Component {
                                 </div>
                             </li>
 
-                            <li className="nav-main-section">
-                                <div className="nav-main-section-inner-container">
-                                    <ul className="nav-main-section-links">
-                                        <NavLink to='/history' className="nav-main-section-link-a" exact>
-                                            <span className="link-container">
-                                                <span className="nav-link-icon"><i className="ion-ios-filing icon" /></span>
-                                                <span className="nav-link-text">History</span>
-                                            </span>
-                                        </NavLink>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li className="nav-main-section">
-                                <div className="nav-main-section-inner-container">
-                                    <ul className="nav-main-section-links">
-                                        <NavLink to='/wl' className="nav-main-section-link-a" exact>
-                                            <span className="link-container">
-                                                <span className="nav-link-icon"><i style={{fontSize: 18}} className="ion-ios-clock"></i></span>
-                                                <span className="nav-link-text">Watch later</span>
-                                            </span>
-                                        </NavLink>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li className="nav-main-section">
-                                <div className="nav-main-section-inner-container">
-                                    <ul className="nav-main-section-links">
-                                        <NavLink to='/lv' className="nav-main-section-link-a" exact>
-                                                <span className="link-container">
-                                                    <span className="nav-link-icon"><i className="ion-thumbsup icon"></i></span>
-                                                    <span className="nav-link-text">Liked videos</span>
-                                                </span>
-                                        </NavLink>
-                                    </ul>
-                                </div>
-                            </li>
                         </ul>
-
-
-
-
-
-
 
                         <hr />
 
@@ -149,13 +97,27 @@ class MySideNav extends React.Component {
                                     </h3>
                                     <ul className="nav-main-section-links">
                                         <li className="nav-main-section-link">
-                                            <a href="#" className="nav-main-section-link-a">
+                                            <NavLink to='/wl' className="nav-main-section-link-a" exact>
                                                 <span className="link-container">
-                                                    <span className="nav-link-icon"><i className="ion-ios-paper icon"></i></span>
-                                                    <span className="nav-link-text">Study mix</span>
+                                                    <span className="nav-link-icon"><i style={{ fontSize: 18 }} className="ion-ios-clock icon"></i></span>
+                                                    <span className="nav-link-text">Watch later</span>
                                                 </span>
-                                            </a>
+                                            </NavLink>
                                         </li>
+                                    </ul>
+                                </div>
+                            </li>
+
+
+                            <li className="nav-main-section">
+                                <div className="nav-main-section-inner-container">
+                                    <ul className="nav-main-section-links">
+                                        <NavLink to='/history' className="nav-main-section-link-a" exact>
+                                            <span className="link-container">
+                                                <span className="nav-link-icon"><i style={{fontSize: 22}} className="ion-ios-filing icon" /></span>
+                                                <span className="nav-link-text">History</span>
+                                            </span>
+                                        </NavLink>
                                     </ul>
                                 </div>
                             </li>
@@ -163,29 +125,12 @@ class MySideNav extends React.Component {
                             <li className="nav-main-section">
                                 <div className="nav-main-section-inner-container">
                                     <ul className="nav-main-section-links">
-                                        <li className="nav-main-section-link">
-                                            <a href="#" className="nav-main-section-link-a">
-                                                <span className="link-container">
-                                                    <span className="nav-link-icon"><i className="ion-ios-paper icon"></i></span>
-                                                    <span className="nav-link-text">Running tunes</span>
-                                                </span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-
-                            <li className="nav-main-section">
-                                <div className="nav-main-section-inner-container">
-                                    <ul className="nav-main-section-links">
-                                        <li className="nav-main-section-link">
-                                            <a href="#" className="nav-main-section-link-a">
-                                                <span className="link-container">
-                                                    <span className="nav-link-icon"><i className="ion-ios-paper icon"></i></span>
-                                                    <span className="nav-link-text">Evening/Chill</span>
-                                                </span>
-                                            </a>
-                                        </li>
+                                        <NavLink to='/lv' className="nav-main-section-link-a" exact>
+                                            <span className="link-container">
+                                                <span className="nav-link-icon"><i className="ion-thumbsup icon"></i></span>
+                                                <span className="nav-link-text">Liked videos</span>
+                                            </span>
+                                        </NavLink>
                                     </ul>
                                 </div>
                             </li>
@@ -211,149 +156,19 @@ class MySideNav extends React.Component {
                                         <a className="nav-main-section-header-a" href="#">SUBSCRIPTIONS</a>
                                     </h3>
                                     <ul className="nav-main-section-links">
-
-                                        <li className="nav-main-section-link">
-                                            <a href="#" className="nav-main-section-link-a">
+                                        {this.state.subscribedChannels.map((channel) =>  <li key={channel.channelTitle} className="nav-main-section-link">
+                                            <Link to={`/channel/${channel.channelTitle}/home`} className="nav-main-section-link-a">
                                                 <span className="link-container">
                                                     <span className="nav-link-img">
-                                                        <img src="https://hd.unsplash.com/photo-1445499348736-29b6cdfc03b9" alt="Profile picture" />
+                                                        <Avatar size={25} round={true} textSizeRatio={2} name={channel.channelTitle} />
                                                     </span>
-                                                    <span className="nav-link-text">Cat-Lyfe
-                    <span className="nav-link-numbers">8</span>
+                                                    <span className="nav-link-text">{channel.channelTitle}
                                                     </span>
                                                 </span>
-                                            </a>
-                                        </li>
+                                            </Link>
+                                        </li>)}    
 
-                                        <li className="nav-main-section-link">
-                                            <a href="#" className="nav-main-section-link-a">
-                                                <span className="link-container">
-                                                    <span className="nav-link-img">
-                                                        <img src="https://hd.unsplash.com/photo-1445499348736-29b6cdfc03b9" alt="Profile picture" />
-                                                    </span>
-                                                    <span className="nav-link-text">Cat-Lyfe
-                    <span className="nav-link-numbers"></span>
-                                                    </span>
-                                                </span>
-                                            </a>
-                                        </li>
 
-                                        <li className="nav-main-section-link">
-                                            <a href="#" className="nav-main-section-link-a">
-                                                <span className="link-container">
-                                                    <span className="nav-link-img">
-                                                        <img src="https://hd.unsplash.com/photo-1445499348736-29b6cdfc03b9" alt="Profile picture" />
-                                                    </span>
-                                                    <span className="nav-link-text">Cat-Lyfe
-                    <span className="nav-link-numbers"></span>
-                                                    </span>
-                                                </span>
-                                            </a>
-                                        </li>
-
-                                        <li className="nav-main-section-link">
-                                            <a href="#" className="nav-main-section-link-a">
-                                                <span className="link-container">
-                                                    <span className="nav-link-img">
-                                                        <img src="https://hd.unsplash.com/photo-1445499348736-29b6cdfc03b9" alt="Profile picture" />
-                                                    </span>
-                                                    <span className="nav-link-text">Cat-Lyfe
-                    <span className="nav-link-numbers">5</span>
-                                                    </span>
-                                                </span>
-                                            </a>
-                                        </li>
-
-                                        <li className="nav-main-section-link">
-                                            <a href="#" className="nav-main-section-link-a">
-                                                <span className="link-container">
-                                                    <span className="nav-link-img">
-                                                        <img src="https://hd.unsplash.com/photo-1445499348736-29b6cdfc03b9" alt="Profile picture" />
-                                                    </span>
-                                                    <span className="nav-link-text">Cat-Lyfe
-                    <span className="nav-link-numbers">17</span>
-                                                    </span>
-                                                </span>
-                                            </a>
-                                        </li>
-
-                                        <li className="nav-main-section-link">
-                                            <a href="#" className="nav-main-section-link-a">
-                                                <span className="link-container">
-                                                    <span className="nav-link-img">
-                                                        <img src="https://hd.unsplash.com/photo-1445499348736-29b6cdfc03b9" alt="Profile picture" />
-                                                    </span>
-                                                    <span className="nav-link-text">Cat-Lyfe
-                    <span className="nav-link-numbers">12</span>
-                                                    </span>
-                                                </span>
-                                            </a>
-                                        </li>
-
-                                        <li className="nav-main-section-link">
-                                            <a href="#" className="nav-main-section-link-a">
-                                                <span className="link-container">
-                                                    <span className="nav-link-img">
-                                                        <img src="https://hd.unsplash.com/photo-1445499348736-29b6cdfc03b9" alt="Profile picture" />
-                                                    </span>
-                                                    <span className="nav-link-text">Cat-Lyfe
-                    <span className="nav-link-numbers">3</span>
-                                                    </span>
-                                                </span>
-                                            </a>
-                                        </li>
-
-                                        <li className="nav-main-section-link">
-                                            <a href="#" className="nav-main-section-link-a">
-                                                <span className="link-container">
-                                                    <span className="nav-link-img">
-                                                        <img src="https://hd.unsplash.com/photo-1445499348736-29b6cdfc03b9" alt="Profile picture" />
-                                                    </span>
-                                                    <span className="nav-link-text">Cat-Lyfe
-                    <span className="nav-link-numbers">25</span>
-                                                    </span>
-                                                </span>
-                                            </a>
-                                        </li>
-
-                                        <li className="nav-main-section-link">
-                                            <a href="#" className="nav-main-section-link-a">
-                                                <span className="link-container">
-                                                    <span className="nav-link-img">
-                                                        <img src="https://hd.unsplash.com/photo-1445499348736-29b6cdfc03b9" alt="Profile picture" />
-                                                    </span>
-                                                    <span className="nav-link-text">Cat-Lyfe
-                    <span className="nav-link-numbers">7</span>
-                                                    </span>
-                                                </span>
-                                            </a>
-                                        </li>
-
-                                        <li className="nav-main-section-link">
-                                            <a href="#" className="nav-main-section-link-a">
-                                                <span className="link-container">
-                                                    <span className="nav-link-img">
-                                                        <img src="https://hd.unsplash.com/photo-1445499348736-29b6cdfc03b9" alt="Profile picture" />
-                                                    </span>
-                                                    <span className="nav-link-text">Cat-Lyfe
-                    <span className="nav-link-numbers"></span>
-                                                    </span>
-                                                </span>
-                                            </a>
-                                        </li>
-
-                                        <li className="nav-main-section-link">
-                                            <a href="#" className="nav-main-section-link-a">
-                                                <span className="link-container">
-                                                    <span className="nav-link-img">
-                                                        <img src="https://hd.unsplash.com/photo-1445499348736-29b6cdfc03b9" alt="Profile picture" />
-                                                    </span>
-                                                    <span className="nav-link-text">Cat-Lyfe
-                    <span className="nav-link-numbers">2</span>
-                                                    </span>
-                                                </span>
-                                            </a>
-                                        </li>
 
                                     </ul>
                                 </div>
@@ -405,5 +220,6 @@ class MySideNav extends React.Component {
         )
     }
 }
+
 
 export default MySideNav;

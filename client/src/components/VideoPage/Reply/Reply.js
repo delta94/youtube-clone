@@ -38,46 +38,41 @@ class Reply extends Component {
                 likeStatus: 0
             }));
         } else if (this.state.likeStatus == 0) {
-            axios.post('/api/likeReply/' + this.props.id).then((res) => {
-                this.setState((prev) => ({
-                    likeCount: prev.likeCount + 1,
-                    likeStatus: 1
-                }));
-            })
+            axios.post('/api/likeReply/' + this.props.id);
+            this.setState((prev) => ({
+                likeCount: prev.likeCount + 1,
+                likeStatus: 1
+            }));
         } else {
             axios.post('/api/unlikeReply/' + this.props.id).then((res) => {
-                axios.post('/api/likeReply/' + this.props.id).then((res) => {
-                    this.setState((prev) => ({
-                        likeCount: prev.likeCount + 1,
-                        likeStatus: 1
-                    }));
-                })
+                axios.post('/api/likeReply/' + this.props.id);
             });
+            this.setState((prev) => ({
+                likeCount: prev.likeCount + 1,
+                likeStatus: 1
+            }));
         }
     }
 
     handleDislike() {
         if (this.state.likeStatus == 1) {
             axios.post('/api/unlikeReply/' + this.props.id).then((res) => {
-                axios.post('/api/dislikeReply/' + this.props.id).then((res) => {
-                    this.setState((prev) => ({
-                        likeCount: prev.likeCount - 1,
-                        likeStatus: -1
-                    }));
-                })
+                axios.post('/api/dislikeReply/' + this.props.id);
             });
+            this.setState((prev) => ({
+                likeCount: prev.likeCount - 1,
+                likeStatus: -1
+            }));
         } else if (this.state.likeStatus == 0) {
-            axios.post('/api/dislikeReply/' + this.props.id).then((res) => {
-                this.setState({
-                    likeStatus: -1
-                });
-            })
+            axios.post('/api/dislikeReply/' + this.props.id);
+            this.setState({
+                likeStatus: -1
+            });
         } else {
-            axios.post('/api/unlikeReply/' + this.props.id).then((res) => {
-                this.setState({
-                    likeStatus: 0
-                });
-            })
+            axios.post('/api/unlikeReply/' + this.props.id);
+            this.setState({
+                likeStatus: 0
+            });
         }
     }
 

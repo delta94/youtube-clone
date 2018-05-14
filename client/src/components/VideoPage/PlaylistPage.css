@@ -1,0 +1,23 @@
+.playlist-iframe_placeholder {
+    width: 100%;
+    height: 490px;
+    position: relative;
+}
+
+.playlist-rightside_videos_wrapper {
+    width: 430px;
+    height: 1800px;
+    float: left;
+    position: relative;
+    left: 875px;
+}
+
+.playlist-container {
+    height: 471px;
+    width: 435px;
+    z-index: 5;
+    position: relative;
+    left: 890px;
+    top: 19px;
+    background: #fefefe;
+}

@@ -23,10 +23,13 @@ import Subscriptions from './components/Subscriptions/Subscriptions';
 import LikedVideosPage from './components/LikedVideosPage/LikedVideosPage';
 import TrendingPage from './components/Trending/Trending';
 import ChannelVideoPage from './components/ChannelPage/ChannelVideoPage';
-
+import PlaylistPage from './components/VideoPage/PlaylistPage';
+import NotFoundPage from './components/NotFoundPage/NotFoundPage';
 
 export default (
     <Switch>
+        <Route component={PlaylistPage} path='/playlist/:playlistId' exact />    
+        <Route component={PlaylistPage} path='/playlist/:playlistId/video/:videoId' />
         <Route component={ChannelVideoPage} path='/channel/:username/home' exact/>    
         <Route component={ LandingPage } path='/' exact />
         <Route component={ LoginPage } path ='/login'/>
@@ -47,5 +50,7 @@ export default (
         <Route component={Subscriptions} path='/subscriptions' />
         <Route component={TrendingPage} path='/trending' />
         <Route component={LikedVideosPage} path='/lv' />
+        <Route component={NotFoundPage} path='/404' />
+        <Route component={NotFoundPage} />
     </Switch>
 )
