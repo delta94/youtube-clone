@@ -94,12 +94,11 @@ router.delete('/savePlaylist/:pid', (req, res) => {
 })
 
 router.get('/checkPlaylistOwner/:playlistId', (req, res) => {
-    console.log(req.params.playlistId);
     db.query(`SELECT owner
      FROM playlist
      WHERE playlist_id=${req.params.playlistId} AND owner='${req.user.username}'`)
         .then((rows) => {
-            console.log('rows[0]', rows[0]);
+             
             if (rows[0]) res.json({
                 result: !!rows[0].owner
             });
@@ -295,11 +294,10 @@ router.get('/recommendedVideo/:videoId', (req, res) => {
         .then((rows) => {
             if (rows[0].tags === null) return res.end();
             else {
-                console.log('==', rows[0].tags);
                 tags = rows[0].tags.split(' ');
                 for (tag of tags) {
-                    videos = videos.concat(sdb.query(`SELECT id, name AS title, upload_account AS channelTitle, GetVideoViewCount(id) 
-                    AS viewCount
+                    videos = videos.concat(sdb.query(`
+                    SELECT id, name AS title, upload_account AS channelTitle, GetVideoViewCount(id) AS viewCount
                     FROM video
                     WHERE LOCATE('${tag}', tags) <> 0`));
                 }
@@ -314,8 +312,6 @@ router.post('/watchLater/:videoId', (req, res) => {
 });
 
 router.get('/checkWatchLater/:videoId', (req, res) => {
-    console.log('check');
-    console.log(req.user.username, req.params.videoId);
     db.query(`SELECT * 
     FROM a_watch_later_v
     WHERE account_name='${req.user.username}' AND video_id=${req.params.videoId}`)
@@ -440,7 +436,6 @@ router.post('/reply', (req, res) => {
 });
 
 router.delete('/reply/:repId', (req, res) => {
-    console.log('inside delete');
     db.query(`SELECT Reply_Delete(${req.params.repId})`).then(() => res.end());
 });
 
@@ -489,7 +484,6 @@ router.post('/insertVideo', (req, res) => {
 
 /* create new playlist */
 router.post('/playlist', (req, res) => {
-    console.log(req.body);
     db.query(`INSERT INTO playlist(name, public, dtime, owner) VALUES('${req.body.name}',1,NOW(), '${req.body.username}')`)
         .then((rows) =>
             db.query(`SELECT AUTO_INCREMENT AS max_id

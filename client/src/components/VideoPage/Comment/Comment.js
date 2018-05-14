@@ -224,6 +224,7 @@ class Comment extends Component {
     render() {
         let reportBttn = null;
         if (this.state.reportClicked) {
+            console.log('->', this.props.name, this.props.currentUser);
             if (this.props.name == this.props.currentUser) {
                 reportBttn = <div id="delete_content" onClick={this.handleDeleteOnClick} >
                     <p>Delete</p>    

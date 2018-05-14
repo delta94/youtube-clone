@@ -13,17 +13,17 @@ class Clock extends Component {
     }
 
     componentDidMount() {
-        setInterval(this.calculateDiffAndSetState, 1000);
+        setInterval(this.calculateDiffAndSetState, 30*1000);
     }
 
     calculateDiff() {
         let now = new Date();
          
-        let diff = (now - new Date(this.props.date)) / (60 * 1000);
+        let diff = parseInt((now - new Date(this.props.date)) / (60 * 1000));
         let str = '';
          
         if (diff < 1) str = 'Just now';
-        else if (diff == 1) str = 'A minute ago';
+        else if (diff < 2) str = 'A minute ago';
         else if (diff < 60) str = parseInt(diff) + ' minutes ago';
         else if (diff < 120) str = 'A hour ago';
         else if (diff < 24 * 60) str = parseInt(diff / 60) + ' hours ago';
@@ -42,7 +42,7 @@ class Clock extends Component {
         let str = '';
          
         if (diff < 1) str = 'Just now';
-        else if (diff == 1) str = 'A minute ago';
+        else if (diff < 2) str = 'A minute ago';
         else if (diff < 60) str = parseInt(diff) + ' minutes ago';
         else if (diff < 120) str = 'A hour ago';
         else if (diff < 24 * 60) str = parseInt(diff / 60) + ' hours ago';
