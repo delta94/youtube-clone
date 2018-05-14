@@ -1,11 +1,10 @@
-var express = require('express');
-var router = express.Router();
-var User = require('../models/User');
-var Database = require('../models/Database');
-let db = new Database();
-let SyncDatabase = require('../models/SyncDatabase');
+const express = require('express');
+const router = express.Router();
+const User = require('../models/User');
+const Database = require('../models/Database');
+const SyncDatabase = require('../models/SyncDatabase');
 let sdb = new SyncDatabase();
-
+let db = new Database();
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 /******************************************** USER *********************************************/
@@ -442,18 +441,14 @@ router.delete('/reply/:repId', (req, res) => {
 router.get('/search/:keyword', (req, res) => {
     let keyword = req.params.keyword;
     // SEARCH ACROSS ALL THREE TABLES USING MY STORED PROCEDURE
-    db.connection.query(`CALL search(?)`, [keyword], (err, results, fields) => {
-        if (err) {
-            console.log(err);
-            throw error;
-        }
+    db.query(`CALL search(?)`, [keyword]).then((results, fields) => {
         let ret = {
             playlists: results[0], // playlist
             accounts: results[1], // accounts
             videos: results[2], // videos
         };
         res.json(ret);
-    });
+    }).catch((e) => { throw e });
 });
 //////////////////////////////////////////////////////////////////////////////////////////////////
 /******************************************* PLAYLIST*******************************************/

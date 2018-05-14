@@ -1,17 +1,18 @@
-var express = require('express');
-var multer = require('multer');
-var path = require('path');
-var router = express.Router();
-var ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
-var ffprobePath = require('@ffprobe-installer/ffprobe').path;
-var ffmpeg = require('fluent-ffmpeg');
+const express = require('express');
+const multer = require('multer');
+const path = require('path');
+const router = express.Router();
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+const ffprobePath = require('@ffprobe-installer/ffprobe').path;
+const ffmpeg = require('fluent-ffmpeg');
 ffmpeg.setFfmpegPath(ffmpegPath);
 ffmpeg.setFfprobePath(ffprobePath);
-var fs = require('fs');
-var Database = require('../models/Database');
-var MySql = require('sync-mysql');
+const fs = require('fs');
+const Database = require('../models/Database');
+const MySql = require('sync-mysql');
 const config = require('../config/mysqlConfig');
 let SyncMySQL = require('../models/SyncDatabase');
+let db = new Database();
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -20,7 +21,7 @@ var storage = multer.diskStorage({
 })
 
 var upload = multer({ storage: storage })
-let db = new Database();
+
 /* upload video */
 router.post('/upload/video', upload.single('video'), function (req, res, next) {
     let duration = 0;

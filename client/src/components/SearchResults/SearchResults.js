@@ -17,16 +17,6 @@ class SearchResults extends Component{
         super(props);
         this.state = {
             videoArr: [
-                {
-                    snippet:{
-                        thumbnails: {
-                            medium: {},
-                        },
-                    },
-                    id: {
-                        videoId: ''
-                    }
-                },
             ],
             playlistArr: [],
             accountArr: [],
@@ -44,7 +34,7 @@ class SearchResults extends Component{
                 Math.floor(Math.random() * 1500000 + 1).toLocaleString() + ' views',
                 Math.floor(Math.random() * 1500000 + 1).toLocaleString() + ' views',
             ],
-            numberOfResults: Math.floor(Math.random() * 5000000 + 1).toLocaleString()
+            numberOfResults: 0
         }
 
         this.getViews = this.getViews.bind(this)
@@ -60,6 +50,7 @@ class SearchResults extends Component{
                 videoArr: result.data.videos,
                 playlistArr: result.data.playlists,
                 accountArr: result.data.accounts,
+                numberOfResults: result.data.videos.length + result.data.playlists.length + result.data.accounts.length,
                 // pagination: videoArr.data
             });
         })
@@ -74,7 +65,8 @@ class SearchResults extends Component{
                     videoArr: result.data.videos,
                     playlistArr: result.data.playlists,
                     accountArr: result.data.accounts,
-                    // pagination: videoArr.data
+                    numberOfResults: result.data.videos.length + result.data.playlists.length + result.data.accounts.length,
+                // pagination: videoArr.data
                 })
             })
         }
@@ -247,7 +239,6 @@ class SearchResults extends Component{
                     </div>
                 </div>, relevance: account.relevance});
             });
-        console.log(orderedResults);
         orderedResults = orderedResults.sort((a, b) => {
             if (a.relevance < b.relevance) {
                 return 1;
