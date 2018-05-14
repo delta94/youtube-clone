@@ -19,7 +19,7 @@ class Subscriptions extends Component {
 
     render() {
         if (this.state.isLoading) return null;
-        console.log('->', this.state.videos);
+         
         return (
             <div id="watchlater-container">
                 {this.state.videos.map((video) => {

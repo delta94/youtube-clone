@@ -19,7 +19,7 @@ export default class PlaylistCheckBox extends Component {
     }
 
     handleInputOnChange() {
-        console.log('clicked');
+         
         if (this.state.checked) {
             this.setState((prev) => ({ checked: !prev.checked }));
             axios.post(`/api/deleteVideo`, {

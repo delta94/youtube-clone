@@ -16,7 +16,6 @@
     background: white;
     position: relative;
     margin-top: 2.5%;
-    
 }
 #load_more{
     height: 30px;
@@ -33,6 +32,7 @@
     margin-left: auto;
     margin-right: auto;
     margin-top: 30px;
+    opacity: 0;
 }
 #load_more_container{
     height: 50px;

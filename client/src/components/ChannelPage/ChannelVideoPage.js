@@ -105,7 +105,7 @@ class ChannelVideoPage extends Component {
             .then((res) => {
                 if (res.data[0]) savedPlaylist = res.data;
                 else savedPlaylist = [];
-                console.log('save: ', res.data);
+                 
                 this.setState({ videos, subscribed, channelInfo, isLoading: false, savedPlaylist, createdPlaylist });
             });
     }

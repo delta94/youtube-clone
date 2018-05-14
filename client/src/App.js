@@ -7,6 +7,7 @@ import Sidebar from 'react-sidenav';
 import { BrowserRouter } from 'react-router-dom';
 import * as actions from './actions/index';
 import { connect } from 'react-redux';
+import Clock from './components/Clock/Clock';
 
 import SideNav, { Nav, NavIcon, NavText } from 'react-sidenav';
 import { fetchUser } from './actions/index';
@@ -20,7 +21,7 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.props.fetchUser();
-        console.log('fetch channel');
+         
     }
 
     componentWillMount() {
@@ -28,15 +29,15 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
+        <div className="App">
             <BrowserRouter>
-            <div>        
-                <Header />
-                { router }
-                <Footer />
-            </div>        
-        </BrowserRouter>
-      </div>  
+                <div>
+                    <Header />
+                    {router}
+                    <Footer />
+                </div>
+            </BrowserRouter>
+        </div>
     );
   }
 }
